@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<div id = "thing"></div>
+
+<script type="text/javascript">
+	
+var w = 1500;
+var h = 1200;  
+var lmargin = 40;
+var inputs = [0,1.2,.2,.3,.8,.5]
+var one = [0];
+
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", w)
+    .attr("height", h);
+
+//how to make a gradient etc... UGH
+// var t,d;  
+// setTimeout(function(){
+//     d = new Date();
+//     t = d.getSeconds();
+// }, 1000); 
+
+// var backRect = svg.selectAll("rect")
+//     .data(one)
+//     .enter()
+//     .append("rect")
+//     .attr("x",0)
+//     .attr("y",0)
+//     .attr("width",w)
+//     .attr("height",h)
+//     .attr("fill", "rgb("+10+","+200+","+200+")")
+//     .attr("opacity", 10)
+
+var circle = svg.selectAll("circle")
+    .data(inputs)
+    .enter()
+    .append("circle")
+    .attr("cy", function(d,i){ return lmargin+i*lmargin })
+    .attr("cx", w/4)
+    .attr("r", function(d){
+        return d*10;
+    });
+
+	 
+</script>
+</body>
+</html>
