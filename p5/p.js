@@ -10,6 +10,7 @@ function draw() {
   if(stop==false){
   background(255);
   system.addParticle();
+
   system.run();
   }else{
   // system.addParticle();
@@ -63,6 +64,8 @@ Particle.prototype.display = function() {
     // translate(width/3, this.position.y);
     // shearY(PI/4.0);
     fill(20,100,200, 20);
+    // var y = this.position.y;
+    // rect(width/3, y, 8, y/10);
     rect(width/3, this.position.y, 8, this.position.y/10);
     stop = true;
 
