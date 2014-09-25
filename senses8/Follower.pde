@@ -153,12 +153,29 @@ class Follower {
 
   // Wraparound
   void borders(Path p) {
-    if(location.x >= p.start.x+r){
-     ellipse(p.start.x+r, p.start.y, r*2, r*2); 
+    if (location.x >= p.start.x+r) {
+      if (p.start.y%3==1) {
+        fill(10, 200, 200); 
+        ellipse(p.start.x+r, p.start.y, r*2, r*2);
+      }
+      else{
+        noFill();
+        strokeWeight(1);
+        stroke(10,200,200);
+        ellipse(p.start.x+r, p.start.y, r*2, r*2);      
+      }
     }
     if (location.x > p.end.x + r) {
       location.x = p.start.x - r;
       location.y = p.start.y + (location.y-p.end.y);
+    }
+    if (next&&(location.x > p.newend.x + r)) {
+      location.x = p.newstart.x - r;
+      location.y = p.newstart.y + (location.y-p.newend.y);
+    }
+    if (next&&(location.x >= p.newstart.x+r)) {
+      //      println ("next");
+      //      ellipse(p.newstart.x+r, p.newstart.y, r*2, r*2);
     }
   }
 }
