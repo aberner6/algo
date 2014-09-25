@@ -32,7 +32,7 @@ Follower[] car1;
 
 ParticleSystem ps;
 boolean stop = false;
-
+boolean next = false;
 void setup() {
   colorMode(RGB);
   size(1200, 600);
@@ -43,18 +43,22 @@ void setup() {
 }
 
 void draw() {
-//  background(10, 200, 200, 10);
+  //  background(10, 200, 200, 10);
   background(255);
-//  background(0);
+  //  background(0);
 
-//  if(stop==false){
+  //  if(stop==false){
   ps.addParticle();
   ps.run();
-//  }
-//  else{
-//  ps.run();    
-//  }
-  
+  //  }
+  //  else{
+  //  ps.run();    
+  //  }
+  if (next) {
+    line(width/1.3, height/4, width-10, height/2);
+    line(width/1.3, height/1.5, width-10, height/2);
+    ellipse(width-10, height/2, 10, 10);
+  }
   for (int i = 0; i< min(tweets.length,listCounter); i++) {     
     tweets[i].update();
     PVector mouse = new PVector(tweets[i].pos.x, tweets[i].pos.y);
@@ -120,22 +124,52 @@ void show() {
     //      float turnBy = map (i, 0, width/2, 0, TWO_PI)-HALF_PI; //mapping the index count - which row are we in - to an angle for rotation
     //      tweets[i].hourly = turnBy; //send this number to our tweet object
     println (tweets[i].thisTweet);
-   tweets[i].pos.y = map (i, 0, tweets.length, 20, height-20);  //send tweet object a target y position
-   tweets[i].pos.x = 200;
+    tweets[i].pos.y = map (i, 0, tweets.length, 20, height-20);  //send tweet object a target y position
+    tweets[i].pos.x = 200;
     tweets[i].tpos.x = width/1.3; //send tweet object a target x position
-//    tweets[i].tpos.y = map (i, 0, tweets.length, 20, height-20);  //send tweet object a target y position
-    tweets[i].tpos.y = height/2;
-    println (tweets.length);
-    
+    //    tweets[i].tpos.y = map (i, 0, tweets.length, 20, height-20);  //send tweet object a target y position
+
+    if (i<tweets.length/2) {
+      tweets[i].tpos.y = height/4;
+    } 
+    else {
+      tweets[i].tpos.y = height/1.5;
+    }
+    //OPTION 1 - MAKES CRISSCROSSES
+    //    if (i%2==1) {
+    //      tweets[i].tpos.y = height/4;
+    //    } 
+    //    else {
+    //      tweets[i].tpos.y = height/1.5;
+    //    }
+    //    println (tweets.length);
+
     path[i].start = new PVector(tweets[i].pos.x, tweets[i].pos.y);    
     path[i].end = new PVector(tweets[i].tpos.x, tweets[i].tpos.y);
     //    println(tweets[i].tpos);
-//   circleLocation[] = {tweets[i].tpos.x, tweets[i].tpos.y};
-   circleRadius = tweets[i].pos.y-25;
+    //   circleLocation[] = {tweets[i].tpos.x, tweets[i].tpos.y};
+    circleRadius = tweets[i].pos.y-25;
   }
 }
 
+//void next() {
+//  line(width/1.3, height/4, width-10, height/2);
+//  line(width/1.3, height/1.5, width-10, height/2);
+//  ellipse(width-10, height/2, 10, 10);
+//  //  for (int i = 0; i< tweets.length; i++) {
+//  //    if (i<tweets.length/2) {
+//  //      tweets[i].tpos.y = height/4;
+//  //    } 
+//  //    else {
+//  //      tweets[i].tpos.y = height/1.5;
+//  //    }
+//  //  }
+//}
+
 void keyPressed() {
+  if (key=='n') {
+    next=true;
+  }; //if you press h, it will run the function of show()
   if (key=='s') show(); //if you press h, it will run the function of show()
   if (keyCode == RIGHT) {
     // for safety, do not select anything above the list length

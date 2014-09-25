@@ -154,8 +154,7 @@ class Follower {
   // Wraparound
   void borders(Path p) {
     if(location.x >= p.start.x+r){
-      println ("yes");
-     ellipse(p.start.x+r, p.start.y, 10,10); 
+     ellipse(p.start.x+r, p.start.y, r*2, r*2); 
     }
     if (location.x > p.end.x + r) {
       location.x = p.start.x - r;
