@@ -76,15 +76,16 @@ void draw() {
       mouse = new PVector(tweets[i].pos.x, tweets[i].pos.y);
       circleLocation = new PVector(tweets[i].pos.x, tweets[i].pos.y);
     }
+    if(s){
     // Draw an ellipse at the mouse location
     tweets[i].render();
 
-if(s){
+//if(s){
     //    circleLocation = new PVector(tweets[i].pos.x, tweets[i].pos.y);
     circleRadius = 10;//tweets[i].pos.y-25;
     m[i].boundaries();
     m[i].run();
-}
+//}
 
     // Call the appropriate steering behaviors for our agents
     v[i].arrive(mouse);
@@ -98,6 +99,7 @@ if(s){
     car1[i].run();
     // Check if it gets to the end of the path since it's not a loop
     car1[i].borders(path[i]);
+    }
   }
 }
 
@@ -164,7 +166,7 @@ void show() {
     //    }
     //    println (tweets.length);
     if (next) {
-      tweets[i].tnewx.x = width-10;
+      tweets[i].tnewx.x = width-50;
       //      tweets[i].tnewx.y = height/2;
       path[i].newstart = new PVector(tweets[i].tpos.x, tweets[i].tpos.y);  
       path[i].newend = new PVector(tweets[i].tnewx.x, height/2);
@@ -173,6 +175,7 @@ void show() {
       path[i].start = new PVector(tweets[i].pos.x, tweets[i].pos.y);    
       path[i].end = new PVector(tweets[i].tpos.x, tweets[i].tpos.y);
     }
+
     circleRadius = tweets[i].pos.y-25;
   }
 }
@@ -181,6 +184,7 @@ void show() {
 void keyPressed() {
   if (key=='n') {
     next=true;
+        show(); 
   }; 
   if (key=='s'){
     s = true;

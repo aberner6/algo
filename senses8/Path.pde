@@ -27,13 +27,15 @@ class Path {
   // Draw the path
   void display() {
 
-    strokeWeight(radius*2);
+//    strokeWeight(radius*2);
     stroke(0, 40);
     line(start.x, start.y, end.x, end.y);
     //    strokeWeight(1);
     //    stroke(0);
-    line(start.x, start.y, end.x, end.y);
-
+    //    line(start.x, start.y, end.x, end.y);
+    for (int j=1; j<radius; j++) {
+      line(start.x, start.y+j, end.x, end.y+j);
+    }
     if (next) {
       //      println("in here");
       strokeWeight(1);

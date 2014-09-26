@@ -46,7 +46,7 @@ class Tweet {
 //    line(width/1.3, height/4, newx.x, height/2);
 //    line(width/1.3, height/1.5, newx.x, height/2);
 //    ellipse(newx.x, height/2, 10,10);    
-    ellipse(width-10, height/2, 10, 10);
+    ellipse(newx.x, height/2, 10, 10);
   }
 //  else{
 //    ellipse(pos.x, pos.y, 10,10);    
