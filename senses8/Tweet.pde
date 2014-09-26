@@ -11,10 +11,10 @@ class Tweet {
 
   float distX;
   float distY;
-  
+
   PVector newx = new PVector();
   PVector tnewx = new PVector();
-  
+
   // Create  the Tweet
   Tweet(float s) { //receiving the text from the data
     thisTweet = s; //filling up our empty variable with the received tweet
@@ -34,23 +34,25 @@ class Tweet {
   void render() {
     pushMatrix();
     //    rotate(hourly);
-//    strokeWeight(.1);
-//    stroke(0);
-    ellipse(pos.x, pos.y, 10,10);
+    //    strokeWeight(.1);
+    //    stroke(0);
+    ellipse(pos.x, pos.y, 10, 10);
     noFill();
-//    bezier(0, pos.y, 410, 20, 440, 300, pos.x, pos.y);
-//    line(0, pos.y, pos.x, pos.y);
-  if (next) {
-//    strokeWeight(4);
-//    stroke(0,10);
-//    line(width/1.3, height/4, newx.x, height/2);
-//    line(width/1.3, height/1.5, newx.x, height/2);
-//    ellipse(newx.x, height/2, 10,10);    
-    ellipse(newx.x, height/2, 10, 10);
-  }
-//  else{
-//    ellipse(pos.x, pos.y, 10,10);    
-//  }
+    //    bezier(0, pos.y, 410, 20, 440, 300, pos.x, pos.y);
+    //    line(0, pos.y, pos.x, pos.y);
+    if (next) {
+      //    strokeWeight(4);
+      //    stroke(0,10);
+      //    line(width/1.3, height/4, newx.x, height/2);
+      //    line(width/1.3, height/1.5, newx.x, height/2);
+      //    ellipse(newx.x, height/2, 10,10);  
+      //      if (p.radius%2==1) {
+      fill(10, 200, 200); 
+      ellipse(newx.x, height/2, 10, 10);
+    }
+    //  else{
+    //    ellipse(pos.x, pos.y, 10,10);    
+    //  }
 
     popMatrix();
   }

@@ -41,6 +41,9 @@ float lifespan = 255;
 
 boolean s = false;
 
+float[] go;
+float gos;
+
 void setup() {
   colorMode(RGB);
   size(1200, 600);
@@ -76,29 +79,29 @@ void draw() {
       mouse = new PVector(tweets[i].pos.x, tweets[i].pos.y);
       circleLocation = new PVector(tweets[i].pos.x, tweets[i].pos.y);
     }
-    if(s){
-    // Draw an ellipse at the mouse location
-    tweets[i].render();
+    if (s) {
+      // Draw an ellipse at the mouse location
+      tweets[i].render();
 
-//if(s){
-    //    circleLocation = new PVector(tweets[i].pos.x, tweets[i].pos.y);
-    circleRadius = 10;//tweets[i].pos.y-25;
-    m[i].boundaries();
-    m[i].run();
-//}
+      //if(s){
+      //    circleLocation = new PVector(tweets[i].pos.x, tweets[i].pos.y);
+      circleRadius = 10;//tweets[i].pos.y-25;
+      m[i].boundaries();
+      m[i].run();
+      //}
 
-    // Call the appropriate steering behaviors for our agents
-    v[i].arrive(mouse);
-    v[i].update();
-    v[i].display();
-    
-    path[i].display();
+      // Call the appropriate steering behaviors for our agents
+      v[i].arrive(mouse);
+      v[i].update();
+      v[i].display();
 
-    car1[i].follow(path[i]);
-    // Call the generic run method (update, borders, display, etc.)
-    car1[i].run();
-    // Check if it gets to the end of the path since it's not a loop
-    car1[i].borders(path[i]);
+      path[i].display();
+
+      car1[i].follow(path[i]);
+      // Call the generic run method (update, borders, display, etc.)
+      car1[i].run();
+      // Check if it gets to the end of the path since it's not a loop
+      car1[i].borders(path[i]);
     }
   }
 }
@@ -125,7 +128,7 @@ void loadData() {
     //In this case I only have 1 column - "BrainTweets"
     float thisTweet = row.getFloat("Neurons");
     // Make a Tweet object out of the data read
-//    m[rowCount] = new Mover(0, 0);
+    //    m[rowCount] = new Mover(0, 0);
     v[rowCount] = new Vehicle(thisSpotX, thisSpotY);
     tweets[rowCount] = new Tweet(thisTweet); //make a new tweet object, send it the string of text loaded in n
     path[rowCount] = new Path();
@@ -141,7 +144,7 @@ void show() {
   for (int i = 0; i< tweets.length; i++) {
     //      float turnBy = map (i, 0, width/2, 0, TWO_PI)-HALF_PI; //mapping the index count - which row are we in - to an angle for rotation
     //      tweets[i].hourly = turnBy; //send this number to our tweet object
-    println (tweets[i].thisTweet);
+    //    println (tweets[i].thisTweet);
     tweets[i].pos.y = map (i, 0, tweets.length, 20, height-20);  //send tweet object a target y position
     tweets[i].pos.x = 200;
     tweets[i].tpos.x = width/1.3; //send tweet object a target x position
@@ -149,7 +152,32 @@ void show() {
 
     path[i].radius = tweets[i].thisTweet;
 
+    //    if (tweets[i].thisTweet%2==1) {
+    //    int go = 1 * tweets[i].thisTweet
+    //multiply it by the tweets[i].thistweet and add it to the next (tweets.length/2) of i
+
+
     if (i<tweets.length/2) {
+      if (tweets[i].thisTweet%2==1) {
+
+        go = new float[100];
+        go[i] = tweets[i].thisTweet;
+        //        if (i>0) {
+        //          println(go[i]+"this");
+        //          println(go[i-1]+"onebefore");
+        gos += go[i]; //+go[i-1]; //1+3+
+        //          println (gos+"gos");
+        println(go[i]+"go at i");
+        //        }
+        //        println(i+"this is %2");
+        //        println(tweets[i].thisTweet+"this tweet");
+        //                  println (max(go)+"go max");
+        //        for (int j=0; j<go.length; j++) {
+        //          println (max(go[j])+"go max");
+        //        }
+      }
+      
+
       m[i] = new Mover(width/1.3, height/4);
       tweets[i].tpos.y = height/4;
     } 
@@ -178,17 +206,19 @@ void show() {
 
     circleRadius = tweets[i].pos.y-25;
   }
+      println(gos+"gos");
+//YES I DID IT
 }
 
 
 void keyPressed() {
   if (key=='n') {
     next=true;
-        show(); 
+    show();
   }; 
-  if (key=='s'){
+  if (key=='s') {
     s = true;
-    show(); 
+    show();
   }
   if (keyCode == RIGHT) {
     // for safety, do not select anything above the list length
