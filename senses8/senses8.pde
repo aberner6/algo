@@ -44,6 +44,7 @@ boolean s = false;
 float[] go;
 float gos;
 
+boolean lightUp = false;
 void setup() {
   colorMode(RGB);
   size(1200, 600);
@@ -159,25 +160,10 @@ void show() {
 
     if (i<tweets.length/2) {
       if (tweets[i].thisTweet%2==1) {
-
         go = new float[100];
         go[i] = tweets[i].thisTweet;
-        //        if (i>0) {
-        //          println(go[i]+"this");
-        //          println(go[i-1]+"onebefore");
         gos += go[i]; //+go[i-1]; //1+3+
-        //          println (gos+"gos");
-        println(go[i]+"go at i");
-        //        }
-        //        println(i+"this is %2");
-        //        println(tweets[i].thisTweet+"this tweet");
-        //                  println (max(go)+"go max");
-        //        for (int j=0; j<go.length; j++) {
-        //          println (max(go[j])+"go max");
-        //        }
       }
-      
-
       m[i] = new Mover(width/1.3, height/4);
       tweets[i].tpos.y = height/4;
     } 
@@ -206,8 +192,11 @@ void show() {
 
     circleRadius = tweets[i].pos.y-25;
   }
-      println(gos+"gos");
-//YES I DID IT
+  println(gos+"gos");
+  if (gos>3) {
+    lightUp = true;
+  }
+  //YES I DID IT
 }
 
 
