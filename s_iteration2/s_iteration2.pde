@@ -2,6 +2,7 @@ Network network;
 Network network1;
 Neuron n;
 Neuron z;
+Neuron w;
 Neuron n1;
 int layers = 3;
 int inputs = 3;
@@ -10,6 +11,7 @@ int multiples = 2;
 boolean sending;
 int thisNum = 0;
 PVector circleLocation;
+PVector pointCloud;
 float circleRadius = 10;
 boolean h = false;
 boolean s = false;
@@ -40,7 +42,7 @@ void setup() {
       float x = map(i, 0, layers, -250, 350);
       float y = 0; //map(j, 0, inputs-1, -75, 75);
       Neuron z = new Neuron(x, y, 4);
-      
+
       if (i > 0) {
         for (int k = 0; k < inputs; k++) {
           Neuron prev = network.neurons.get(k); 
@@ -56,9 +58,9 @@ void setup() {
     }
     else {
       for (int j = 0; j < inputs; j++) {
-        float x = 0;
-        float y = map(j, 0, inputs-1, -75, 75);
-        Neuron n = new Neuron(x, y, j);
+        float l = 0;
+        float m = map(j, 0, inputs-1, -75, 75);
+        Neuron n = new Neuron(l, m, j);
         network.addNeuron(n);
         network1.addNeuron(n);
       }
@@ -76,8 +78,6 @@ void draw() {
   network.display();
   network1.update();
   network1.display();
-
-
 
   // Every 30 frames feed in an input
   if (frameCount % 80 == 0) {

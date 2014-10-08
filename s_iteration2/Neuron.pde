@@ -3,10 +3,13 @@ class Neuron {
 
   PVector location;
   PVector olocation = new PVector(-width/2, 0);
-
+  PVector pointCloud;
   ArrayList<Connection> connections;
   float r = 10;
   float r2 = 10;
+  float px2 = 0;
+  float px = 0;
+
   int index;
 
   int indexis;
@@ -14,6 +17,7 @@ class Neuron {
 
   Neuron(float x, float y, int i) {
     location = new PVector(x, y);
+    pointCloud = new PVector(0, 0);
     connections = new ArrayList<Connection>();
     indexis = i;
   }
@@ -39,8 +43,9 @@ class Neuron {
 
   void fire() {
     r = 24; //suddenly bigger
-//    olocation.x = -1;
-//    location.x = lerp(location.x, olocation.x, 1);
+    px = -width/2;//location.x;
+    //    olocation.x = -1;
+    //    location.x = lerp(location.x, olocation.x, 1);
 
     for (Connection c : connections) {
       c.feedforward(sum, indexing);
@@ -48,7 +53,10 @@ class Neuron {
   }
 
   void display() {
+
     //    noStroke();
+
+
     strokeWeight(.1);
     //    if (indexing%2==0) {
     if (indexis==4) {
@@ -71,6 +79,9 @@ class Neuron {
           fill(fill, fill2, fill3, opacity1);
           r = lerp(r, r2, 0.08);
           ellipse(location.x, location.y, r, r);
+
+          px = lerp(px, px2, 0.08); 
+          ellipse(px, location.y, 20, 20);
         }
       }
       if (indexing%2==1) {
@@ -79,6 +90,9 @@ class Neuron {
           fill(fill, fill4, fill5, opacity2);
           r = lerp(r, r2, 0.08);
           ellipse(location.x, location.y, r, r);
+
+          px = lerp(px, px2, 0.08); 
+          ellipse(px, location.y, 20, 20);
         }
       }
     }

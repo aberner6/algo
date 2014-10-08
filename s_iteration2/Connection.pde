@@ -5,6 +5,7 @@ class Connection {
 
   boolean sending = false;
   PVector sender;
+  PVector pointCloud;
   float output = 0;
 
   int rd = 6;
@@ -35,6 +36,7 @@ class Connection {
 
   void feedforward(float val, int index) {
     sending = true;
+    pointCloud = a.location.get();
     sender = a.location.get();
     output = val*weight;
     //    println(output+"feed connection");
@@ -47,8 +49,13 @@ class Connection {
 
   void update() {
     if (sending) {
+
       sender.x = lerp(sender.x, b.location.x, .08);
       sender.y = lerp(sender.y, b.location.y, .08);
+
+      pointCloud.x = lerp(pointCloud.x, sender.x, .08);
+      pointCloud.y = lerp(pointCloud.y, sender.y, .08);
+
       float d = PVector.dist(sender, b.location);
       if (d<1) {
         b.feedforward(output, index);
@@ -102,7 +109,7 @@ class Connection {
   void display() {
     stroke(200);
     strokeWeight(1);
-//    weight = -1;
+    //    weight = -1;
     //    strokeWeight(1+weight*4);
     noFill();
     bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight*4, b.location.x, b.location.y-weight*4, b.location.x, b.location.y);
@@ -120,7 +127,9 @@ class Connection {
       stroke(200);
       strokeWeight(1);
       pushMatrix();
-      translate(sender.x, sender.y);
+      translate(pointCloud.x, pointCloud.y);
+
+//      translate(sender.x, sender.y);
       rotate(theta);
       beginShape(TRIANGLES);
       vertex(0, -rd*2);

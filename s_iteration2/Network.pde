@@ -7,11 +7,13 @@ class Network {
 
   PVector location;
   PVector tlocation;
-
+  PVector pointCloud;
   int index;
 
   Network(float x, float y) {
     location = new PVector(x, y);
+    pointCloud = new PVector(0, 0);
+
     neurons = new ArrayList<Neuron>();
     connections = new ArrayList<Connection>();
   }
@@ -42,9 +44,10 @@ class Network {
 
   // Update the animation
   void update() {
-    
+
     for (Connection c : connections) {
       c.update();
+
       //      c.run();
     }
   }
@@ -54,6 +57,7 @@ class Network {
     translate(location.x, location.y);
     for (Connection c : connections) {
       circleLocation = new PVector(location.x, location.y);
+
       c.boundaries();
       //      c.run();
       c.display();
