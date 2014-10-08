@@ -33,17 +33,17 @@ class Connection {
     maxforce = 0.015;
   }
 
-  void feedforward(float val) {
+  void feedforward(float val, int index) {
     sending = true;
     sender = a.location.get();
     output = val*weight;
     //    println(output+"feed connection");
   }
 
-//  void run() {
-//    update();
-//    display();
-//  }
+  //  void run() {
+  //    update();
+  //    display();
+  //  }
 
   void update() {
     if (sending) {
@@ -51,7 +51,7 @@ class Connection {
       sender.y = lerp(sender.y, b.location.y, .08);
       float d = PVector.dist(sender, b.location);
       if (d<1) {
-        b.feedforward(output);
+        b.feedforward(output, index);
         println(output+"output");
         sending = false;
       }
@@ -101,31 +101,33 @@ class Connection {
   // Draw line and traveling circle
   void display() {
     stroke(200);
-    strokeWeight(1+weight*4);
-    //    noFill();
-    //    bezier(a.location.x, a.location.y, a.location.x, a.location.y+10,b.location.x, b.location.y+10, b.location.x, b.location.y);
-    line(a.location.x, a.location.y, b.location.x, b.location.y);
+    strokeWeight(1);
+//    weight = -1;
+    //    strokeWeight(1+weight*4);
+    noFill();
+    bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight*4, b.location.x, b.location.y-weight*4, b.location.x, b.location.y);
+    //    line(a.location.x, a.location.y, b.location.x, b.location.y);
     // Draw line and traveling circle
 
-    if (sending) {
-      fill(0);
-      strokeWeight(1);
-      ellipse(sender.x, sender.y, 16, 16);
-    }
     //    if (sending) {
-    //      float theta = velocity.heading2D()+radians(90);
-    //      noFill();
-    //      stroke(200);
-    //      strokeWeight(.3);
-    //      pushMatrix();
-    //      translate(sender.x, sender.y);
-    //      rotate(theta);
-    //      beginShape(TRIANGLES);
-    //      vertex(0, -rd*2);
-    //      vertex(-rd, rd*2);
-    //      vertex(rd, rd*2);
-    //      popMatrix();
+    //      fill(0);
+    //      strokeWeight(1);
+    //      ellipse(sender.x, sender.y, 16, 16);
     //    }
+    if (sending) {
+      float theta = velocity.heading2D()+radians(90);
+      noFill();
+      stroke(200);
+      strokeWeight(1);
+      pushMatrix();
+      translate(sender.x, sender.y);
+      rotate(theta);
+      beginShape(TRIANGLES);
+      vertex(0, -rd*2);
+      vertex(-rd, rd*2);
+      vertex(rd, rd*2);
+      popMatrix();
+    }
   }
 }
 

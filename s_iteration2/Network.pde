@@ -6,7 +6,7 @@ class Network {
   ArrayList<Connection> connections;
 
   PVector location;
-  PVector originLoc = new PVector();
+  PVector tlocation;
 
   int index;
 
@@ -28,33 +28,35 @@ class Network {
   // Sending an input to the first Neuron
   // We should do something better to track multiple inputs
   void feedforward(float input1, float input2, int which, int and, int andTw) {
+
     Neuron n1 = neurons.get(which);
-    n1.feedforward(input1);
+    n1.feedforward(input1, which);
     Neuron n2 = neurons.get(which+and);// or just (which);
-    n2.feedforward(input2);
+    n2.feedforward(input2, which+and);
 
     if (andTw>0) {
       Neuron n3 = neurons.get(which+andTw);// or just (which);
-      n3.feedforward(input1);
+      n3.feedforward(input1, which+andTw);
     }
   }
 
   // Update the animation
   void update() {
+    
     for (Connection c : connections) {
       c.update();
       //      c.run();
     }
   }
   void display() {
+
     pushMatrix();
     translate(location.x, location.y);
     for (Connection c : connections) {
       circleLocation = new PVector(location.x, location.y);
       c.boundaries();
-//      c.run();
+      //      c.run();
       c.display();
-
     }
     for (Neuron n: neurons) {
       n.display();

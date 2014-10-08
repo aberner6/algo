@@ -17,6 +17,13 @@ boolean o = false;
 boolean ss = false;
 int which = 1;
 int andTw = 0;
+float opacity1;
+float opacity2;
+int  fill = 0;
+int  fill2;
+int  fill3;
+int  fill4;
+int  fill5;
 
 void setup() {
   size(700, 400);
@@ -25,39 +32,15 @@ void setup() {
 
   network = new Network(translateX, height/4);
   network1 = new Network(translateX, height*3/4);
-  Neuron output = new Neuron(translateX*2, height/4, 0); //y is usually 0
-  Neuron output1 = new Neuron(translateX*2, -height/4, 0); //y is usually 0
-  // Create the Network object
-  //  network = new Network(width/2, height/2);
-  //
-  //  int layers = 3;
-  //  int inputs = 3;
-  //
-  //  Neuron output = new Neuron(250, 0, 5);
-  //  for (int i = 0; i < layers; i++) {
-  //    for (int j = 0; j < inputs; j++) {
-  //      float x = map(i, 0, layers, -250, 300);
-  //      float y = map(j, 0, inputs-1, -75, 75);
-  //      Neuron n = new Neuron(x, y, i);
-  //      if (i > 0) {
-  //        for (int k = 0; k < inputs; k++) {
-  //          Neuron prev = network.neurons.get(network.neurons.size()-inputs+k-j); 
-  //          network.connect(prev, n, 1, 1);
-  //        }
-  //      }
-  //      if (i == layers-1) {
-  //        network.connect(n, output, 1, 1);
-  //      }
-  //      network.addNeuron(n);
-  //    }
-  //  } 
-  //  network.addNeuron(output);
-  //}
+  Neuron output = new Neuron(translateX*2, height/4, 4); //y is usually 0
+  Neuron output1 = new Neuron(translateX*2, -height/4, 4); //y is usually 0
+
   for (int i = 0; i < layers; i++) {
     if (i==layers-1) {
       float x = map(i, 0, layers, -250, 350);
       float y = 0; //map(j, 0, inputs-1, -75, 75);
-      Neuron z = new Neuron(x, y, i);
+      Neuron z = new Neuron(x, y, 4);
+      
       if (i > 0) {
         for (int k = 0; k < inputs; k++) {
           Neuron prev = network.neurons.get(k); 
@@ -88,30 +71,58 @@ void setup() {
 
 void draw() {
   background(255);
+
   network.update();
   network.display();
   network1.update();
   network1.display();
+
+
+
   // Every 30 frames feed in an input
   if (frameCount % 80 == 0) {
     //    println("hey");
+    //    network1.feedforward(1, 1, which, and, andTw);
     network.feedforward(1, 1, which, and, andTw);
-//    network.feedforward(random(1), random(1), which, and, andTw);
-//    network.feedforward(random(inputs-1), random(inputs-1), which, and, andTw);
+    //    network.feedforward(random(1), random(1), which, and, andTw);
+    //    network.feedforward(random(inputs-1), random(inputs-1), which, and, andTw);
   }
 
   if (s) {
-    //"sound and smell"
+    opacity2 = 0;
+    opacity1 = 40;
+
+    fill2 = 0;
+    fill3 = 255;
+    fill4 = 0;
+    fill5 = 0;
+
     which = 0;
     and = 2;
     andTw = 0;
   }
   if (o) {
+    opacity1 = 0;
+    opacity2 = 40;
+
+    fill2 = 0;
+    fill3 = 0;
+    fill5 = 0;
+    fill4 = 255;
+
     which = 1;
     and = 0;
     andTw = 0;
   }
   if (ss) {
+    opacity1 = 40;
+    opacity2 = 40;
+
+    fill3 = 100;
+    fill2 = 100;
+    fill4 = 100;
+    fill5 = 100;
+
     which = 0;
     and = 1;
     andTw = 2;
