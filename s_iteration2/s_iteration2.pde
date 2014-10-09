@@ -1,9 +1,14 @@
+ParticleSystem ps;
+
 Network network;
 Network network1;
+Network network2;
+
 Neuron n;
 Neuron z;
 Neuron w;
 Neuron n1;
+Neuron n2;
 int layers = 3;
 int inputs = 3;
 int and = 0;
@@ -27,13 +32,27 @@ int  fill3;
 int  fill4;
 int  fill5;
 
+float thisx;
+int zk;
+int layers2 = 10;
+int inputs2 = 10;
 void setup() {
-  size(700, 400);
+  size(1200, 800);
   smooth();
+
+  //for(int j = 0; j<100000; j++){
+  for (int i=0; i<height; i++) {
+    ps = new ParticleSystem(new PVector(0, i));
+    zk = i;
+  }
+  //}
   int translateX = width/4;
 
   network = new Network(translateX, height/4);
   network1 = new Network(translateX, height*3/4);
+  network2 = new Network(width/2, height/2);
+  Neuron output2 = new Neuron(width/2, height/2, 5);
+
   Neuron output = new Neuron(translateX*2, height/4, 4); //y is usually 0
   Neuron output1 = new Neuron(translateX*2, -height/4, 4); //y is usually 0
 
@@ -68,22 +87,50 @@ void setup() {
   } 
   network.addNeuron(output);
   network1.addNeuron(output1);
+
+
+  //  Neuron output = new Neuron(250, 0);
+  for (int i = 0; i < layers2; i++) {
+    for (int j = 0; j < inputs2; j++) {
+      float x = map(i, 0, layers, -width/2, width/2);
+      float y = map(j, 0, inputs-1, -height/2, height/2);
+      Neuron n2 = new Neuron(x, y, 5);
+      if (i > 0) {
+        for (int k = 0; k < inputs2; k++) {
+          Neuron prev = network2.neurons.get(network2.neurons.size()-inputs2+k-j); 
+          network2.connect(prev, n2, 5, 1);
+        }
+      }
+      if (i == layers2-1) {
+        network2.connect(n2, output2, random(1), 1);
+      }
+      network2.addNeuron(n2);
+    }
+  } 
+  network2.addNeuron(output2);
 }
 
 
 void draw() {
   background(255);
+  ps.addParticle();
+  ps.run();
 
   network.update();
   network.display();
   network1.update();
   network1.display();
-
+  network2.update();
+  network2.display();
   // Every 30 frames feed in an input
   if (frameCount % 80 == 0) {
+    //    ps.addParticle();
+    //    ps.run();
     //    println("hey");
     //    network1.feedforward(1, 1, which, and, andTw);
     network.feedforward(1, 1, which, and, andTw);
+    network2.feedforward(1, 1, which, and, andTw);
+
     //    network.feedforward(random(1), random(1), which, and, andTw);
     //    network.feedforward(random(inputs-1), random(inputs-1), which, and, andTw);
   }

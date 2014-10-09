@@ -18,6 +18,9 @@ class Connection {
 
   int index;
 
+  float lerp1 = .25;
+  float lerp2 = .25;
+
   Connection(Neuron from, Neuron to, float w, int i) {
     weight = w;
     a = from;
@@ -50,16 +53,16 @@ class Connection {
   void update() {
     if (sending) {
 
-      sender.x = lerp(sender.x, b.location.x, .08);
-      sender.y = lerp(sender.y, b.location.y, .08);
+      sender.x = lerp(sender.x, b.location.x, lerp1);
+      sender.y = lerp(sender.y, b.location.y, lerp1);
 
-      pointCloud.x = lerp(pointCloud.x, sender.x, .08);
-      pointCloud.y = lerp(pointCloud.y, sender.y, .08);
+      pointCloud.x = lerp(pointCloud.x, sender.x, lerp2);
+      pointCloud.y = lerp(pointCloud.y, sender.y, lerp2);
 
       float d = PVector.dist(sender, b.location);
       if (d<1) {
         b.feedforward(output, index);
-        println(output+"output");
+        //        println(output+"output");
         sending = false;
       }
       // Update velocity
@@ -107,12 +110,22 @@ class Connection {
   }
   // Draw line and traveling circle
   void display() {
-    stroke(200);
-    strokeWeight(1);
-    //    weight = -1;
-    //    strokeWeight(1+weight*4);
-    noFill();
-    bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight*4, b.location.x, b.location.y-weight*4, b.location.x, b.location.y);
+
+    if (weight==5) {
+      strokeWeight(.3);
+      stroke(200);
+      noFill();
+      bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight*10, b.location.x, b.location.y-weight*10, b.location.x, b.location.y);
+    }    
+    else {
+      stroke(200);
+      strokeWeight(1);
+      //    weight = -1;
+      //    strokeWeight(1+weight*4);
+      noFill();
+      bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight*4, b.location.x, b.location.y-weight*4, b.location.x, b.location.y);
+    }
+
     //    line(a.location.x, a.location.y, b.location.x, b.location.y);
     // Draw line and traveling circle
 
@@ -122,20 +135,36 @@ class Connection {
     //      ellipse(sender.x, sender.y, 16, 16);
     //    }
     if (sending) {
-      float theta = velocity.heading2D()+radians(90);
-      noFill();
-      stroke(200);
-      strokeWeight(1);
-      pushMatrix();
-      translate(pointCloud.x, pointCloud.y);
+      if (weight==5) {
+        float theta = velocity.heading2D()+radians(90);
+        noFill();
+        stroke(200);
+        strokeWeight(.5);
+        pushMatrix();
+        translate(pointCloud.x, pointCloud.y);
+        rotate(theta);
+        beginShape(TRIANGLES);
+        vertex(0, -rd/4);
+        vertex(-rd/4, rd/4);
+        vertex(rd/4, rd/4);
+        popMatrix();
+      }
+      else {
+        float theta = velocity.heading2D()+radians(90);
+        noFill();
+        stroke(200);
+        strokeWeight(1);
+        pushMatrix();
+        translate(pointCloud.x, pointCloud.y);
 
-//      translate(sender.x, sender.y);
-      rotate(theta);
-      beginShape(TRIANGLES);
-      vertex(0, -rd*2);
-      vertex(-rd, rd*2);
-      vertex(rd, rd*2);
-      popMatrix();
+        //      translate(sender.x, sender.y);
+        rotate(theta);
+        beginShape(TRIANGLES);
+        vertex(0, -rd*2);
+        vertex(-rd, rd*2);
+        vertex(rd, rd*2);
+        popMatrix();
+      }
     }
   }
 }

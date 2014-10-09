@@ -29,7 +29,7 @@ class Neuron {
   void feedforward(float input, int which) {
 
     //    println(input+"feed neuron");
-    println(which+"which to feed");
+    //    println(which+"which to feed");
     sum += input;
     //    println(sum+"sum neuron");
     indexing = which;
@@ -43,9 +43,7 @@ class Neuron {
 
   void fire() {
     r = 24; //suddenly bigger
-    px = -width/2;//location.x;
-    //    olocation.x = -1;
-    //    location.x = lerp(location.x, olocation.x, 1);
+    px = -thisx*2;//-width/3;//location.x;
 
     for (Connection c : connections) {
       c.feedforward(sum, indexing);
@@ -53,13 +51,16 @@ class Neuron {
   }
 
   void display() {
-
-    //    noStroke();
-
-
     strokeWeight(.1);
     //    if (indexing%2==0) {
-    if (indexis==4) {
+    if (indexis==5) {
+      noStroke();
+      fill(random(0, 255), fill2, fill3, opacity1);
+      r = lerp(r, r2, 0.08);
+      ellipse(location.x, location.y, r, r);
+    }
+
+    else if (indexis==4) {
       noStroke();
       //      println("yeah");
       //      stroke(fill, 100, 100);
@@ -80,8 +81,9 @@ class Neuron {
           r = lerp(r, r2, 0.08);
           ellipse(location.x, location.y, r, r);
 
+          noStroke();
           px = lerp(px, px2, 0.08); 
-          ellipse(px, location.y, 20, 20);
+          ellipse(px, location.y, r, r);
         }
       }
       if (indexing%2==1) {
@@ -91,28 +93,12 @@ class Neuron {
           r = lerp(r, r2, 0.08);
           ellipse(location.x, location.y, r, r);
 
+          noStroke();
           px = lerp(px, px2, 0.08); 
-          ellipse(px, location.y, 20, 20);
+          ellipse(px, location.y, r, r);
         }
       }
     }
-    //    else{
-
-    //    }
-    //    else {
-    //      if (indexis%2==0) {
-    //        stroke(fill, fill2, fill3);
-    //        fill(fill, fill2, fill3, opacity1);
-    //        ellipse(location.x, location.y, r, r);
-    //        r = lerp(r, r2, 0.08);
-    //      }
-    //      if (indexis%2==1) {
-    //        stroke(fill, fill3, fill2);
-    //        fill(fill, fill3, fill2, opacity2);
-    //        r = lerp(r, r2, 0.08);
-    //        ellipse(location.x, location.y, r, r);
-    //      }
-    //    }
   }
 }
 
