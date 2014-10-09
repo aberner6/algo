@@ -34,14 +34,14 @@ int  fill5;
 
 float thisx;
 int zk;
-int layers2 = 10;
-int inputs2 = 10;
+int layers2 = 40;
+int inputs2 = 5;
 void setup() {
   size(1200, 800);
   smooth();
 
   //for(int j = 0; j<100000; j++){
-  for (int i=0; i<height; i++) {
+  for (int i=0; i<height/2; i++) {
     ps = new ParticleSystem(new PVector(0, i));
     zk = i;
   }
@@ -51,7 +51,7 @@ void setup() {
   network = new Network(translateX, height/4);
   network1 = new Network(translateX, height*3/4);
   network2 = new Network(width/2, height/2);
-  Neuron output2 = new Neuron(width/2, height/2, 5);
+  Neuron output2 = new Neuron(width*2, height/2, 5);
 
   Neuron output = new Neuron(translateX*2, height/4, 4); //y is usually 0
   Neuron output1 = new Neuron(translateX*2, -height/4, 4); //y is usually 0
@@ -92,8 +92,8 @@ void setup() {
   //  Neuron output = new Neuron(250, 0);
   for (int i = 0; i < layers2; i++) {
     for (int j = 0; j < inputs2; j++) {
-      float x = map(i, 0, layers, -width/2, width/2);
-      float y = map(j, 0, inputs-1, -height/2, height/2);
+      float x = map(i, 0, layers2, -width/4, width*2);
+      float y = map(j, 0, inputs2-1, -height/2, height/2);
       Neuron n2 = new Neuron(x, y, 5);
       if (i > 0) {
         for (int k = 0; k < inputs2; k++) {

@@ -112,10 +112,12 @@ class Connection {
   void display() {
 
     if (weight==5) {
-      strokeWeight(.3);
-      stroke(200);
-      noFill();
-      bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight*10, b.location.x, b.location.y-weight*10, b.location.x, b.location.y);
+      strokeWeight(1);
+      stroke(200,20);
+//noStroke();
+//      fill(200,10);
+noFill();
+      bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight, b.location.x, b.location.y-weight, b.location.x, b.location.y);
     }    
     else {
       stroke(200);
@@ -136,18 +138,18 @@ class Connection {
     //    }
     if (sending) {
       if (weight==5) {
-        float theta = velocity.heading2D()+radians(90);
-        noFill();
-        stroke(200);
-        strokeWeight(.5);
-        pushMatrix();
-        translate(pointCloud.x, pointCloud.y);
-        rotate(theta);
-        beginShape(TRIANGLES);
-        vertex(0, -rd/4);
-        vertex(-rd/4, rd/4);
-        vertex(rd/4, rd/4);
-        popMatrix();
+//        float theta = velocity.heading2D()+radians(90);
+//        noFill();
+//        stroke(200);
+//        strokeWeight(.5);
+//        pushMatrix();
+//        translate(pointCloud.x, pointCloud.y);
+//        rotate(theta);
+//        beginShape(TRIANGLES);
+//        vertex(0, -rd/3);
+//        vertex(-rd/3, rd/3);
+//        vertex(rd/3, rd/3);
+//        popMatrix();
       }
       else {
         float theta = velocity.heading2D()+radians(90);

@@ -57,7 +57,7 @@ class Neuron {
       noStroke();
       fill(random(0, 255), fill2, fill3, opacity1);
       r = lerp(r, r2, 0.08);
-      ellipse(location.x, location.y, r, r);
+      ellipse(location.x, location.y, r/4, r/4);
     }
 
     else if (indexis==4) {
