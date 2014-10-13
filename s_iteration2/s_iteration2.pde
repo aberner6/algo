@@ -1,4 +1,4 @@
-ParticleSystem ps;
+
 
 Network network;
 Network network1;
@@ -9,6 +9,7 @@ Neuron z;
 Neuron w;
 Neuron n1;
 Neuron n2;
+Neuron n4;
 int layers = 3;
 int inputs = 3;
 int and = 0;
@@ -18,7 +19,10 @@ int thisNum = 0;
 PVector circleLocation;
 PVector pointCloud;
 float circleRadius = 10;
+
 boolean h = false;
+boolean i = false;
+
 boolean s = false;
 boolean o = false;
 boolean ss = false;
@@ -34,25 +38,33 @@ int  fill5;
 
 float thisx;
 int zk;
-int layers2 = 40;
-int inputs2 = 5;
+int layers2 = 10;
+int inputs2 = 10;
+
+float c1;
+float c2;
+int translateX = width/4;
+int translateX2 = 0;
+
 void setup() {
   size(1200, 800);
   smooth();
-
+  //frameRate(10);
   //for(int j = 0; j<100000; j++){
-  for (int i=0; i<height/2; i++) {
-    ps = new ParticleSystem(new PVector(0, i));
-    zk = i;
-  }
+  //  for (int i=0; i<height; i++) {
+  //    //    c1 = random(10, 200);
+  //    //    c2 = random(100,255);
+  //    ps = new ParticleSystem(new PVector(0, i));
+  //    zk = i;
+  //  }
   //}
-  int translateX = width/4;
 
-  network = new Network(translateX, height/4);
-  network1 = new Network(translateX, height*3/4);
-  network2 = new Network(width/2, height/2);
+  network2 = new Network(translateX2, height/2);
   Neuron output2 = new Neuron(width*2, height/2, 5);
 
+  int translateX = width/4;
+  network = new Network(translateX, height/4);
+  network1 = new Network(translateX, height*3/4);
   Neuron output = new Neuron(translateX*2, height/4, 4); //y is usually 0
   Neuron output1 = new Neuron(translateX*2, -height/4, 4); //y is usually 0
 
@@ -88,23 +100,28 @@ void setup() {
   network.addNeuron(output);
   network1.addNeuron(output1);
 
-
   //  Neuron output = new Neuron(250, 0);
-  for (int i = 0; i < layers2; i++) {
+  for (int s = 0; s < layers2; s++) {
     for (int j = 0; j < inputs2; j++) {
-      float x = map(i, 0, layers2, -width/4, width*2);
-      float y = map(j, 0, inputs2-1, -height/2, height/2);
-      Neuron n2 = new Neuron(x, y, 5);
-      if (i > 0) {
+      float x = map(s, 0, layers2, -width/4, width*1.5);
+      float y = map(j, 0, inputs2-1, -height/2+100, height/2-100);
+      Neuron n4 = new Neuron(x, y, 5);
+      if (s > 0) {
         for (int k = 0; k < inputs2; k++) {
-          Neuron prev = network2.neurons.get(network2.neurons.size()-inputs2+k-j); 
-          network2.connect(prev, n2, 5, 1);
+          if (k<inputs2/2) {
+            Neuron prev = network2.neurons.get(network2.neurons.size()-inputs2+k-j); 
+            network2.connect(prev, n4, 5, 1);
+          }
+          if (k>inputs2/2) {
+            Neuron prev = network2.neurons.get(network2.neurons.size()-inputs2+k-j); 
+            network2.connect(prev, n4, 6, 1);
+          }
         }
       }
-      if (i == layers2-1) {
-        network2.connect(n2, output2, random(1), 1);
+      if (s == layers2-1) {
+        network2.connect(n4, output2, 5, 1);
       }
-      network2.addNeuron(n2);
+      network2.addNeuron(n4);
     }
   } 
   network2.addNeuron(output2);
@@ -113,24 +130,31 @@ void setup() {
 
 void draw() {
   background(255);
-  ps.addParticle();
-  ps.run();
+  //  ps.addParticle();
+  //  ps.run();
 
-  network.update();
-  network.display();
-  network1.update();
-  network1.display();
-  network2.update();
-  network2.display();
+  if (h) {
+    network2.update();
+    network2.display();
+  }
+  if (i) {
+    network.update();
+    network.display();
+    network1.update();
+    network1.display();
+  }
+  //      if (h) {
+  //      network2.feedforward(1, 1, which, and, andTw);
+  //    }
   // Every 30 frames feed in an input
-  if (frameCount % 80 == 0) {
-    //    ps.addParticle();
-    //    ps.run();
-    //    println("hey");
-    //    network1.feedforward(1, 1, which, and, andTw);
-    network.feedforward(1, 1, which, and, andTw);
-    network2.feedforward(1, 1, which, and, andTw);
-
+  if (frameCount % 90 == 0) {
+    //       network1.feedforward(1, 1, which, and, andTw);
+    if (i) {
+      network.feedforward(1, 1, which, and, andTw);
+    }
+    if (h) {
+      network2.feedforward(1, 1, which, and, andTw);
+    }
     //    network.feedforward(random(1), random(1), which, and, andTw);
     //    network.feedforward(random(inputs-1), random(inputs-1), which, and, andTw);
   }
@@ -192,5 +216,19 @@ void keyPressed() {
     o = false;
     ss = true; //sound and smell
   }
+  //  if (key=="l") {
+  //    h = true;
+  //  }
+  if (key=='h') {
+    h = true;
+    i = false;
+  }
+  if (key == 'i') {
+    i = true;
+    h = false;
+  }
+  //  if (keyPressed == 'o') {
+  //    i = false;
+  //  }
 }
 

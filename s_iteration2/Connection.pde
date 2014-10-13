@@ -16,12 +16,13 @@ class Connection {
   float maxspeed;
   float maxforce;
 
-  int index;
+  float index;
 
-  float lerp1 = .25;
-  float lerp2 = .25;
+  //  float lerp1 = .25;
+  float lerp2 = .2;
+  float lerp1 = .2;
 
-  Connection(Neuron from, Neuron to, float w, int i) {
+  Connection(Neuron from, Neuron to, float w, float i) {
     weight = w;
     a = from;
     b = to;
@@ -37,12 +38,12 @@ class Connection {
     maxforce = 0.015;
   }
 
-  void feedforward(float val, int index) {
+  void feedforward(float val, float index) {
     sending = true;
     pointCloud = a.location.get();
     sender = a.location.get();
     output = val*weight;
-    //    println(output+"feed connection");
+//    println(index+"feed connection");
   }
 
   //  void run() {
@@ -60,9 +61,19 @@ class Connection {
       pointCloud.y = lerp(pointCloud.y, sender.y, lerp2);
 
       float d = PVector.dist(sender, b.location);
-      if (d<1) {
+      float z = PVector.dist(pointCloud, sender);
+      //      if (z<.5) {
+      //        b.feedforward(output, index);
+      //
+      //        println(output+"output");
+      //        sending = false;
+      //      }
+      //
+      if (z<1.5) {
+
         b.feedforward(output, index);
-        //        println(output+"output");
+
+//        println(output+"output");
         sending = false;
       }
       // Update velocity
@@ -112,12 +123,10 @@ class Connection {
   void display() {
 
     if (weight==5) {
-      strokeWeight(1);
-      stroke(200,20);
-//noStroke();
-//      fill(200,10);
-noFill();
-      bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight, b.location.x, b.location.y-weight, b.location.x, b.location.y);
+      strokeWeight(.5);
+      stroke(200);
+      noFill();
+      bezier(a.location.x, a.location.y, a.location.x, a.location.y-weight*4, b.location.x, b.location.y-weight*4, b.location.x, b.location.y);
     }    
     else {
       stroke(200);
@@ -131,43 +140,44 @@ noFill();
     //    line(a.location.x, a.location.y, b.location.x, b.location.y);
     // Draw line and traveling circle
 
-    //    if (sending) {
-    //      fill(0);
-    //      strokeWeight(1);
-    //      ellipse(sender.x, sender.y, 16, 16);
-    //    }
     if (sending) {
-      if (weight==5) {
-//        float theta = velocity.heading2D()+radians(90);
-//        noFill();
-//        stroke(200);
-//        strokeWeight(.5);
-//        pushMatrix();
-//        translate(pointCloud.x, pointCloud.y);
-//        rotate(theta);
-//        beginShape(TRIANGLES);
-//        vertex(0, -rd/3);
-//        vertex(-rd/3, rd/3);
-//        vertex(rd/3, rd/3);
-//        popMatrix();
-      }
-      else {
-        float theta = velocity.heading2D()+radians(90);
-        noFill();
-        stroke(200);
-        strokeWeight(1);
-        pushMatrix();
-        translate(pointCloud.x, pointCloud.y);
-
-        //      translate(sender.x, sender.y);
-        rotate(theta);
-        beginShape(TRIANGLES);
-        vertex(0, -rd*2);
-        vertex(-rd, rd*2);
-        vertex(rd, rd*2);
-        popMatrix();
-      }
+//      fill(0);
+//      strokeWeight(1);
+      ellipse(sender.x, sender.y, 4, 4);
     }
-  }
+    //    if (sending) {
+    //      if (weight==5 || weight==6) {
+    //        float theta = velocity.heading2D()+radians(90);
+    //        noFill();
+    //        stroke(200);
+    //        strokeWeight(.5);
+    //        //        noStroke();
+    //        //        fill(fill, random(200, 250), random(200, 250), 70);
+    //        pushMatrix();
+    //        translate(pointCloud.x, pointCloud.y);
+    //        rotate(theta);
+    //        beginShape(TRIANGLES);
+    //        vertex(0, -rd/2);
+    //        vertex(-rd/2, rd/2);
+    //        vertex(rd/2, rd/2);
+    //        popMatrix();
+    //      }
+    //      else {
+    //        println("what");
+    //        float theta = velocity.heading2D()+radians(90);
+    //        noFill();
+    //        stroke(200);
+    //        strokeWeight(1);
+    //        pushMatrix();
+    //        translate(pointCloud.x, pointCloud.y);
+    //        //      translate(sender.x, sender.y);
+    //        rotate(theta);
+    //        beginShape(TRIANGLES);
+    //        vertex(0, -rd*2);
+    //        vertex(-rd, rd*2);
+    //        vertex(rd, rd*2);
+    //        popMatrix();
+    //      }
+//  }
 }
-
+}

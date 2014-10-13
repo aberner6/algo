@@ -7,15 +7,16 @@ class Neuron {
   ArrayList<Connection> connections;
   float r = 10;
   float r2 = 10;
-  float px2 = 0;
+  float px2 = -translateX;
   float px = 0;
+  float pxz = 0;
 
-  int index;
+  float index;
 
-  int indexis;
-  int indexing;
+  float indexis;
+  float indexing;
 
-  Neuron(float x, float y, int i) {
+  Neuron(float x, float y, float i) {
     location = new PVector(x, y);
     pointCloud = new PVector(0, 0);
     connections = new ArrayList<Connection>();
@@ -26,7 +27,7 @@ class Neuron {
     connections.add(c);
   }
 
-  void feedforward(float input, int which) {
+  void feedforward(float input, float which) {
 
     //    println(input+"feed neuron");
     //    println(which+"which to feed");
@@ -43,7 +44,8 @@ class Neuron {
 
   void fire() {
     r = 24; //suddenly bigger
-    px = -thisx*2;//-width/3;//location.x;
+    px = 0;//-width/3;//location.x;
+    pxz = -translateX;//-width/3;//location.x;
 
     for (Connection c : connections) {
       c.feedforward(sum, indexing);
@@ -52,17 +54,24 @@ class Neuron {
 
   void display() {
     strokeWeight(.1);
-    //    if (indexing%2==0) {
     if (indexis==5) {
-      noStroke();
-      fill(random(0, 255), fill2, fill3, opacity1);
+      //      noStroke();
+      stroke(fill, 0, 255);
+      fill(fill, fill2, fill3, opacity1);
       r = lerp(r, r2, 0.08);
-      ellipse(location.x, location.y, r/4, r/4);
+      ellipse(location.x, location.y, r, r);
     }
+    if (indexis==6) {
+      //      noStroke();
+      stroke(fill, 255, 0);
 
-    else if (indexis==4) {
+      fill(fill, fill4, fill5, opacity2);
+      r = lerp(r, r2, 0.08);
+      ellipse(location.x, location.y, r, r);
+    }
+    if (indexis==4) {
       noStroke();
-      //      println("yeah");
+        println("yeah");
       //      stroke(fill, 100, 100);
       if (fill2>0 || fill3>0) {
         fill(fill, fill2, fill3, opacity1);
@@ -73,7 +82,8 @@ class Neuron {
       r = lerp(r, r2, 0.08);
       ellipse(location.x, location.y, r, r);
     }
-    else {
+    else if(indexis!=4 && indexis!=5 && indexis!=6) {
+      println("what");
       if (indexing%2==0) {
         if (indexis%2==0) {
           stroke(fill, 0, 255);
@@ -82,7 +92,7 @@ class Neuron {
           ellipse(location.x, location.y, r, r);
 
           noStroke();
-          px = lerp(px, px2, 0.08); 
+          px = lerp(px, px2, .2); 
           ellipse(px, location.y, r, r);
         }
       }
@@ -94,7 +104,7 @@ class Neuron {
           ellipse(location.x, location.y, r, r);
 
           noStroke();
-          px = lerp(px, px2, 0.08); 
+          px = lerp(px, px2, .2); 
           ellipse(px, location.y, r, r);
         }
       }

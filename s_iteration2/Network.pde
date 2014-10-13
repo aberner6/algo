@@ -20,7 +20,7 @@ class Network {
   void addNeuron(Neuron n) {
     neurons.add(n);
   }
-  void connect(Neuron a, Neuron b, float weight, int i) {
+  void connect(Neuron a, Neuron b, float weight, float i) {
     Connection c = new Connection(a, b, weight, i);
     a.addConnection(c);
     // Also add the Connection here
@@ -35,7 +35,8 @@ class Network {
     n1.feedforward(input1, which);
     Neuron n2 = neurons.get(which+and);// or just (which);
     n2.feedforward(input2, which+and);
-
+//    Neuron n4 = neurons.get(which+and);// or just (which);
+//    n4.feedforward(input2, which+and);
     if (andTw>0) {
       Neuron n3 = neurons.get(which+andTw);// or just (which);
       n3.feedforward(input1, which+andTw);
