@@ -1,30 +1,216 @@
-var svg;
+var svg, vis, 
+inputCirc, inputLine, trackCirc, 
+outputLine, outputCirc, finalOutputCirc,
+yIn, xIn;
 var width = 1200;
-var height = 600;
+var height = 700;
+var r = 5;
+var a = false;
+var t = [];
+var strokeWeight = 1;
 
 svg = d3.select("#container")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
-var vis = svg //for the visualization
+vis = svg //for the visualization
     .append('svg:g')
     .attr("transform",
       "translate("+ 0 + "," + 0 + ")");  
-
-var t = [1, 2, 3, 4];
-var lmargin = 100;
-var yIn = d3.scale.linear()
+var o = [1, 2];
+t = [1, 2, 3, 4, 5, 6];
+var lmargin = width/4;
+yIn = d3.scale.linear()
     .domain([0, t.length])
     .range([height/8, height-height/8])
+xIn = d3.scale.linear()
+    .domain([0, t.length])
+    .range([lmargin, height-height/8])
 
-var inputCirc = vis.selectAll("inCirc")
+var startUp = function(){
+inputLine = vis.selectAll("inLine")
+    .data(t)
+    .enter()
+    .append("line").attr("class","inLine")
+    .attr("x1", lmargin)
+    .attr("x2", lmargin)
+    .attr("y1", function(i){
+        return yIn(i);
+    })
+    .attr("y2", function(i){
+        return yIn(i);
+    })
+    .attr("stroke", "gray")
+    .transition()
+    .delay(1000)
+    .duration(3000)
+    .attr("x2", lmargin*2)
+    .attr("y2", function(i){
+        return height/2;
+    })
+    .each("end", function(){
+        trackCirc
+        .transition()
+        .delay(1000)
+        .duration(3000)
+        .attr("cx", lmargin*2)
+        .attr("cy", function(i){
+            return height/2;
+        })
+        .each("end", shiftAway)
+    });
+inputCirc = vis.selectAll("inCirc")
     .data(t)
     .enter()
     .append("circle").attr("class","inCirc")
-    .attr("cx", width/4)
+    .attr("cx", lmargin)
     .attr("cy", function(i){
         return yIn(i);
     })
     .attr("fill", "white")
     .attr("stroke", "gray")
-    .attr("r",8)
+    .attr("r",r);
+
+trackCirc = vis.selectAll("trackC")
+    .data(t)
+    .enter()
+    .append("circle").attr("class","trackC")
+    .attr("cx", lmargin)
+    .attr("cy", function(i){
+        return yIn(i);
+    })
+    .attr("fill", "white")
+    .attr("stroke", "gray")
+    .attr("r",r);
+
+var distBetween = 40;
+outputLine = vis.selectAll("outLine")
+    .data(o)
+    .enter()
+    .append("line").attr("class","outLine")
+    .attr("x1", lmargin*2+r/2+strokeWeight)
+    .attr("y1", function(d,i){
+        if(i<o.length/2){
+            return height/2-distBetween+r/2;            
+        }
+        else{
+            return height/2+distBetween-r/2;            
+        }
+    })
+    .attr("x2", lmargin*2+r/2+strokeWeight)
+    .attr("y2", function(d,i){
+        if(i<o.length/2){
+            return height/2-distBetween;            
+        }
+        else{
+            return height/2+distBetween;            
+        }
+    })
+    .attr("stroke", "none");
+outputCirc = vis.selectAll("outCirc")
+    .data(o)
+    .enter()
+    .append("circle").attr("class","outCirc")
+    .attr("cx", lmargin*2)
+    .attr("cy", function(d,i){
+        if(i<o.length/2){
+            return height/2-distBetween;            
+        }
+        else{
+            return height/2+distBetween;            
+        }
+    })
+    .attr("r",r)
+    .attr("fill","none")
+    .attr("stroke", "none");
+
+finalOutputCirc = vis.selectAll("finCirc")
+    .data(o)
+    .enter()
+    .append("circle").attr("class","finCirc")
+    .attr("cx", lmargin*2)
+    .attr("cy", function(d,i){
+        if(i<o.length/2){
+            return height/2-distBetween;            
+        }
+        else{
+            return height/2+distBetween;            
+        }
+    })
+    .attr("r",r)
+    .attr("fill","none")
+    .attr("stroke", "none");
+
+function shiftAway(){
+    inputCirc
+    .transition()
+    .attr("cy", function(d,i){
+        if(i<t.length/2){
+            return yIn(i)-distBetween;
+        }
+        else{
+            return yIn(i)+distBetween;
+        }
+    });
+    d3.selectAll(".inLine")
+    .transition()
+    .attr("y1", function(d,i){
+        if(i<t.length/2){
+            return yIn(i)-distBetween;            
+        }
+        else{
+            return yIn(i)+distBetween;            
+        }
+    })
+    .attr("y2", function(d,i){
+        if(i<t.length/2){
+            return height/2-distBetween;            
+        }
+        else{
+            return height/2+distBetween;            
+        }
+    });
+    trackCirc
+    .transition()
+    .attr("cy", function(d,i){
+        if(i<t.length/2){
+            return height/2-distBetween;            
+        }
+        else{
+            return height/2+distBetween;            
+        }
+    })
+    outputCirc
+    .transition()
+    .delay(1000)
+    .attr("stroke","gray")
+    .each("end", function(){
+        outputLine
+        .transition()
+        .attr("x2", lmargin*2+100-r/2-strokeWeight)
+        .attr("y2", height/2)
+        .attr("stroke", "gray");
+
+        finalOutputCirc
+        .transition()
+        .attr("cx", lmargin*2+100)
+        .attr("cy", height/2)
+        .attr("stroke","gray")
+    });        
+}
+}
+
+d3.select('#introNav2').on("click", startUp);
+    
+
+    
+    
+    // d3.select("#container")
+    //     .transition()
+    //     .duration(1000)
+    //     .style("opacity", .8)
+    //     .each("end",function(){
+    //     $(".introZoom, #intro4, #introNav2").fadeIn("fast", function(){
+
+    //     })
+        // })
