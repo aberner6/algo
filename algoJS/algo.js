@@ -234,9 +234,8 @@ d3.select('#introNav2').on("click", function(){
     if(b==1){
     $("p:first").replaceWith("<p>Input enters</p>");
         svg.call(transition, p0, p1);
-        $(".intro").animate({
+        $("#intro").animate({
             top: "160px",
-            width: "188px",
             left: "392px",
         });
         startUp();  
@@ -244,6 +243,10 @@ d3.select('#introNav2').on("click", function(){
     if(b==2){
     $("p:first").replaceWith("<p>And then</p>");
         svg.call(transition, p1, p2);
+        $("#intro").animate({
+            top: "10px",
+            left: "30px",
+        });
         shiftAway();
         // balls();
     }
