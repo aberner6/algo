@@ -1,6 +1,12 @@
 body{
 	font-family: Lato-Light;
 	background: black;
+	padding: 0; margin: 0;
+}
+canvas{
+	left:0px;
+	top:0px;
+	position:absolute;
 }
 #intro4{
 /*position: absolute;*/

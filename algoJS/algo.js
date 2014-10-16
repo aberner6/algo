@@ -2,17 +2,21 @@ var svg, vis,
 inputCirc, inputLine, trackCirc, 
 outputLine, outputCirc, finalOutputCirc,
 yIn, xIn;
+
 var width = 1200;
-var height = 700;
-var r = 5;
+var height = 600;
+d3chart = d3chart || {};
+// var r;
+var r = d3chart.r;
 var a = false;
 var t = [];
+var o = [];
 var strokeWeight = 1;
 var lineColor = "gray";
 var inColor = "gray";
 var movingColor = "gray";
 var outColor = "gray";
-var shiftAway, endOutput;
+var startUp, shiftAway, endOutput;
 
 svg = d3.select("#container")
     .append("svg")
@@ -22,7 +26,7 @@ vis = svg //for the visualization
     .append('svg:g')
     .attr("transform",
       "translate("+ 0 + "," + 0 + ")");  
-var o = [1, 2];
+o = [1, 2];
 t = [1, 2, 3, 4, 5, 6];
 var lmargin = width/4;
 yIn = d3.scale.linear()
@@ -33,19 +37,34 @@ xIn = d3.scale.linear()
     .range([lmargin, height-height/8])
 
 var startUp = function(){
+
+trackCirc = vis.selectAll("trackC")
+    .data(t)
+    .enter()
+    .append("circle").attr("class","trackC")
+    .attr("cx", lmargin)
+    .attr("cy", function(i){
+        return yIn(i);
+    })
+    .attr("fill", "white")
+    .attr("stroke", movingColor)
+    .attr("r",r);
+
 inputLine = vis.selectAll("inLine")
     .data(t)
     .enter()
     .append("line").attr("class","inLine")
     .attr("x1", lmargin)
-    .attr("x2", lmargin)
     .attr("y1", function(i){
         return yIn(i);
     })
+    .attr("x2", lmargin)
     .attr("y2", function(i){
         return yIn(i);
     })
-    .attr("stroke", lineColor)
+    .attr("stroke", lineColor);
+
+    inputLine
     .transition()
     .delay(500)
     .duration(3000)
@@ -73,35 +92,23 @@ inputCirc = vis.selectAll("inCirc")
     })
     .attr("fill", "white")
     .attr("stroke", inColor)
-    .attr("r",r);
-
-trackCirc = vis.selectAll("trackC")
-    .data(t)
-    .enter()
-    .append("circle").attr("class","trackC")
-    .attr("cx", lmargin)
-    .attr("cy", function(i){
-        return yIn(i);
-    })
-    .attr("fill", "white")
-    .attr("stroke", movingColor)
-    .attr("r",r);
+    .attr("r",d3chart.r);
 
 var distBetween = 40;
 outputLine = vis.selectAll("outLine")
     .data(o)
     .enter()
     .append("line").attr("class","outLine")
-    .attr("x1", lmargin*2+r/2+strokeWeight)
+    .attr("x1", lmargin*2)//lmargin*2+d3chart.r/2+strokeWeight)
     .attr("y1", function(d,i){
         if(i<o.length/2){
-            return height/2-distBetween+r/2;            
+            return height/2-distBetween+d3chart.r/2;            
         }
         else{
-            return height/2+distBetween-r/2;            
+            return height/2+distBetween-d3chart.r/2;            
         }
     })
-    .attr("x2", lmargin*2+r/2+strokeWeight)
+    .attr("x2", lmargin*2)//lmargin*2+d3chart.r/2+strokeWeight)
     .attr("y2", function(d,i){
         if(i<o.length/2){
             return height/2-distBetween;            
@@ -111,6 +118,7 @@ outputLine = vis.selectAll("outLine")
         }
     })
     .attr("stroke", "none");
+
 outputCirc = vis.selectAll("outCirc")
     .data(o)
     .enter()
@@ -207,7 +215,7 @@ endOutput = function(){
     .each("end", function(){
         outputLine
         .transition()
-        .attr("x2", lmargin*2+100-r/2-strokeWeight)
+        .attr("x2", lmargin*2+100)//-r/2-strokeWeight)
         .attr("y2", height/2)
         .attr("stroke", outColor);
 
