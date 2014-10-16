@@ -2,12 +2,13 @@ var svg, vis,
 inputCirc, inputLine, trackCirc, 
 outputLine, outputCirc, finalOutputCirc,
 yIn, xIn;
-
+var windowWidth = window.outerWidth,
+    windowHeight = window.innerHeight;
 var width = 1200;
 var height = 600;
-d3chart = d3chart || {};
+var d3chart = d3chart || {};
 // var r;
-var r = d3chart.r;
+var r = 5;
 var a = false;
 var t = [];
 var o = [];
@@ -92,23 +93,23 @@ inputCirc = vis.selectAll("inCirc")
     })
     .attr("fill", "white")
     .attr("stroke", inColor)
-    .attr("r",d3chart.r);
+    .attr("r",5);
 
 var distBetween = 40;
 outputLine = vis.selectAll("outLine")
     .data(o)
     .enter()
     .append("line").attr("class","outLine")
-    .attr("x1", lmargin*2)//lmargin*2+d3chart.r/2+strokeWeight)
+    .attr("x1", lmargin*2)//lmargin*2+5/2+strokeWeight)
     .attr("y1", function(d,i){
         if(i<o.length/2){
-            return height/2-distBetween+d3chart.r/2;            
+            return height/2-distBetween+5/2;            
         }
         else{
-            return height/2+distBetween-d3chart.r/2;            
+            return height/2+distBetween-5/2;            
         }
     })
-    .attr("x2", lmargin*2)//lmargin*2+d3chart.r/2+strokeWeight)
+    .attr("x2", lmargin*2)//lmargin*2+5/2+strokeWeight)
     .attr("y2", function(d,i){
         if(i<o.length/2){
             return height/2-distBetween;            
@@ -232,10 +233,17 @@ d3.select('#introNav2').on("click", function(){
     b++;
     if(b==1){
     $("p:first").replaceWith("<p>Input enters</p>");
+        svg.call(transition, p0, p1);
+        $(".intro").animate({
+            top: "160px",
+            width: "188px",
+            left: "392px",
+        });
         startUp();  
     }
     if(b==2){
     $("p:first").replaceWith("<p>And then</p>");
+        svg.call(transition, p1, p2);
         shiftAway();
         // balls();
     }
@@ -246,8 +254,28 @@ d3.select('#introNav2').on("click", function(){
 });
 
 
-    
-    
+var p0 = [width/2,height/2, windowHeight],
+    p1 = [width/2, height/4, windowHeight],
+    p2 = [width/2, height/2+height/4, windowHeight/2];  
+
+function transition(svg, start, end) {
+
+var  i = d3.interpolateZoom(start, end);
+
+  vis
+    .attr("transform", transform(start))
+    .transition()
+    .delay(1000)
+    .duration(i.duration * 2)
+    .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
+
+}
+var center = [width / 2, height / 2];
+
+function transform(p) {
+var k = height / p[2]; //*2;
+    return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
+}
     // d3.select("#container")
     //     .transition()
     //     .duration(1000)
