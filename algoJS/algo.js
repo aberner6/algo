@@ -1,5 +1,5 @@
 var svg, vis, 
-inputCirc, inputLine, trackCirc, 
+inputCirc, inputLine, trackCirc, senseCirc,
 outputLine, outputCirc, finalOutputCirc,
 yIn, xIn;
 var windowWidth = window.outerWidth,
@@ -15,9 +15,10 @@ var o = [];
 var strokeWeight = 1;
 var lineColor = "gray";
 var inColor = "gray";
-var movingColor = "gray";
-var outColor = "gray";
-var startUp, shiftAway, endOutput;
+var movingColor = "aqua";
+var outColor = "white";
+var startUp, shiftAway, endOutput, rollingCircle;
+var distBetween = 40;
 
 svg = d3.select("#container")
     .append("svg")
@@ -37,8 +38,89 @@ xIn = d3.scale.linear()
     .domain([0, t.length])
     .range([lmargin, height-height/8])
 
-var startUp = function(){
 
+rollingCircle = function(x, y, d, w){
+    // console.log(d)
+var duration = 3000;
+if(w==0){
+console.log(w)
+  senseCirc
+    .transition()
+    // .delay(0)
+    .duration(duration)
+    .attr("opacity",  1)
+    .attr("cx", lmargin)
+
+  trackCirc
+    .transition()
+    .delay(duration)
+    .duration(duration)
+    .attr("cx", x)
+    .attr("cy", y)
+    .each("end", function(){
+        senseCirc
+        .transition()
+        .attr("opacity",0)
+        .attr("cx",0);
+    })
+}
+if(w==1){
+senseCirc
+    .transition()
+    .attr("opacity",1)
+    .attr("cx",lmargin)
+    .attr("cy", function(d,i){
+        if(i<t.length/2){
+            return yIn(i)-y;            
+        }
+        else{
+            return yIn(i)+y;            
+        }
+    });   
+trackCirc
+    .transition()
+    .delay(0)
+    .attr("opacity",0)
+    .transition()
+    .delay(500)
+    // .duration(3000)
+    .attr("cx", x)
+    .attr("cy", function(d,i){
+        if(i<t.length/2){
+            return yIn(i)-y;            
+        }
+        else{
+            return yIn(i)+y;            
+        }
+    })
+    .attr("opacity",1)    
+}
+if(w==2){
+trackCirc
+    .transition()
+    .delay(d)
+    .duration(3000)
+    .attr("cx", x)
+    .attr("cy", function(d,i){
+        if(i<t.length/2){
+            return height/2-distBetween;            
+        }
+        else{
+            return height/2+distBetween;            
+        }
+    })
+}
+if(w==3){
+trackCirc
+    .transition()
+    .delay(d)
+    .duration(3000)
+    .attr("cx", x)
+    .attr("cy", y);
+}
+}
+
+startUp = function(){
 trackCirc = vis.selectAll("trackC")
     .data(t)
     .enter()
@@ -47,9 +129,22 @@ trackCirc = vis.selectAll("trackC")
     .attr("cy", function(i){
         return yIn(i);
     })
-    .attr("fill", "white")
+    .attr("fill",  movingColor)
     .attr("stroke", movingColor)
-    .attr("r",r);
+    .attr("opacity",1)
+    .attr("r",r);  
+senseCirc = vis.selectAll("senseC")
+    .data(t)
+    .enter()
+    .append("circle").attr("class","senseC")
+    .attr("cx", 0)
+    .attr("cy", function(i){
+        return yIn(i);
+    })
+    .attr("opacity",0)
+    .attr("fill",  movingColor)
+    .attr("stroke", movingColor)
+    .attr("r",r); 
 
 inputLine = vis.selectAll("inLine")
     .data(t)
@@ -74,14 +169,15 @@ inputLine = vis.selectAll("inLine")
         return height/2;
     })
     .each("end", function(){
-        trackCirc
-        .transition()
-        .delay(500)
-        .duration(3000)
-        .attr("cx", lmargin*2)
-        .attr("cy", function(i){
-            return height/2;
-        });
+        rollingCircle(lmargin*2, height/2, 10, 0);
+        // trackCirc
+        // .transition()
+        // .delay(500)
+        // .duration(3000)
+        // .attr("cx", lmargin*2)
+        // .attr("cy", function(i){
+        //     return height/2;
+        // });
     });
 inputCirc = vis.selectAll("inCirc")
     .data(t)
@@ -95,7 +191,6 @@ inputCirc = vis.selectAll("inCirc")
     .attr("stroke", inColor)
     .attr("r",5);
 
-var distBetween = 40;
 outputLine = vis.selectAll("outLine")
     .data(o)
     .enter()
@@ -183,30 +278,34 @@ shiftAway = function(){
             return height/2+distBetween;            
         }
     });
-    trackCirc
-    .transition()
-    .attr("cx", lmargin)
-    .attr("cy", function(d,i){
-        if(i<t.length/2){
-            return yIn(i)-distBetween;            
-        }
-        else{
-            return yIn(i)+distBetween;            
-        }
-    })
-    trackCirc
-    .transition()
-    .delay(500)
-    .duration(3000)
-    .attr("cx", lmargin*2)
-    .attr("cy", function(d,i){
-        if(i<t.length/2){
-            return height/2-distBetween;            
-        }
-        else{
-            return height/2+distBetween;            
-        }
-    })  
+    rollingCircle(lmargin, distBetween, 20, 1)
+    rollingCircle(lmargin*2, height/2-distBetween,4000, 2)
+
+    // trackCirc
+    // .transition()
+    // .attr("cx", lmargin)
+    // .attr("cy", function(d,i){
+    //     if(i<t.length/2){
+    //         return yIn(i)-distBetween;            
+    //     }
+    //     else{
+    //         return yIn(i)+distBetween;            
+    //     }
+    // })
+
+    // trackCirc
+    // .transition()
+    // .delay(500)
+    // .duration(3000)
+    // .attr("cx", lmargin*2)
+    // .attr("cy", function(d,i){
+    //     if(i<t.length/2){
+    //         return height/2-distBetween;            
+    //     }
+    //     else{
+    //         return height/2+distBetween;            
+    //     }
+    // })  
 }
 endOutput = function(){
     outputCirc
@@ -225,6 +324,10 @@ endOutput = function(){
         .attr("cx", lmargin*2+100)
         .attr("cy", height/2)
         .attr("stroke",outColor)
+        .attr("fill", outColor);
+
+    rollingCircle(lmargin*2+100, height/2,10, 3)
+
     });       
 }
 }
@@ -258,8 +361,8 @@ d3.select('#introNav2').on("click", function(){
 
 
 var p0 = [width/2,height/2, windowHeight],
-    p1 = [width/2, height/4, windowHeight],
-    p2 = [width/2, height/2+height/4, windowHeight/2];  
+    p1 = [width/2, height/2, windowHeight],
+    p2 = [width/2, height/2, windowHeight];  
 
 function transition(svg, start, end) {
 
