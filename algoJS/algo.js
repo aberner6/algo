@@ -164,7 +164,29 @@ trackCirc
                     else{
                         return height/2+distBetween;            
                     }
-                })            
+                })
+                .attr("r", r*2)
+                .each("end", function(){
+                    trackCirc
+                    .transition()
+                    .duration(duration/2)
+                    .attr("r",r) 
+                    .each("end", function(){
+                        trackCirc
+                        .transition()
+                        .duration(duration)
+                        .attr("cx", x)
+                        .attr("cy", height/2)
+                        .attr("r", r*2)
+                        .each("end", function(){
+                            trackCirc
+                            .transition()
+                            .duration(duration/2)
+                            .attr("r",0)
+                        })
+                    })
+
+                })           
             })
         })
     })
