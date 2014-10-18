@@ -61,14 +61,18 @@ console.log(w)
         senseCirc
         .transition()
         .attr("opacity",0)
-        .attr("cx",0);
+        // .attr("cx",0);
     })
 }
 if(w==1){
+console.log(w);
 senseCirc
     .transition()
-    .attr("opacity",1)
-    .attr("cx",lmargin)
+    .duration(10)
+    .attr("opacity",0)
+    .transition()
+    .delay(2000)
+    .attr("cx", 0)
     .attr("cy", function(d,i){
         if(i<t.length/2){
             return yIn(i)-y;            
@@ -79,11 +83,10 @@ senseCirc
     });   
 trackCirc
     .transition()
-    .delay(0)
+    .duration(10)
     .attr("opacity",0)
     .transition()
-    .delay(500)
-    // .duration(3000)
+    .delay(100)
     .attr("cx", x)
     .attr("cy", function(d,i){
         if(i<t.length/2){
@@ -93,13 +96,14 @@ trackCirc
             return yIn(i)+y;            
         }
     })
-    .attr("opacity",1)    
 }
 if(w==2){
+console.log(w);
 trackCirc
     .transition()
-    .delay(d)
-    .duration(3000)
+    .delay(duration*2)
+    .duration(duration/2)
+    .attr("opacity",1)    
     .attr("cx", x)
     .attr("cy", function(d,i){
         if(i<t.length/2){
@@ -109,8 +113,23 @@ trackCirc
             return height/2+distBetween;            
         }
     })
+senseCirc
+    .transition()
+    .delay(duration)
+    .duration(duration)
+    .attr("opacity",1)
+    .attr("cx",lmargin)
+    // .attr("cy", function(d,i){
+    //     if(i<t.length/2){
+    //         return yIn(i)-y;            
+    //     }
+    //     else{
+    //         return yIn(i)+y;            
+    //     }
+    // });   
 }
 if(w==3){
+console.log(w);
 trackCirc
     .transition()
     .delay(d)
