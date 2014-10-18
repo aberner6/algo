@@ -118,15 +118,7 @@ senseCirc
     .delay(duration)
     .duration(duration)
     .attr("opacity",1)
-    .attr("cx",lmargin)
-    // .attr("cy", function(d,i){
-    //     if(i<t.length/2){
-    //         return yIn(i)-y;            
-    //     }
-    //     else{
-    //         return yIn(i)+y;            
-    //     }
-    // });   
+    .attr("cx",lmargin)  
 }
 if(w==3){
 console.log(w);
@@ -136,6 +128,46 @@ trackCirc
     .duration(3000)
     .attr("cx", x)
     .attr("cy", y);
+}
+if(w==4){
+console.log(w);
+trackCirc
+    .transition()
+    .attr("opacity",0)
+    .each("end", function(){
+        trackCirc
+        .transition()
+        .attr("cx", 0)
+        .attr("cy", function(d,i){
+            if(i<t.length/2){
+                return yIn(i)-y;            
+            }
+            else{
+                return yIn(i)+y;            
+            }
+        })        
+        .each("end", function(){
+            trackCirc
+            .transition()
+            .duration(duration) 
+            .attr("opacity",1)  
+            .attr("cx", lmargin)
+            .each("end", function(){
+                trackCirc
+                .transition()
+                .duration(duration)
+                .attr("cx", lmargin*2)
+                .attr("cy", function(d,i){
+                    if(i<t.length/2){
+                        return height/2-distBetween;            
+                    }
+                    else{
+                        return height/2+distBetween;            
+                    }
+                })            
+            })
+        })
+    })
 }
 }
 
@@ -375,6 +407,10 @@ d3.select('#introNav2').on("click", function(){
     if(b==3){
     $("p:first").replaceWith("<p>After that</p>");
         endOutput();
+    }
+    if(b==4){
+    $("p:first").replaceWith("<p>Lastly</p>");        
+    rollingCircle(lmargin*2+100, distBetween,10, 4)        
     }
 });
 
