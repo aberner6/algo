@@ -6,7 +6,7 @@ pth;
 var windowWidth = window.outerWidth,
     windowHeight = window.innerHeight;
 var width = 1200;
-var height = 600;
+var height = 800;
 var d3chart = d3chart || {};
 // var r;
 var r = 5;
@@ -517,33 +517,51 @@ var gradient = svg.append("defs").append("linearGradient")
 
 gradient.append("stop")
     .attr("offset", "20%")
-    .attr("stop-color", "#ccf");
+    .attr("stop-color", "aqua");//"#ccf");
 
 gradient.append("stop")
     .attr("offset", "50%")
-    .attr("stop-color", "#1C425C");
+    .attr("stop-color", "aqua");
 
 gradient.append("stop")
     .attr("offset", "100%")
-    .attr("stop-color", "#19162B");
+    .attr("stop-color", "#ccf");
 
-pth = vis.selectAll("path")
-    .data(d3.range(558))
-    .enter().append("path")
-    .attr("fill", "url(#gradient)")
-    .attr("d", function() { return raindrop(1 + Math.random() * 50); })
-    .attr("transform", function(d) {
-      return "rotate(" + d + ")"
-          + "translate(" + (height / 4 + Math.random() * height / 6) + ",0)"
-          + "rotate(90)";
-    });
+var gradient2 = svg.append("defs").append("linearGradient")
+    .attr("id", "gradient2")
+    .attr("x1", "0%")
+    .attr("y1", "20%")
+    .attr("x2", "20%")
+    .attr("y2", "100%");
+
+gradient2.append("stop")
+    .attr("offset", "20%")
+    .attr("stop-color", "#ccf");//"#ccf");
+
+gradient2.append("stop")
+    .attr("offset", "50%")
+    .attr("stop-color", "#ccf");
+
+gradient2.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "aqua");
+// pth = vis.selectAll("path")
+//     .data(d3.range(558))
+//     .enter().append("path")
+//     .attr("fill", "url(#gradient)")
+//     .attr("d", function() { return raindrop(1 + Math.random() * 50); })
+//     .attr("transform", function(d) {
+//       return "rotate(" + d + ")"
+//           + "translate(" + (height / 4 + Math.random() * height / 6) + ",0)"
+//           + "rotate(90)";
+//     });
 var circ = vis.selectAll("circle")
-    .data(d3.range(558))
+    .data(d3.range(500))
     .enter().append("circle")
-    .attr("fill", "url(#gradient)")
     .attr("r", function() { return rain(1 + Math.random() * 50); })
-    .attr("cx", lmargin)
-    .attr("cy", height/4)
+    .attr("cx", 0)
+    .attr("cy", 0)
+    .attr("fill","none")
     // .attr("transform", function(d) {
     //   return "rotate(" + r + ")"
     //       + "translate(" + (height / 4 + Math.random() * height / 6) + ",0)"
@@ -553,37 +571,56 @@ var circ = vis.selectAll("circle")
 // size is linearly proportional to square pixels (not exact, yet)
 function rain(size) {
   var r = Math.sqrt(size / Math.PI);
-  return r;
+  return 8;
 }
 
 var moveAround = function(secs){
 // could use transparent gradient overlay to vary raindrop color
-    pth
-    .transition()
-    .duration(1000)
-    .attr("transform", function(d) {
-      return "rotate(" + d + ")"
-          + "translate(" + (height / 4 + Math.random() * height / 6) + ","+secs*10+")"
-          + "rotate(90)";
-    });
+    // pth
+    // .transition()
+    // .duration(1000)
+    // .attr("transform", function(d) {
+    //   return "rotate(" + d + ")"
+    //       + "translate(" + (height / 4 + Math.random() * height / 6) + ","+secs*10+")"
+    //       + "rotate(90)";
+    // });
+var yMap = d3.scale.linear()
+            .domain([0, 1000])
+            .range([0, height])
     circ
     .transition()
-    .duration(1000)
-    .attr("transform", function(d) {
-      return "rotate(" + d + ")"
-          + "translate(" + (height / 4 + Math.random() * height / 6) + ","+secs*10+")"
-          + "rotate(90)";
-    });
+    .duration(2000)
+    .attr("cy", function(d,i){
+        return yMap(secs)+i*2.5;
+    })
+    .attr("cx", function(d,i){
+        return 10+Math.random()*90;
+    })
+    .attr("fill", function(d,i){
+        if (i%2==1){
+            return "url(#gradient)"
+        }
+        if (i%2==0){
+            return "url(#gradient2)"
+        }
+    })
+
+    // .attr("transform", function(d,i) {
+    //   return "rotate(" + d + ")"
+    //        + 
+    //       "translate(" + (Math.random() * 70) + ","+yMap(secs)+")";
+    //       + "rotate(90)";
+    // });
 }
 // size is linearly proportional to square pixels (not exact, yet)
-function raindrop(size) {
-  var r = Math.sqrt(size / Math.PI);
-  return "M" + r + ",0"
-      + "A" + r + "," + r + " 0 1,1 " + -r + ",0"
-      + "C" + -r + "," + -r + " 0," + -r + " 0," + -3*r
-      + "C0," + -r + " " + r + "," + -r + " " + r + ",0"
-      + "Z";
-}
+// function raindrop(size) {
+//   var r = Math.sqrt(size / Math.PI);
+//   return "M" + r + ",0"
+//       + "A" + r + "," + r + " 0 1,1 " + -r + ",0"
+//       + "C" + -r + "," + -r + " 0," + -r + " 0," + -3*r
+//       + "C0," + -r + " " + r + "," + -r + " " + r + ",0"
+//       + "Z";
+// }
 
 
 
