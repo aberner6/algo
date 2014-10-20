@@ -24,10 +24,12 @@ var distBetween = 40;
 var myVar=setInterval(function () {myTimer()}, 1000);
 var d;
 var secs;
+var soundsLoaded;
 function myTimer() {
     d = new Date();
     secs = d.getMilliseconds();
     moveAround(secs/10);
+    // soundsLoaded();
 }
 
 svg = d3.select("#container")
@@ -469,10 +471,12 @@ d3.select('#introNav2').on("click", function(){
         // balls();
     }
     if(b==3){
+        soundsLoaded();
     $("p:first").replaceWith("<p>After that</p>");
         endOutput();
     }
     if(b==4){
+        soundsLoaded();
     $("p:first").replaceWith("<p>Lastly</p>");        
     rollingCircle(lmargin*2+100, distBetween,10, 4)        
     }
@@ -524,7 +528,7 @@ gradient.append("stop")
     .attr("stop-color", "#19162B");
 
 pth = vis.selectAll("path")
-    .data(d3.range(358))
+    .data(d3.range(558))
     .enter().append("path")
     .attr("fill", "url(#gradient)")
     .attr("d", function() { return raindrop(1 + Math.random() * 50); })
@@ -533,6 +537,25 @@ pth = vis.selectAll("path")
           + "translate(" + (height / 4 + Math.random() * height / 6) + ",0)"
           + "rotate(90)";
     });
+var circ = vis.selectAll("circle")
+    .data(d3.range(558))
+    .enter().append("circle")
+    .attr("fill", "url(#gradient)")
+    .attr("r", function() { return rain(1 + Math.random() * 50); })
+    .attr("cx", lmargin)
+    .attr("cy", height/4)
+    // .attr("transform", function(d) {
+    //   return "rotate(" + r + ")"
+    //       + "translate(" + (height / 4 + Math.random() * height / 6) + ",0)"
+    //       + "rotate(90)";
+    // });
+
+// size is linearly proportional to square pixels (not exact, yet)
+function rain(size) {
+  var r = Math.sqrt(size / Math.PI);
+  return r;
+}
+
 var moveAround = function(secs){
 // could use transparent gradient overlay to vary raindrop color
     pth
@@ -540,7 +563,15 @@ var moveAround = function(secs){
     .duration(1000)
     .attr("transform", function(d) {
       return "rotate(" + d + ")"
-          + "translate(" + (height / 4 + Math.random() * height / 6) + ","+secs+")"
+          + "translate(" + (height / 4 + Math.random() * height / 6) + ","+secs*10+")"
+          + "rotate(90)";
+    });
+    circ
+    .transition()
+    .duration(1000)
+    .attr("transform", function(d) {
+      return "rotate(" + d + ")"
+          + "translate(" + (height / 4 + Math.random() * height / 6) + ","+secs*10+")"
           + "rotate(90)";
     });
 }
@@ -554,6 +585,49 @@ function raindrop(size) {
       + "Z";
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+loop = new SeamlessLoop();
+
+//check if the browser can play MP3's. If not, use ogg.
+var audio  = document.createElement("audio"),
+canPlayMP3 = (typeof audio.canPlayType === "function" &&
+              audio.canPlayType("audio/mpeg") !== "");
+if (canPlayMP3===true) {
+    console.log("true");
+  loop.addUri("BD.mp3", 4000, "sound1");
+  // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.mp3", 4000, "sound2");
+} 
+else {
+  loop.addUri("BD.ogg", 4000, "sound1");
+  // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.ogg", 4000, "sound2");
+}
+
+var soundsLoaded = function() {
+if(b==2){
+  var n = 1;
+  loop.start("sound" + n);
+}  
+if(b==3){
+  var n = 1;
+  loop.start("sound" + n);
+}
+// n++;
+  // loop.update("sound" + n, false);
+};
     // d3.select("#container")
     //     .transition()
     //     .duration(1000)

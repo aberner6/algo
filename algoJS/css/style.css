@@ -76,3 +76,93 @@ margin-top:10px;
 /*right:5%;*/
 /*opacity:.1;*/
 }
+
+
+header#navbar {
+font-family: 'Lato-Light', sans-serif;
+color: #000;
+font-weight: 400;
+font-size: 90%;
+-webkit-box-shadow: none;
+-moz-box-shadow: none;
+box-shadow: none;
+
+}
+
+header#navbar .container {
+max-height: 52px;
+border-bottom: 1px solid #ccc;
+padding-bottom: 0;
+padding-left: 40px;
+width: 100%;
+}
+
+.navbar-default {
+background-color: white;
+border: none;
+height: 50px;
+
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+	border-color: #e7e7e7;
+	/* max-height: 50px;  */
+}
+
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
+color: #fff;
+text-decoration: none;
+background-color: red;
+outline: 0;
+}
+
+/* old huge 
+.navbar-default .navbar-brand {
+	font-family: 'Lato-Light', sans-serif;
+	font-size: 550%;
+	color: red;
+	font-weight: 700;
+	line-height: 1em;
+}
+
+
+.navbar-brand-container {
+	position: relative;
+	top: -12px;
+	left: -38px;
+}
+
+*/
+.about{
+margin-top: 15px;
+margin-left: 15px;
+/*position: absolute;*/
+float:left;
+}
+.navbar-default .navbar-brand {
+	font-family: 'Lato-Light', sans-serif;
+	font-size: 150%;
+	color: #000;
+	font-weight: 700;
+}
+
+.navbar-brand-container {
+	position: relative;
+}
+
+
+.navbar-nav {
+	float: left;
+	margin: 0;
+	background-color: white;
+}
+
+.navbar-default .navbar-nav>.active>a {
+	color: white;
+	background-color: #ddd;
+}
+
+.navbar-default .navbar-nav>.leaf>a:hover, .navbar-default .navbar-nav>.leaf>a:focus {
+	color: white;
+	background-color: red;
+}
