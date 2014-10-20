@@ -1,7 +1,8 @@
 var svg, vis, 
 inputCirc, inputLine, trackCirc, senseCirc,
 outputLine, outputCirc, finalOutputCirc,
-yIn, xIn;
+yIn, xIn,
+pth;
 var windowWidth = window.outerWidth,
     windowHeight = window.innerHeight;
 var width = 1200;
@@ -19,6 +20,15 @@ var movingColor = "aqua";
 var outColor = "white";
 var startUp, shiftAway, endOutput, rollingCircle;
 var distBetween = 40;
+
+var myVar=setInterval(function () {myTimer()}, 1000);
+var d;
+var secs;
+function myTimer() {
+    d = new Date();
+    secs = d.getMilliseconds();
+    moveAround(secs/10);
+}
 
 svg = d3.select("#container")
     .append("svg")
@@ -194,6 +204,38 @@ trackCirc
 }
 
 startUp = function(){
+// var blooCirc = vis.selectAll("blC")
+//     .data(t)
+//     .enter()
+//     .append("circle").attr("class","blC")
+//     .attr("cx", lmargin)
+//     .attr("cy", function(i){
+//         return yIn(i);
+//     })
+//     .attr("fill",  movingColor)
+//     .attr("stroke", movingColor)
+//     .attr("opacity",1)
+//     .attr("r",r); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 trackCirc = vis.selectAll("trackC")
     .data(t)
     .enter()
@@ -459,6 +501,59 @@ function transform(p) {
 var k = height / p[2]; //*2;
     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
 }
+
+
+
+var gradient = svg.append("defs").append("linearGradient")
+    .attr("id", "gradient")
+    .attr("x1", "0%")
+    .attr("y1", "20%")
+    .attr("x2", "20%")
+    .attr("y2", "100%");
+
+gradient.append("stop")
+    .attr("offset", "20%")
+    .attr("stop-color", "#ccf");
+
+gradient.append("stop")
+    .attr("offset", "50%")
+    .attr("stop-color", "#1C425C");
+
+gradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "#19162B");
+
+pth = vis.selectAll("path")
+    .data(d3.range(358))
+    .enter().append("path")
+    .attr("fill", "url(#gradient)")
+    .attr("d", function() { return raindrop(1 + Math.random() * 50); })
+    .attr("transform", function(d) {
+      return "rotate(" + d + ")"
+          + "translate(" + (height / 4 + Math.random() * height / 6) + ",0)"
+          + "rotate(90)";
+    });
+var moveAround = function(secs){
+// could use transparent gradient overlay to vary raindrop color
+    pth
+    .transition()
+    .duration(1000)
+    .attr("transform", function(d) {
+      return "rotate(" + d + ")"
+          + "translate(" + (height / 4 + Math.random() * height / 6) + ","+secs+")"
+          + "rotate(90)";
+    });
+}
+// size is linearly proportional to square pixels (not exact, yet)
+function raindrop(size) {
+  var r = Math.sqrt(size / Math.PI);
+  return "M" + r + ",0"
+      + "A" + r + "," + r + " 0 1,1 " + -r + ",0"
+      + "C" + -r + "," + -r + " 0," + -r + " 0," + -3*r
+      + "C0," + -r + " " + r + "," + -r + " " + r + ",0"
+      + "Z";
+}
+
     // d3.select("#container")
     //     .transition()
     //     .duration(1000)

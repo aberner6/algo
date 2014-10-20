@@ -9,6 +9,10 @@ canvas{
 	top:0px;
 	position:absolute;
 }
+.path {
+  stroke: #fff;
+  stroke-opacity: .5;
+}
 #intro4{
 /*position: absolute;*/
 z-index: 20;
