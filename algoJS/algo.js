@@ -624,7 +624,7 @@ d3.select('#introNav2').on("click", function(){
     $("#smell").on("click", function(){
          rollingCircle(lmargin*2, height/2, 10, 0.6);   
     })
-    $("#sound").show().on("click", function(){
+    $("#sound").on("click", function(){
         rollingCircle(lmargin*2, height/2, 10, 0.7);
     })
 
