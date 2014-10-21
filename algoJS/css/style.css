@@ -31,9 +31,53 @@ top: 400px;
 left: 100px;
 }
 
-
+#buttons{
+position:absolute;
+z-index: 1000;
+top: 400px;
+right: 100px;
+/*display:none;*/
+}
+#sound{
+/*width: 0.8em;*/
+z-index: 20;
+background-color:gray;
+line-height:0px;
+border-left: 1px solid gray;
+border-right: 1px solid gray;
+border-bottom: 1px solid gray;
+padding:5px;
+cursor: pointer;
+margin-bottom: 5px;
+display: none;
+}  
+#smell{
+/*width: 0.8em;*/
+z-index: 20;
+background-color:gray;
+line-height:0px;
+border-left: 1px solid gray;
+border-right: 1px solid gray;
+border-bottom: 1px solid gray;
+padding:5px;
+cursor: pointer;
+display: none;
+}    
+#smell:hover{
+background-color: darkgray;
+border-left: 1px solid yellow;
+border-right: 1px solid yellow;
+border-bottom: 1px solid yellow;
+cursor: pointer;
+}
+#sound:hover{
+background-color: darkgray;
+border-left: 1px solid yellow;
+border-right: 1px solid yellow;
+border-bottom: 1px solid yellow;
+cursor: pointer;
+}
 #introNav2{
-/*float:right;*/
 width: 0.8em;
 z-index: 20;
 background-color:gray;
@@ -42,7 +86,6 @@ border-left: 1px solid gray;
 border-right: 1px solid gray;
 border-bottom: 1px solid gray;
 padding:5px;
-/*margin-right: -8px;*/
 cursor: pointer;
 }
 #introNav2:hover{

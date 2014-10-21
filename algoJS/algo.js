@@ -53,6 +53,7 @@ xIn = d3.scale.linear()
     .range([lmargin, height-height/8])
 
 
+
 rollingCircle = function(x, y, d, w){
     // console.log(d)
 var duration = 3000;
@@ -126,6 +127,7 @@ console.log(w)
   senseCirc
     .transition()
     .duration(100)
+    .attr("r",r)
     .attr("cx", 0)
     .attr("cy", function(i){
         return yIn(i);
@@ -177,6 +179,7 @@ console.log(w)
   senseCirc
     .transition()
     .duration(100)
+    .attr("r",r)
     .attr("cx", 0)
     .attr("cy", function(i){
         return yIn(i);
@@ -614,7 +617,17 @@ d3.select('#introNav2').on("click", function(){
     }
     if(b==4){
         rollingCircle(lmargin*2, height/2, 10, 0.7);
+        $("#smell").show()
+        $("#sound").show()
     }
+
+    $("#smell").on("click", function(){
+         rollingCircle(lmargin*2, height/2, 10, 0.6);   
+    })
+    $("#sound").show().on("click", function(){
+        rollingCircle(lmargin*2, height/2, 10, 0.7);
+    })
+
     if(b==5){
     $("p:first").replaceWith("<p>And then</p>");
         // svg.call(transition, p1, p2);
