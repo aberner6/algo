@@ -4,9 +4,10 @@ outputLine, outputCirc, finalOutputCirc,
 yIn, xIn,
 pth;
 var windowWidth = window.outerWidth,
+    height = window.innerHeight,
     windowHeight = window.innerHeight;
 var width = 1200;
-var height = 800;
+// var height = 800;
 var d3chart = d3chart || {};
 // var r;
 var r = 5;
@@ -17,7 +18,7 @@ var strokeWeight = 1;
 var lineColor = "gray";
 var inColor = "gray";
 var movingColor = "aqua";
-var outColor = "white";
+var outColor = "gray";
 var startUp, shiftAway, endOutput, rollingCircle;
 var distBetween = 40;
 
@@ -545,16 +546,7 @@ gradient2.append("stop")
 gradient2.append("stop")
     .attr("offset", "100%")
     .attr("stop-color", "aqua");
-// pth = vis.selectAll("path")
-//     .data(d3.range(558))
-//     .enter().append("path")
-//     .attr("fill", "url(#gradient)")
-//     .attr("d", function() { return raindrop(1 + Math.random() * 50); })
-//     .attr("transform", function(d) {
-//       return "rotate(" + d + ")"
-//           + "translate(" + (height / 4 + Math.random() * height / 6) + ",0)"
-//           + "rotate(90)";
-//     });
+
 var circ = vis.selectAll("circle")
     .data(d3.range(500))
     .enter().append("circle")
@@ -576,14 +568,6 @@ function rain(size) {
 
 var moveAround = function(secs){
 // could use transparent gradient overlay to vary raindrop color
-    // pth
-    // .transition()
-    // .duration(1000)
-    // .attr("transform", function(d) {
-    //   return "rotate(" + d + ")"
-    //       + "translate(" + (height / 4 + Math.random() * height / 6) + ","+secs*10+")"
-    //       + "rotate(90)";
-    // });
 var yMap = d3.scale.linear()
             .domain([0, 1000])
             .range([0, height])
@@ -612,15 +596,6 @@ var yMap = d3.scale.linear()
     //       + "rotate(90)";
     // });
 }
-// size is linearly proportional to square pixels (not exact, yet)
-// function raindrop(size) {
-//   var r = Math.sqrt(size / Math.PI);
-//   return "M" + r + ",0"
-//       + "A" + r + "," + r + " 0 1,1 " + -r + ",0"
-//       + "C" + -r + "," + -r + " 0," + -r + " 0," + -3*r
-//       + "C0," + -r + " " + r + "," + -r + " " + r + ",0"
-//       + "Z";
-// }
 
 
 
