@@ -4,9 +4,9 @@ outputLine, outputCirc, finalOutputCirc,
 yIn, xIn,
 pth;
 var windowWidth = window.outerWidth,
-    height = window.innerHeight,
-    windowHeight = window.innerHeight;
-var width = 1200;
+    windowHeight= window.innerHeight,
+    height = windowHeight,
+    width = windowWidth;
 // var height = 800;
 var d3chart = d3chart || {};
 // var r;
@@ -596,6 +596,25 @@ endOutput = function(){
     });       
 }
 }
+
+
+
+    // $(".navbar-brand-container").on("mouseover", function(){
+    //     console.log("yes")
+    //     $("p:first").replaceWith("<p>About</p>");
+    //     $(".navbar-brand-container").animate({
+    //         left:"50px",
+    //     });
+    // })
+
+    // $(".navbar-brand-container").on("mouseout", function(){
+    //     console.log("yes")
+    //     $("p:first").replaceWith("<p>A SENSE OF PLACE</p>");
+    //     $(".navbar-brand-container").animate({
+    //         left:"-50px",
+    //     });
+    // })
+
 var b = 0;
 d3.select('#introNav2').on("click", function(){
     b++;

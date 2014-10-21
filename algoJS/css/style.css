@@ -142,10 +142,23 @@ outline: 0;
 }
 
 .about{
-margin-top: 15px;
-margin-left: 15px;
-/*position: absolute;*/
-float:left;
+	/* display: none; */
+position: absolute;
+/* margin-right: -33px; */
+margin-top: 5px;
+left: 5px;
+/*	display: inline-block;
+vertical-align: top;
+width: 22%;
+height: 40px;
+position: relative;
+right: 3.5%;
+top: 0;*/
+
+/*margin-top: 5%;
+margin-left: 2%;
+position: absolute;*/
+/*display:none;*/
 }
 .navbar-default .navbar-brand {
 	font-family: 'Lato-Light', sans-serif;
