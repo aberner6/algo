@@ -456,8 +456,8 @@ d3.select('#introNav2').on("click", function(){
     $("p:first").replaceWith("<p>Input enters</p>");
         svg.call(transition, p0, p1);
         $("#intro").animate({
-            top: "160px",
-            left: "392px",
+            top: "100px",
+            left: "200px",
         });
         startUp();  
     }
@@ -465,19 +465,27 @@ d3.select('#introNav2').on("click", function(){
     $("p:first").replaceWith("<p>And then</p>");
         svg.call(transition, p1, p2);
         $("#intro").animate({
-            top: "10px",
-            left: "30px",
+            top: "100px",
+            left: "400px",
         });
         shiftAway();
         // balls();
     }
     if(b==3){
         soundsLoaded();
+        $("#intro").animate({
+            top: "100px",
+            left: "600px",
+        });
     $("p:first").replaceWith("<p>After that</p>");
         endOutput();
     }
     if(b==4){
         soundsLoaded();
+        $("#intro").animate({
+            top: "100px",
+            left: "100px",
+        });
     $("p:first").replaceWith("<p>Lastly</p>");        
     rollingCircle(lmargin*2+100, distBetween,10, 4)        
     }
