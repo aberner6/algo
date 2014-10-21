@@ -41,7 +41,7 @@ svg = d3.select("#container")
 vis = svg //for the visualization
     .append('svg:g')
     .attr("transform",
-      "translate("+ 0 + "," + 0 + ")");  
+      "translate("+ 0 + "," + 50 + ")");  
 o = [1, 2];
 t = [1, 2, 3, 4, 5, 6];
 var lmargin = width/4;
@@ -76,6 +76,148 @@ console.log(w)
         .transition()
         .attr("opacity",0)
         // .attr("cx",0);
+    })
+}
+if(w==0.5){
+console.log(w)
+  senseCirc
+    .transition()
+    .duration(100)
+    .attr("cx", 0)
+    .each("end", function(){
+        senseCirc
+        .transition()
+        .duration(duration/4)
+        .attr("opacity",1)
+        .attr("cx", lmargin)
+        .each("end", function(){
+            inputLine
+                .transition()
+                .duration(duration)
+                .attr("stroke-width", function(d,i){
+                    if(i%2==1){
+                        return 2;
+                    }
+                    if(i%2==0){
+                        return .5;
+                    }
+                    // return Math.random()*5;
+                })
+                .each("end", function(){
+                    senseCirc
+                    .transition()
+                    .duration(duration)
+                    .attr("cx", lmargin*2)
+                    .attr("cy", height/2)
+                    .each("end", function(){
+                        senseCirc
+                        .transition()
+                        .attr("opacity",0)
+                    })
+                })
+        })
+    })
+}
+if(w==0.6){
+console.log(w)
+// senseCirc
+// .transition()
+// .attr("cx",0)
+  senseCirc
+    .transition()
+    .duration(100)
+    .attr("cx", 0)
+    .attr("cy", function(i){
+        return yIn(i);
+    })
+    .each("end", function(){
+        senseCirc
+        .transition()
+        .duration(duration/4)
+        .attr("fill", function(d,i){
+            if(i%2==1){
+                return "aqua";
+            }
+            if(i%2==0){
+                return "magenta";
+            }
+        })
+        .attr("opacity",1)
+        .attr("cx", lmargin)
+        .each("end", function(){
+            // inputLine
+            //     .transition()
+            //     .duration(duration)
+            //     .attr("stroke-width", function(d,i){
+            //         if(i%2==1){
+            //             return 2;
+            //         }
+            //         if(i%2==0){
+            //             return .5;
+            //         }
+            //     })
+            //     .each("end", function(){
+                    senseCirc
+                    .transition()
+                    .duration(duration)
+                    .attr("cx", lmargin*2)
+                    .attr("cy", height/2)
+                    .attr("r", r*3)
+                    .each("end", function(){
+                        senseCirc
+                        .transition()
+                        .attr("opacity",0)
+                    })
+                // })
+        })
+    })
+}
+if(w==0.7){
+console.log(w)
+  senseCirc
+    .transition()
+    .duration(100)
+    .attr("cx", 0)
+    .attr("cy", function(i){
+        return yIn(i);
+    })
+    .each("end", function(){
+        senseCirc
+        .transition()
+        .duration(duration/4)
+        .attr("fill", function(d,i){
+            if(i%2==1){
+                return "magenta";
+            }
+            if(i%2==0){
+                return "aqua";
+            }
+        })
+        .attr("opacity",1)
+        .attr("cx", lmargin)
+        .each("end", function(){
+            // inputLine
+            //     .transition()
+            //     .duration(duration)
+            //     .attr("stroke-width", function(d,i){
+            //         if(i%2==1){
+            //             return 2;
+            //         }
+            //         if(i%2==0){
+            //             return .5;
+            //         }
+            //     })
+            //     .each("end", function(){
+                    senseCirc
+                    .transition()
+                    .duration(duration/2)
+                    .attr("r", 0)
+                    .transition()
+                    .duration(duration)
+                    .attr("cx", lmargin*2)
+                    .attr("cy", height/2)
+                // })
+        })
     })
 }
 if(w==1){
@@ -249,7 +391,7 @@ trackCirc = vis.selectAll("trackC")
         return yIn(i);
     })
     .attr("fill",  movingColor)
-    .attr("stroke", movingColor)
+    .attr("stroke", "none")
     .attr("opacity",1)
     .attr("r",r);  
 senseCirc = vis.selectAll("senseC")
@@ -262,7 +404,7 @@ senseCirc = vis.selectAll("senseC")
     })
     .attr("opacity",0)
     .attr("fill",  movingColor)
-    .attr("stroke", movingColor)
+    .attr("stroke", "none")
     .attr("r",r); 
 
 inputLine = vis.selectAll("inLine")
@@ -277,7 +419,8 @@ inputLine = vis.selectAll("inLine")
     .attr("y2", function(i){
         return yIn(i);
     })
-    .attr("stroke", lineColor);
+    .attr("stroke", lineColor)
+    .attr("stroke-width", 1)
 
     inputLine
     .transition()
@@ -430,7 +573,7 @@ endOutput = function(){
     outputCirc
     .transition()
     .delay(500)
-    .attr("stroke",outColor)
+    .attr("stroke","none")
     .each("end", function(){
         outputLine
         .transition()
@@ -456,7 +599,7 @@ d3.select('#introNav2').on("click", function(){
     if(b==1){
         intro = false;
     $("p:first").replaceWith("<p>Input enters</p>");
-        svg.call(transition, p0, p1);
+        // svg.call(transition, p0, p1);
         $("#intro").animate({
             top: "100px",
             left: "200px",
@@ -464,8 +607,17 @@ d3.select('#introNav2').on("click", function(){
         startUp();  
     }
     if(b==2){
+        rollingCircle(lmargin*2, height/2, 10, 0.5);
+    }
+    if(b==3){
+        rollingCircle(lmargin*2, height/2, 10, 0.6);
+    }
+    if(b==4){
+        rollingCircle(lmargin*2, height/2, 10, 0.7);
+    }
+    if(b==5){
     $("p:first").replaceWith("<p>And then</p>");
-        svg.call(transition, p1, p2);
+        // svg.call(transition, p1, p2);
         $("#intro").animate({
             top: "100px",
             left: "400px",
@@ -473,7 +625,7 @@ d3.select('#introNav2').on("click", function(){
         shiftAway();
         // balls();
     }
-    if(b==3){
+    if(b==6){
         soundsLoaded();
         $("#intro").animate({
             top: "100px",
@@ -482,7 +634,7 @@ d3.select('#introNav2').on("click", function(){
     $("p:first").replaceWith("<p>After that</p>");
         endOutput();
     }
-    if(b==4){
+    if(b==7){
         soundsLoaded();
         $("#intro").animate({
             top: "100px",
@@ -497,6 +649,7 @@ d3.select('#introNav2').on("click", function(){
 var p0 = [width/2,height/2, windowHeight],
     p1 = [width/2, height/2, windowHeight],
     p2 = [width/2, height/2, windowHeight];  
+
 
 function transition(svg, start, end) {
 
@@ -609,18 +762,6 @@ var xMap2 = d3.scale.linear()
             return xMap(Math.random());
         }
     })
-    // .attr("cy", function(){
-    //     return yMap(Math.random());
-    // })
-    // .attr("cx", function(d,i){
-    //     if(intro==true){
-    //         return xMap(secs)+i*5;
-    //     }
-    //     else{
-    //         return xMap(secs)+i*.5;
-    //     }
-    // })
-
     .attr("fill", function(d,i){
         if (i%2==1){
             return "url(#gradient)"
