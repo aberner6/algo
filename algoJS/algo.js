@@ -26,6 +26,7 @@ var myVar=setInterval(function () {myTimer()}, 1000);
 var d;
 var secs;
 var soundsLoaded;
+var intro = true;
 function myTimer() {
     d = new Date();
     secs = d.getMilliseconds();
@@ -305,8 +306,8 @@ inputCirc = vis.selectAll("inCirc")
     .attr("cy", function(i){
         return yIn(i);
     })
-    .attr("fill", "white")
-    .attr("stroke", inColor)
+    .attr("fill", "none")
+    .attr("stroke", "none")
     .attr("r",5);
 
 outputLine = vis.selectAll("outLine")
@@ -441,8 +442,8 @@ endOutput = function(){
         .transition()
         .attr("cx", lmargin*2+100)
         .attr("cy", height/2)
-        .attr("stroke",outColor)
-        .attr("fill", outColor);
+        .attr("stroke","none")
+        .attr("fill", "none");
 
     rollingCircle(lmargin*2+100, height/2,10, 3)
 
@@ -453,6 +454,7 @@ var b = 0;
 d3.select('#introNav2').on("click", function(){
     b++;
     if(b==1){
+        intro = false;
     $("p:first").replaceWith("<p>Input enters</p>");
         svg.call(transition, p0, p1);
         $("#intro").animate({
@@ -556,7 +558,7 @@ gradient2.append("stop")
     .attr("stop-color", "aqua");
 
 var circ = vis.selectAll("circle")
-    .data(d3.range(500))
+    .data(d3.range(1000))
     .enter().append("circle")
     .attr("r", function() { return rain(1 + Math.random() * 50); })
     .attr("cx", 0)
@@ -579,15 +581,46 @@ var moveAround = function(secs){
 var yMap = d3.scale.linear()
             .domain([0, 1000])
             .range([0, height])
+var yMap2 = d3.scale.linear()
+            .domain([0, 1])
+            .range([0, height])
+var xMap = d3.scale.linear()
+            .domain([0, 1])
+            .range([0, 100])
+var xMap2 = d3.scale.linear()
+            .domain([0, 1000])
+            .range([0, width])
     circ
     .transition()
-    .duration(2000)
+    .duration(1000)
     .attr("cy", function(d,i){
-        return yMap(secs)+i*2.5;
+        if (intro){
+            return yMap2(Math.random());
+        }  
+        else{
+            return yMap(secs)+i*2.5;//2.9;            
+        }
     })
     .attr("cx", function(d,i){
-        return 10+Math.random()*90;
+        if(intro){
+            return xMap2(secs)+i*5;
+        }
+        else{
+            return xMap(Math.random());
+        }
     })
+    // .attr("cy", function(){
+    //     return yMap(Math.random());
+    // })
+    // .attr("cx", function(d,i){
+    //     if(intro==true){
+    //         return xMap(secs)+i*5;
+    //     }
+    //     else{
+    //         return xMap(secs)+i*.5;
+    //     }
+    // })
+
     .attr("fill", function(d,i){
         if (i%2==1){
             return "url(#gradient)"
