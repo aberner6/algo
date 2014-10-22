@@ -17,7 +17,7 @@ var o = [];
 var strokeWeight = 1;
 var lineColor = "gray";
 var inColor = "gray";
-var movingColor = "aqua";
+var movingColor = "#438CA5";
 var outColor = "gray";
 var startUp, shiftAway, endOutput, rollingCircle;
 var distBetween = 40;
@@ -138,10 +138,10 @@ console.log(w)
         .duration(duration/4)
         .attr("fill", function(d,i){
             if(i%2==1){
-                return "aqua";
+                return "#438CA5";
             }
             if(i%2==0){
-                return "magenta";
+                return "#C84961";
             }
         })
         .attr("opacity",1)
@@ -190,10 +190,10 @@ console.log(w)
         .duration(duration/4)
         .attr("fill", function(d,i){
             if(i%2==1){
-                return "magenta";
+                return "#C84961";
             }
             if(i%2==0){
-                return "aqua";
+                return "#438CA5";
             }
         })
         .attr("opacity",1)
@@ -233,12 +233,13 @@ senseCirc
     .delay(2000)
     .attr("cx", 0)
     .attr("cy", function(d,i){
-        if(i<t.length/2){
-            return yIn(i)-y;            
-        }
-        else{
-            return yIn(i)+y;            
-        }
+        // if(i<t.length/2){
+        //     return yIn(i)-y;            
+        // }
+        // else{
+        //     return yIn(i)+y;            
+        // }
+        return yIn(i);
     });   
 trackCirc
     .transition()
@@ -248,12 +249,14 @@ trackCirc
     .delay(100)
     .attr("cx", x)
     .attr("cy", function(d,i){
-        if(i<t.length/2){
-            return yIn(i)-y;            
-        }
-        else{
-            return yIn(i)+y;            
-        }
+        // if(i<t.length/2){
+        //     return yIn(i)-y;            
+        // }
+        // else{
+        //     return yIn(i)+y;            
+        // }
+        return yIn(i);
+
     })
 }
 if(w==2){
@@ -298,12 +301,14 @@ trackCirc
         .transition()
         .attr("cx", 0)
         .attr("cy", function(d,i){
-            if(i<t.length/2){
-                return yIn(i)-y;            
-            }
-            else{
-                return yIn(i)+y;            
-            }
+            // if(i<t.length/2){
+            //     return yIn(i)-y;            
+            // }
+            // else{
+            //     return yIn(i)+y;            
+            // }
+            return yIn(i);
+
         })        
         .each("end", function(){
             trackCirc
@@ -519,20 +524,20 @@ shiftAway = function(){
     .transition()
     .attr("cy", function(d,i){
         if(i<t.length/2){
-            return yIn(i)-distBetween;
+            return yIn(i);//-distBetween;
         }
         else{
-            return yIn(i)+distBetween;
+            return yIn(i);//+distBetween;
         }
     });
     d3.selectAll(".inLine")
     .transition()
     .attr("y1", function(d,i){
         if(i<t.length/2){
-            return yIn(i)-distBetween;            
+            return yIn(i);//-distBetween;            
         }
         else{
-            return yIn(i)+distBetween;            
+            return yIn(i);//+distBetween;            
         }
     })
     .attr("y2", function(d,i){
@@ -614,8 +619,24 @@ endOutput = function(){
     //         left:"-50px",
     //     });
     // })
+// d3.select("#info").on("click", function(){
+    // $('#introNav2').slideDown("slow");    
+// })
 
+$('.about').tipsy({
+    gravity: 'nw', 
+    html: true, 
+    title: function() {
+         return "Created by the Spatial Information Design Lab & Stefano Fusi Lab"
+         +'<br>'+'Researcher: Lyudmila Kushmir'+'<br>'+"Designer/Developer: Annelie Berner"+ '<br>';
+    }
+});
 var b = 0;
+d3.select("#enter").on("click", function(){
+    $('#intro').slideDown("slow");
+    $('#title').fadeOut("slow");
+    // $('#introNav2').slideDown("slow");    
+})
 d3.select('#introNav2').on("click", function(){
     b++;
     if(b==1){
@@ -704,43 +725,62 @@ var k = height / p[2]; //*2;
 
 
 
-var gradient = svg.append("defs").append("linearGradient")
-    .attr("id", "gradient")
-    .attr("x1", "0%")
-    .attr("y1", "20%")
-    .attr("x2", "20%")
-    .attr("y2", "100%");
+// var gradient = svg.append("defs").append("linearGradient")
+//     .attr("id", "gradient")
+//     .attr("x1", "0%")
+//     .attr("y1", "10%")
+//     .attr("x2", "2%")
+//     .attr("y2", "100%");
 
-gradient.append("stop")
-    .attr("offset", "20%")
-    .attr("stop-color", "aqua");//"#ccf");
+// gradient.append("stop")
+//     .attr("offset", "1%")
+//     .attr("stop-color", "aquamarine");//"#ccf");
 
-gradient.append("stop")
-    .attr("offset", "50%")
-    .attr("stop-color", "aqua");
+// gradient.append("stop")
+//     .attr("offset", "10%")
+//     .attr("stop-color", "hotpink");
 
-gradient.append("stop")
-    .attr("offset", "100%")
-    .attr("stop-color", "#ccf");
+// gradient.append("stop")
+//     .attr("offset", "100%")
+//     .attr("stop-color", "hotpink");
 
-var gradient2 = svg.append("defs").append("linearGradient")
-    .attr("id", "gradient2")
-    .attr("x1", "0%")
-    .attr("y1", "20%")
-    .attr("x2", "20%")
-    .attr("y2", "100%");
+// var gradient2 = svg.append("defs").append("linearGradient")
+//     .attr("id", "gradient2")
+//     .attr("x1", "0%")
+//     .attr("y1", "20%")
+//     .attr("x2", "20%")
+//     .attr("y2", "100%");
 
-gradient2.append("stop")
-    .attr("offset", "20%")
-    .attr("stop-color", "#ccf");//"#ccf");
+// gradient2.append("stop")
+//     .attr("offset", "20%")
+//     .attr("stop-color", "magenta");//"#ccf");
 
-gradient2.append("stop")
-    .attr("offset", "50%")
-    .attr("stop-color", "#ccf");
+// gradient2.append("stop")
+//     .attr("offset", "50%")
+//     .attr("stop-color", "#ccf");
 
-gradient2.append("stop")
-    .attr("offset", "100%")
-    .attr("stop-color", "aqua");
+// gradient2.append("stop")
+//     .attr("offset", "100%")
+//     .attr("stop-color", "aqua");
+
+// var gradient3 = svg.append("defs").append("linearGradient")
+//     .attr("id", "gradient3")
+//     .attr("x1", "0%")
+//     .attr("y1", "10%")
+//     .attr("x2", "10%")
+//     .attr("y2", "100%");
+
+// gradient3.append("stop")
+//     .attr("offset", "1%")
+//     .attr("stop-color", "hotpink");//"#ccf");
+
+// gradient3.append("stop")
+//     .attr("offset", "10%")
+//     .attr("stop-color", "aquamarine");
+
+// gradient3.append("stop")
+//     .attr("offset", "100%")
+//     .attr("stop-color", "aquamarine");
 
 var circ = vis.selectAll("circle")
     .data(d3.range(1000))
@@ -760,6 +800,17 @@ function rain(size) {
   var r = Math.sqrt(size / Math.PI);
   return 8;
 }
+var colorSpectrum = ["#438CA5",
+"#C4602E",
+"#BD57D3",
+"#678F39",
+"#7372BE",
+"#C84961",
+"#BC5296"];
+
+var color = d3.scale.ordinal()
+    .domain([0, 1000])
+    .range(colorSpectrum);
 
 var moveAround = function(secs){
 // could use transparent gradient overlay to vary raindrop color
@@ -794,19 +845,27 @@ var xMap2 = d3.scale.linear()
             return xMap(Math.random());
         }
     })
+    .attr("opacity",.8)
     .attr("fill", function(d,i){
-        if (i%2==1){
-            return "url(#gradient)"
-        }
-        if (i%2==0){
-            return "url(#gradient2)"
-        }
+        return color(i)
+        // if (i%2==1){
+        //     return "aquamarine"
+        // }
+        // if (i%2==0){
+        //     // console.log("yes")
+        //     return "salmon"
+        // }
+        // console.log(i)
+        // if(i>10){
+        //     // console.log("yes")
+        //     return "url(#gradient3)"
+        // }
     })
 
     // .attr("transform", function(d,i) {
     //   return "rotate(" + d + ")"
     //        + 
-    //       "translate(" + (Math.random() * 70) + ","+yMap(secs)+")";
+    //       "translate(" + (secs) + ","+(0)+")";
     //       + "rotate(90)";
     // });
 }
