@@ -641,7 +641,7 @@ d3.select('#introNav2').on("click", function(){
     b++;
     if(b==1){
         intro = false;
-    $("p:first").replaceWith("<p>Input enters</p>");
+    $("p:first").replaceWith("<p>Let's consider a network of 6 neurons</p>");
         // svg.call(transition, p0, p1);
         $("#intro").animate({
             top: "100px",
@@ -650,27 +650,37 @@ d3.select('#introNav2').on("click", function(){
         startUp();  
     }
     if(b==2){
+    $("p:first").replaceWith("<p>And throw in a sound input from our sense cloud</p>");
+        soundsLoaded();
         rollingCircle(lmargin*2, height/2, 10, 0.5);
     }
     if(b==3){
+    $("p:first").replaceWith("<p>Next let's try smell</p>");
+      loop.stop("sound" + 1);
+        // soundsLoaded();
         rollingCircle(lmargin*2, height/2, 10, 0.6);
     }
     if(b==4){
         rollingCircle(lmargin*2, height/2, 10, 0.7);
-        $("#smell").show()
-        $("#sound").show()
+        $("#buttons").show()
+
     }
 
     $("#smell").on("click", function(){
+
          rollingCircle(lmargin*2, height/2, 10, 0.6);   
     })
     $("#sound").on("click", function(){
+// loop.callback(soundsLoaded);
+                soundsLoaded();
         rollingCircle(lmargin*2, height/2, 10, 0.7);
     })
 
     if(b==5){
     $("p:first").replaceWith("<p>And then</p>");
         // svg.call(transition, p1, p2);
+        $("#buttons").hide()
+        // $("#sound").hide()
         $("#intro").animate({
             top: "100px",
             left: "400px",
@@ -679,7 +689,6 @@ d3.select('#introNav2').on("click", function(){
         // balls();
     }
     if(b==6){
-        soundsLoaded();
         $("#intro").animate({
             top: "100px",
             left: "600px",
@@ -688,7 +697,6 @@ d3.select('#introNav2').on("click", function(){
         endOutput();
     }
     if(b==7){
-        soundsLoaded();
         $("#intro").animate({
             top: "100px",
             left: "100px",
@@ -724,71 +732,15 @@ var k = height / p[2]; //*2;
 }
 
 
-
-// var gradient = svg.append("defs").append("linearGradient")
-//     .attr("id", "gradient")
-//     .attr("x1", "0%")
-//     .attr("y1", "10%")
-//     .attr("x2", "2%")
-//     .attr("y2", "100%");
-
-// gradient.append("stop")
-//     .attr("offset", "1%")
-//     .attr("stop-color", "aquamarine");//"#ccf");
-
-// gradient.append("stop")
-//     .attr("offset", "10%")
-//     .attr("stop-color", "hotpink");
-
-// gradient.append("stop")
-//     .attr("offset", "100%")
-//     .attr("stop-color", "hotpink");
-
-// var gradient2 = svg.append("defs").append("linearGradient")
-//     .attr("id", "gradient2")
-//     .attr("x1", "0%")
-//     .attr("y1", "20%")
-//     .attr("x2", "20%")
-//     .attr("y2", "100%");
-
-// gradient2.append("stop")
-//     .attr("offset", "20%")
-//     .attr("stop-color", "magenta");//"#ccf");
-
-// gradient2.append("stop")
-//     .attr("offset", "50%")
-//     .attr("stop-color", "#ccf");
-
-// gradient2.append("stop")
-//     .attr("offset", "100%")
-//     .attr("stop-color", "aqua");
-
-// var gradient3 = svg.append("defs").append("linearGradient")
-//     .attr("id", "gradient3")
-//     .attr("x1", "0%")
-//     .attr("y1", "10%")
-//     .attr("x2", "10%")
-//     .attr("y2", "100%");
-
-// gradient3.append("stop")
-//     .attr("offset", "1%")
-//     .attr("stop-color", "hotpink");//"#ccf");
-
-// gradient3.append("stop")
-//     .attr("offset", "10%")
-//     .attr("stop-color", "aquamarine");
-
-// gradient3.append("stop")
-//     .attr("offset", "100%")
-//     .attr("stop-color", "aquamarine");
-
 var circ = vis.selectAll("circle")
     .data(d3.range(1000))
     .enter().append("circle")
     .attr("r", function() { return rain(1 + Math.random() * 50); })
     .attr("cx", 0)
     .attr("cy", 0)
-    .attr("fill","none")
+    .attr("fill","white")
+    .attr("opacity",.8)
+
     // .attr("transform", function(d) {
     //   return "rotate(" + r + ")"
     //       + "translate(" + (height / 4 + Math.random() * height / 6) + ",0)"
@@ -816,7 +768,7 @@ var moveAround = function(secs){
 // could use transparent gradient overlay to vary raindrop color
 var yMap = d3.scale.linear()
             .domain([0, 1000])
-            .range([0, height])
+            .range([-100, height])
 var yMap2 = d3.scale.linear()
             .domain([0, 1])
             .range([0, height])
@@ -845,7 +797,10 @@ var xMap2 = d3.scale.linear()
             return xMap(Math.random());
         }
     })
-    .attr("opacity",.8)
+    // circ
+    // .transition()
+    // .delay(2000)
+    // .duration(3000)
     .attr("fill", function(d,i){
         return color(i)
         // if (i%2==1){
@@ -891,28 +846,43 @@ loop = new SeamlessLoop();
 var audio  = document.createElement("audio"),
 canPlayMP3 = (typeof audio.canPlayType === "function" &&
               audio.canPlayType("audio/mpeg") !== "");
+// if (canPlayMP3===true) {
+//     console.log("true");
+//   loop.addUri("BD.mp3", 500, "sound1");
+// } 
+// else {
+//   loop.addUri("BD.ogg", 500, "sound1");
+// }
+// var callback = false;
+// function soundsLoaded(){
+//   loop.start("sound1");
+//   callBack = true;
+//   loop.update("sound" + 1, false);
+// };
+
+
 if (canPlayMP3===true) {
-    console.log("true");
-  loop.addUri("BD.mp3", 4000, "sound1");
-  // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.mp3", 4000, "sound2");
-} 
-else {
-  loop.addUri("BD.ogg", 4000, "sound1");
-  // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.ogg", 4000, "sound2");
+   loop.addUri("http://localhost:8000/music/BD.mp3", 500, "sound1");
+
+  // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.mp3", 1, "sound1");
+} else {
+  loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.ogg", 1000, "sound1");
 }
 
-var soundsLoaded = function() {
-if(b==2){
+function soundsLoaded() {
   var n = 1;
   loop.start("sound" + n);
-}  
-if(b==3){
-  var n = 1;
-  loop.start("sound" + n);
-}
-// n++;
-  // loop.update("sound" + n, false);
 };
+//soundsLoaded();
+//loop.callback(soundsLoaded);
+
+
+
+
+
+
+
+
     // d3.select("#container")
     //     .transition()
     //     .duration(1000)
