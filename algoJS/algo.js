@@ -667,7 +667,7 @@ d3.select('#introNav2').on("click", function(){
     }
 
     $("#smell").on("click", function(){
-
+      loop.stop("sound" + 1);
          rollingCircle(lmargin*2, height/2, 10, 0.6);   
     })
     $("#sound").on("click", function(){
@@ -679,7 +679,9 @@ d3.select('#introNav2').on("click", function(){
     if(b==5){
     $("p:first").replaceWith("<p>And then</p>");
         // svg.call(transition, p1, p2);
-        $("#buttons").hide()
+        $("#buttons").hide();
+              loop.stop("sound" + 1);
+
         // $("#sound").hide()
         $("#intro").animate({
             top: "100px",
@@ -862,11 +864,11 @@ canPlayMP3 = (typeof audio.canPlayType === "function" &&
 
 
 if (canPlayMP3===true) {
-   loop.addUri("http://localhost:8000/music/BD.mp3", 500, "sound1");
-
-  // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.mp3", 1, "sound1");
+   // loop.addUri("http://localhost:8000/music/BD.mp3", 500, "sound1");
+// loop.addUri("https://www.youtube.com/watch?v=g0ziLeohVLc"
+  loop.addUri("http://www.freesoundfiles.com/Sounds/Tom%206.wav", 500, "sound1");
 } else {
-  loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.ogg", 1000, "sound1");
+  // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.ogg", 1000, "sound1");
 }
 
 function soundsLoaded() {
