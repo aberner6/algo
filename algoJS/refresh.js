@@ -100,6 +100,7 @@ inputCirc = vis.selectAll("inCirc")
         }
     })
     .attr("r", r/2)
+    .attr("opacity",1)
     .attr("fill", "none")
     .attr("stroke-dasharray", function(d,i){
         if(i%2==1){
@@ -117,12 +118,12 @@ inputCirc = vis.selectAll("inCirc")
         return xIn(i)+Math.random(-1,1)*10;
     })        
     .each("end", function(){
-        // d3.selectAll(".inCirc")
-        //     .transition()
-        //     .duration(10000)
-        //     .attr("opacity",function(d,i){
-        //         return .01;
-        //     })
+        d3.selectAll(".inCirc")
+            .transition()
+            .duration(8000)
+            .attr("opacity",function(d,i){
+                return 0;
+            })
     })
 
     // .attr("cx", lmargin)
