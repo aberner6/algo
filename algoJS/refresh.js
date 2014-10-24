@@ -45,10 +45,10 @@ o = [1, 2];
 var numInput = 100;
 t = [1, 2, 3];
 var lmargin = 200;
-var yMid = 330;
+var yMid = height/2;
 yIn = d3.scale.linear()
-    .domain([0, t.length])
-    .range([height/8, height-height/8])
+    .domain([0, t.length-1])
+    .range([height/4, height-height/4])
 // xIn = d3.scale.linear()
 //     .domain([0, t.length])
 //     .range([lmargin, width-lmargin])
