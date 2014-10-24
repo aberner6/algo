@@ -4,6 +4,7 @@ outputLine, outputCirc, finalOutputCirc,
 yIn, xIn,
 path,
 circle, line, rollingCirc, cloudCirc;
+var moveAround;
 var windowWidth = window.outerWidth,
     windowHeight= window.innerHeight,
     height = windowHeight,
@@ -23,16 +24,24 @@ var startUp, shiftAway, endOutput, rollingCircle;
 // var distBetween = 40;
 var opacity = .5;
 var littleL = 4;
-var myVar=setInterval(function () {myTimer()}, 1000);
 var d;
 var secs;
 var soundsLoaded;
 var intro = true;
-function myTimer() {
-    d = new Date();
-    secs = d.getMilliseconds();
-    moveAround(secs/10);
-}
+var thisData = [];
+var myTimer;
+
+var colorSpectrum = [];
+// loadData("senses.csv")
+// function loadData(csvName){
+// d3.csv(csvName, function(thisData) {
+    // for (i=0; i<data.length; i++){
+        // sense[i] = data[i].sense;
+        // weight[i] = data[i].weight;
+        // thisData.push({"sense":data[i].sense, "weight": data[i].weight})
+        // links.push({"source":neuronA[i],"target":neuronB[i]}) 
+    // }
+// }
 
 svg = d3.select("#container")
     .append("svg")
@@ -46,7 +55,20 @@ o = [1, 2];
 var numInput = 100;
 var randLength = 1000;
 
-var colorSpectrum = ["#438CA5",
+
+
+
+
+
+
+
+
+
+loadData("senses.csv")
+function loadData(csvName){
+d3.csv(csvName, function(thisData) {
+
+colorSpectrum = ["#438CA5",
 "#C4602E",
 "#BD57D3",
 "#678F39",
@@ -58,26 +80,29 @@ var color2 = "#C4602E";
 var color = d3.scale.ordinal()
     .domain([0, randLength])
     .range(colorSpectrum);
-
 t = [1, 2, 3];
 var lmargin = 200;
 var yMid = height/2;
 yIn = d3.scale.linear()
-    .domain([0, t.length-1])
+    .domain([0, thisData.length-1])
     .range([height/4, height-height/4]);
-
 yRand = d3.scale.linear()
     .domain([0, randLength])
     .range([0, height]);
-// xIn = d3.scale.linear()
-//     .domain([0, t.length])
-//     .range([lmargin, width-lmargin])
 xIn = d3.scale.linear()
     .domain([0, numInput])
     .range([lmargin, width+lmargin])
+// function simpleStuff(thisData){
+var myVar=setInterval(function () {myTimer()}, 1000);
+
+function myTimer() {
+    d = new Date();
+    secs = d.getMilliseconds();
+    moveAround(secs/10);
+}
 
 circle = vis.selectAll("neurons")
-    .data(t)
+    .data(thisData)
     .enter()
     .append("circle").attr("class","neurons")
     .attr("cx", lmargin)
@@ -101,7 +126,7 @@ circle = vis.selectAll("neurons")
     .attr("opacity",1);
 
 line = vis.selectAll("inLine")
-    .data(t)
+    .data(thisData)
     .enter()
     .append("line").attr("class","inLine")
     .attr("x1", lmargin)
@@ -125,7 +150,7 @@ line = vis.selectAll("inLine")
     .attr("opacity",0);
 
 rollingCirc = vis.selectAll("rollingCirc")
-    .data(t)
+    .data(thisData)
     .enter()
     .append("circle").attr("class","rollingCirc")
     .attr("cx", 0)
@@ -144,10 +169,10 @@ rollingCirc = vis.selectAll("rollingCirc")
     })
     .attr("stroke", function(d,i){
         if(i%2==1){
-            return (colorSpectrum[4]);
+            return "#7372BE";//(colorSpectrum[4]);
         }
         if(i%2==0){
-            return (colorSpectrum[5]);
+            return "#C84961";//(colorSpectrum[5]);
         }
     })
     .attr("opacity",0);
@@ -394,8 +419,6 @@ line
 
 
 
-
-
 $('.about').tipsy({
     gravity: 'nw', 
     html: true, 
@@ -435,6 +458,7 @@ d3.select('#introNav2').on("click", function(){
         // loop.stop("sound" + 1);
     }
     if(b==4){
+        passSense(1)
         $("#buttons").show()
 
     }
@@ -597,3 +621,5 @@ function soundsLoaded() {
   var n = 1;
   loop.start("sound" + n);
 };
+})
+}
