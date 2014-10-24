@@ -3,7 +3,7 @@ inputCirc, inputLine, trackCirc, senseCirc,
 outputLine, outputCirc, finalOutputCirc,
 yIn, xIn,
 path,
-circle, line;
+circle, line, rollingCirc;
 var windowWidth = window.outerWidth,
     windowHeight= window.innerHeight,
     height = windowHeight,
@@ -40,11 +40,12 @@ svg = d3.select("#container")
 vis = svg //for the visualization
     .append('svg:g')
     .attr("transform",
-      "translate("+ 0 + "," + 50 + ")");  
+      "translate("+ 0 + "," + 0 + ")");  
 o = [1, 2];
 var numInput = 100;
 t = [1, 2, 3];
 var lmargin = 200;
+var yMid = 330;
 yIn = d3.scale.linear()
     .domain([0, t.length])
     .range([height/8, height-height/8])
@@ -79,6 +80,27 @@ circle = vis.selectAll("neurons")
     .duration(8000)
     .attr("opacity",1);
 
+rollingCirc = vis.selectAll("rollingCirc")
+    .data(t)
+    .enter()
+    .append("circle").attr("class","rollingCirc")
+    .attr("cx", 0)
+    .attr("cy", function(d,i){
+        return yIn(i);
+    })
+    .attr("r", r)
+    .attr("fill", "none")
+    .attr("stroke-dasharray", function(d,i){
+        if(i%2==1){
+            return ("4,4");
+        }
+        else{
+            return ("0,0");
+        }
+    })
+    .attr("stroke", "gray")
+    .attr("opacity",0);
+
 inputCirc = vis.selectAll("inCirc")
     .data(d3.range(numInput))
     .enter()
@@ -110,57 +132,100 @@ inputCirc = vis.selectAll("inCirc")
             return ("0,0");
         }
     })
-    .attr("stroke", "gray")
+    .attr("stroke", "gray");
+
+function passSense(output){
+if(output==0){
+d3.selectAll(".inCirc")
     .transition()
-    .delay(6000)
-    .duration(7000)
-    .attr("cx", function(d,i){
-        return xIn(i)+Math.random(-1,1)*10;
-    })        
+    .duration(100)
+    .attr("opacity",1)
     .each("end", function(){
         d3.selectAll(".inCirc")
             .transition()
-            .duration(8000)
-            .attr("opacity",function(d,i){
-                return 0;
+            .duration(4000)      
+            .attr("cx", function(d,i){
+                return xIn(i)+Math.random(-1,1)*10;
+            })
+            .each("end", function(){
+                d3.selectAll(".inCirc")
+                    .transition()
+                    .duration(2000)
+                    .attr("opacity",function(d,i){
+                        return 0;
+                    })
+                    .each("end", function(){
+                        d3.selectAll(".inCirc")
+                        .transition()               
+                        .attr("cx", function(d,i){
+                            if(i%2==1){
+                                return Math.random(-1,1)*10;
+                            }
+                            else{
+                                return -1*Math.random(-1,1)*10;
+                            }
+                        })
+                        .attr("cy", function(d,i){
+                            if(i%2==1){
+                                return yIn(i%3)+Math.random(-1,1)*10;
+                            }
+                            else{
+                                return yIn(i%3)-Math.random(-1,1)*10;
+                            }
+                        })
+                    })
+            })  
+    })
+}
+else{
+    d3.selectAll(".rollingCirc")
+    .transition()
+    .duration(100)
+    .attr("opacity",1)
+    .each("end", function(){
+        d3.selectAll(".rollingCirc")
+            .transition()
+            .duration(3000)
+            .attr("cx", lmargin)
+            .each("end", function(){
+                 d3.selectAll(".rollingCirc")
+                .transition()
+                .duration(3000)
+                .attr("cx", lmargin*3)   
+                .attr("cy", yMid);    
             })
     })
-
-    // .attr("cx", lmargin)
-    // .each("end", function(){
-        // d3.selectAll(".inCirc")
-        // //inputCirc
-        // .transition()
-        // .delay(7000)
-        // .duration(7000)
-        // .attr("cx", function(d,i){
-        //     if(i%2==1){
-        //         return xIn(i)+Math.random(-1,1)*10;
-        //     }
-        //     else{
-        //         return xIn(i)-Math.random(-1,1)*10;
-        //     }
-        // })
-        // .transition()
-        // .delay(7000)
-        // .duration(7000)
-        // .attr("opacity",function(d,i){
-        //     return .01*i;
-        // })
-        // .attr("r", function(d,i){
-        //     if(yIn(i%3)>279-r||yIn(i%3)<279+r){
-        //         return r/2;
-        //     }
-        //     else{                
-        //         return 1;
-        //     }
-        // })
-        // .attr("cy", function(d,i){
-        //     return yIn(i%3);
-        // })
-    // })
+}
+}
 //    // .attr("transform", "translate("+lmargin*4+",0)")
-
+function showLines(){
+line = vis.selectAll("inLine")
+    .data(t)
+    .enter()
+    .append("line").attr("class","inLine")
+    .attr("x1", lmargin)
+    .attr("y1", function(d,i){
+        return yIn(i);
+    })
+    .attr("x2", lmargin*3)
+    .attr("y2", function(d,i){
+        return yMid;
+    })
+    .attr("fill", "none")
+    .attr("stroke-dasharray", function(d,i){
+        if(i%2==1){
+            return ("4,4");
+        }
+        else{
+            return ("0,0");
+        }
+    })
+    .attr("stroke", "gray")
+    .attr("opacity",0)
+    .transition()
+    .duration(4000)
+    .attr("opacity",1);
+}
 
 
 
@@ -234,8 +299,11 @@ d3.select("#enter").on("click", function(){
 d3.select('#introNav2').on("click", function(){
     b++;
     if(b==1){
+        showLines();
+        passSense(1)
+        // passSense(0);
         intro = false;
-    $("p:first").replaceWith("<p>Let's consider a network of 6 neurons</p>");
+        $("p:first").replaceWith("<p>Let's consider a network of 6 neurons</p>");
         // svg.call(transition, p0, p1);
         $("#intro").animate({
             top: "100px",
@@ -243,12 +311,15 @@ d3.select('#introNav2').on("click", function(){
         });
     }
     if(b==2){
-    $("p:first").replaceWith("<p>And throw in a sound input from our sense cloud</p>");
-        soundsLoaded();
+        passSense(0);
+        $("p:first").replaceWith("<p>And throw in a sound input from our sense cloud</p>");
+        // soundsLoaded();
     }
     if(b==3){
-    $("p:first").replaceWith("<p>Next let's try smell</p>");
-        loop.stop("sound" + 1);
+        showLines();
+        passSense(1)
+        $("p:first").replaceWith("<p>Next let's try smell</p>");
+        // loop.stop("sound" + 1);
     }
     if(b==4){
         $("#buttons").show()
