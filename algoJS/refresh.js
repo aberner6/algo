@@ -9,6 +9,8 @@ var windowWidth = window.outerWidth,
     windowHeight= window.innerHeight,
     height = windowHeight,
     width = windowWidth;
+var addIt =0;
+
 // var height = 800;
 // var r;
 var r = 10;
@@ -28,7 +30,7 @@ var d;
 var secs;
 var soundsLoaded;
 var intro = true;
-var thisData = [];
+var tData = [];
 var myTimer;
 
 var colorSpectrum = [];
@@ -66,8 +68,13 @@ var randLength = 1000;
 
 loadData("senses.csv")
 function loadData(csvName){
-d3.csv(csvName, function(thisData) {
 
+d3.csv(csvName, function(thisData) {
+tData=(thisData);
+// if(tData.length>1){
+calculate("sm");
+    // console.log(tData);
+// }
 colorSpectrum = ["#438CA5",
 "#C4602E",
 "#BD57D3",
@@ -364,9 +371,39 @@ line
     .duration(4000)
     .attr("opacity",1);
 }
+// addIt = 0;
+function calculate(triggerSense){
+console.log(triggerSense);
+// boolean over = false;
+var theshold = 1.1;
+    for (i=0; i<tData.length; i++){
+        if(tData[i].sense==triggerSense){
+            // if(i>0){
+                addIt += parseInt(tData[i].weight);
+                // console.log(tData[i].weight);
+            // }
+            console.log(addIt);
+        }
+        if(addIt>theshold){
+            // over = true;
+            triggerRoll(addIt, triggerSense);
+            // console.log(addIt);
+        }else{
+        }
+    }
+}
 
-
-
+function senseIn(triggerSense){
+    //if d.sense of rolling ball is the same as trigger sense
+    //calculate(triggerSense)
+    //roll ball down to output
+    //which will trigger roll or not
+}
+function triggerRoll(addIt, triggerSense){
+     console.log(addIt+" add it");
+    //if d.sense is the triggersense, 
+    //send that ball through to the output
+}
 
 
 
