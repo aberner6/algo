@@ -22,6 +22,7 @@ var o = [];
 var startUp, shiftAway, endOutput, rollingCircle;
 // var distBetween = 40;
 var opacity = .5;
+var littleL = 4;
 var myVar=setInterval(function () {myTimer()}, 1000);
 var d;
 var secs;
@@ -98,6 +99,30 @@ circle = vis.selectAll("neurons")
     .transition()
     .duration(8000)
     .attr("opacity",1);
+
+line = vis.selectAll("inLine")
+    .data(t)
+    .enter()
+    .append("line").attr("class","inLine")
+    .attr("x1", lmargin)
+    .attr("y1", function(d,i){
+        return yIn(i);
+    })
+    .attr("x2", lmargin*3)
+    .attr("y2", function(d,i){
+        return yMid;
+    })
+    .attr("fill", "none")
+    .attr("stroke-dasharray", function(d,i){
+        if(i%2==1){
+            return ("4,4");
+        }
+        else{
+            return ("0,0");
+        }
+    })
+    .attr("stroke", "gray")
+    .attr("opacity",0);
 
 rollingCirc = vis.selectAll("rollingCirc")
     .data(t)
@@ -293,7 +318,11 @@ else{
                             d3.selectAll(".rollingCirc")
                             .transition()
                             .duration(10)
-                            .attr("y1", function(d,i){
+                            .attr("fill","none")
+                            .attr("cx", function(d,i){
+                                return littleL;
+                            })                             
+                            .attr("cy", function(d,i){
                                 return yIn(i);
                             })                        
                         })
@@ -305,29 +334,7 @@ else{
 }
 //    // .attr("transform", "translate("+lmargin*4+",0)")
 function showLines(){
-line = vis.selectAll("inLine")
-    .data(t)
-    .enter()
-    .append("line").attr("class","inLine")
-    .attr("x1", lmargin)
-    .attr("y1", function(d,i){
-        return yIn(i);
-    })
-    .attr("x2", lmargin*3)
-    .attr("y2", function(d,i){
-        return yMid;
-    })
-    .attr("fill", "none")
-    .attr("stroke-dasharray", function(d,i){
-        if(i%2==1){
-            return ("4,4");
-        }
-        else{
-            return ("0,0");
-        }
-    })
-    .attr("stroke", "gray")
-    .attr("opacity",0)
+line
     .transition()
     .duration(4000)
     .attr("opacity",1);
@@ -405,8 +412,8 @@ d3.select("#enter").on("click", function(){
 d3.select('#introNav2').on("click", function(){
     b++;
     if(b==1){
-        showLines();
-        passSense(1)
+        // showLines();
+        passSense(0);
         // passSense(0);
         intro = false;
         $("p:first").replaceWith("<p>Let's consider a network of 6 neurons</p>");
