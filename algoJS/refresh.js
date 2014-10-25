@@ -421,7 +421,7 @@ function senseIn(addIt, triggerSense){
                 d3.selectAll(".rollingCirc")
                 .transition()
                 .attr("fill", function(d,i){
-                    return (colorSpectrum[4]);
+                    return (color(triggerSense));
                 })
                 .each("end", function(){
                     if(addIt>threshold){
