@@ -10,7 +10,8 @@ var windowWidth = window.outerWidth,
     height = windowHeight,
     width = windowWidth;
 var addIt =0;
-
+var trigger = false;
+var tSense;
 // var height = 800;
 // var r;
 var r = 10;
@@ -72,7 +73,9 @@ function loadData(csvName){
 d3.csv(csvName, function(thisData) {
 tData=(thisData);
 // if(tData.length>1){
-calculate("sm");
+// calculate("sm");
+// calculate("to");
+
     // console.log(tData);
 // }
 colorSpectrum = ["#438CA5",
@@ -366,15 +369,16 @@ else{
 }
 //    // .attr("transform", "translate("+lmargin*4+",0)")
 function showLines(){
-line
+d3.selectAll(".inLine")
     .transition()
     .duration(4000)
     .attr("opacity",1);
 }
-// addIt = 0;
 function calculate(triggerSense){
 console.log(triggerSense);
 // boolean over = false;
+addIt = 0;
+
 var theshold = 1.1;
     for (i=0; i<tData.length; i++){
         if(tData[i].sense==triggerSense){
@@ -394,13 +398,76 @@ var theshold = 1.1;
 }
 
 function senseIn(triggerSense){
+    console.log(triggerSense);
     //if d.sense of rolling ball is the same as trigger sense
     //calculate(triggerSense)
     //roll ball down to output
     //which will trigger roll or not
+    // showLines();
+    // passSense(1)
+    d3.selectAll(".rollingCirc")
+    // rollingCirc
+    .transition()
+    .duration(100)
+    .attr("opacity",opacity)
+    .each("end", function(){
+        d3.selectAll(".rollingCirc")
+            .transition()
+            .duration(3000)
+            .attr("cx", lmargin)
+            .each("end", function(){
+                d3.selectAll(".rollingCirc")
+                .transition()
+                .attr("fill", function(d,i){
+                    return (colorSpectrum[4]);
+                })
+                .each("end", function(){
+                    d3.selectAll(".rollingCirc")
+                    .transition()   
+                    .duration(3000)
+                    .attr("cx", function(d,i){
+// console.log(d.sense);
+                        if(d.sense==tSense){
+// console.log(d.sense);
+                            return lmargin*3;
+                        }
+                    })   
+                    .attr("cy", function(d,i){
+                        if(d.sense==tSense){
+                            return yMid;
+                        }
+                    })
+                    ////then disappear
+                    .each("end", function(){
+                        d3.selectAll(".rollingCirc")
+                        .transition()
+                        .duration(10)
+                        .attr("opacity",0)
+                        .each("end", function(){
+                            d3.selectAll(".rollingCirc")
+                            .transition()
+                            .duration(10)
+                            .attr("fill","none")
+                            .attr("cx", function(d,i){
+                                return littleL;
+                            })                             
+                            .attr("cy", function(d,i){
+                                return yIn(i);
+                            })                        
+                        })
+                    })                                       
+                })  
+            })
+    })
 }
+
 function triggerRoll(addIt, triggerSense){
-     console.log(addIt+" add it");
+     console.log(addIt+"sum "+triggerSense+" sense");
+     trigger = true;
+     tSense = triggerSense;
+    //  if(b==1){
+        senseIn(triggerSense);
+    // }
     //if d.sense is the triggersense, 
     //send that ball through to the output
 }
@@ -472,8 +539,11 @@ d3.select("#enter").on("click", function(){
 d3.select('#introNav2').on("click", function(){
     b++;
     if(b==1){
-        // showLines();
-        passSense(0);
+        // if(trigger == true){
+calculate("sm");
+        // }
+        showLines();
+        // passSense(0);
         // passSense(0);
         intro = false;
         $("p:first").replaceWith("<p>Let's consider a network of 6 neurons</p>");
@@ -639,24 +709,24 @@ var color = d3.scale.ordinal()
 
 
 
-loop = new SeamlessLoop();
+// loop = new SeamlessLoop();
 
-//check if the browser can play MP3's. If not, use ogg.
-var audio  = document.createElement("audio"),
-canPlayMP3 = (typeof audio.canPlayType === "function" &&
-              audio.canPlayType("audio/mpeg") !== "");
+// //check if the browser can play MP3's. If not, use ogg.
+// var audio  = document.createElement("audio"),
+// canPlayMP3 = (typeof audio.canPlayType === "function" &&
+//               audio.canPlayType("audio/mpeg") !== "");
 
-if (canPlayMP3===true) {
-   // loop.addUri("http://localhost:8000/music/BD.mp3", 500, "sound1");
-// loop.addUri("https://www.youtube.com/watch?v=g0ziLeohVLc"
-  // loop.addUri("http://www.freesoundfiles.com/Sounds/Tom%206.wav", 500, "sound1");
-} else {
-  // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.ogg", 1000, "sound1");
-}
+// if (canPlayMP3===true) {
+//    // loop.addUri("http://localhost:8000/music/BD.mp3", 500, "sound1");
+// // loop.addUri("https://www.youtube.com/watch?v=g0ziLeohVLc"
+//   // loop.addUri("http://www.freesoundfiles.com/Sounds/Tom%206.wav", 500, "sound1");
+// } else {
+//   // loop.addUri("http://stash.rachelnabors.com/music/byakkoya_single.ogg", 1000, "sound1");
+// }
 
-function soundsLoaded() {
-  var n = 1;
-  loop.start("sound" + n);
-};
+// function soundsLoaded() {
+//   var n = 1;
+//   loop.start("sound" + n);
+// };
 })
 }
