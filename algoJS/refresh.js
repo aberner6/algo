@@ -3,7 +3,7 @@ inputCirc, inputLine, trackCirc, senseCirc,
 outputLine, outputCirc, finalOutputCirc,
 yIn, xIn,
 path,
-circle, line, rollingCirc, cloudCirc;
+circle, line, rollingCirc, cloudCirc, endOutCirc;
 var moveAround;
 var windowWidth = window.outerWidth,
     windowHeight= window.innerHeight,
@@ -12,9 +12,13 @@ var windowWidth = window.outerWidth,
 var addIt =0;
 var trigger = false;
 var tSense;
+var lmargin = 200;
+var yMid = height/2;
 var threshold = 1.1;
 var input = [];
 var trigOther = false;
+var endOutX = lmargin*3;
+
 // var height = 800;
 // var r;
 var r = 10;
@@ -98,8 +102,7 @@ var color = d3.scale.ordinal()
     .domain([0, randLength])
     .range(colorSpectrum);
 t = [1, 2, 3];
-var lmargin = 200;
-var yMid = height/2;
+
 yIn = d3.scale.linear()
     .domain([0, thisData.length-1])
     .range([height/4, height-height/4]);
@@ -150,7 +153,7 @@ line = vis.selectAll("inLine")
     .attr("y1", function(d,i){
         return yIn(i);
     })
-    .attr("x2", lmargin*3)
+    .attr("x2", endOutX)
     .attr("y2", function(d,i){
         return yMid;
     })
@@ -177,6 +180,32 @@ rollingCirc = vis.selectAll("rollingCirc")
     .attr("cy", function(d,i){
         return yIn(i);
     })
+    .attr("r", r)
+    .attr("fill", "none")
+    .attr("stroke-dasharray", function(d,i){
+        if(i%2==1){
+            return ("4,4");
+        }
+        else{
+            return ("0,0");
+        }
+    })
+    .attr("stroke", function(d,i){
+        if(i%2==1){
+            return "#7372BE";//(colorSpectrum[4]);
+        }
+        if(i%2==0){
+            return "#C84961";//(colorSpectrum[5]);
+        }
+    })
+    .attr("opacity",0);
+
+endOutCirc = vis.selectAll("endCirc")
+    .data(d3.range(1))
+    .enter()
+    .append("circle").attr("class","endCirc")
+    .attr("cx", endOutX)
+    .attr("cy", yMid)
     .attr("r", r)
     .attr("fill", "none")
     .attr("stroke-dasharray", function(d,i){
@@ -283,106 +312,14 @@ d3.selectAll(".cloudCirc")
     })
 }
 
-function passSense(output){
-if(output==0){
-d3.selectAll(".inCirc")
-    .transition()
-    .duration(10)
-    .attr("opacity",opacity)
-    .each("end", function(){
-        d3.selectAll(".inCirc")
-            .transition()
-            .duration(4000)      
-            .attr("cx", function(d,i){
-                return 3+xIn(i)+Math.random(-1,1)*10;
-            })
-            .each("end", function(){
-                d3.selectAll(".inCirc")
-                    .transition()
-                    .duration(2000)
-                    .attr("opacity",function(d,i){
-                        return 0;
-                    })
-                    .each("end", function(){
-                        d3.selectAll(".inCirc")
-                        .transition()     
-                        .duration(10)          
-                        .attr("cx", function(d,i){
-                            if(i%2==1){
-                                return 4+Math.random(-1,1)*10;
-                            }
-                            else{
-                                return 4-1*Math.random(-1,1)*10;
-                            }
-                        })
-                        .attr("cy", function(d,i){
-                            if(i%2==1){
-                                return yIn(i%3)+Math.random(-1,1)*10;
-                            }
-                            else{
-                                return yIn(i%3)-Math.random(-1,1)*10;
-                            }
-                        })
-                    })
-            })  
-    })
-}
-else{
-    d3.selectAll(".rollingCirc")
-    .transition()
-    .duration(100)
-    .attr("opacity",opacity)
-    .each("end", function(){
-        d3.selectAll(".rollingCirc")
-            .transition()
-            .duration(3000)
-            .attr("cx", lmargin)
-            .each("end", function(){
-                d3.selectAll(".rollingCirc")
-                .transition()
-                .attr("fill", function(d,i){
-                    if(i%2==1){
-                        return (colorSpectrum[4]);
-                    }
-                    if(i%2==0){
-                        return (colorSpectrum[5]);
-                    }
-                })
-                .each("end", function(){
-                    d3.selectAll(".rollingCirc")
-                    .transition()   
-                    .duration(3000)
-                    .attr("cx", lmargin*3)   
-                    .attr("cy", yMid)
-                    .each("end", function(){
-                        d3.selectAll(".rollingCirc")
-                        .transition()
-                        .duration(10)
-                        .attr("opacity",0)
-                        .each("end", function(){
-                            d3.selectAll(".rollingCirc")
-                            .transition()
-                            .duration(10)
-                            .attr("fill","none")
-                            .attr("cx", function(d,i){
-                                return littleL;
-                            })                             
-                            .attr("cy", function(d,i){
-                                return yIn(i);
-                            })                        
-                        })
-                    })                                       
-                })  
-            })
-    })
-}
-}
 //    // .attr("transform", "translate("+lmargin*4+",0)")
 function showLines(){
 d3.selectAll(".inLine")
     .transition()
     .duration(4000)
-    .attr("opacity",1)
+    .attr("opacity",function(d,i){
+        return tData[i].weight*2;
+    })
     .attr("stroke-width", function(d,i){
         return tData[i].weight*2;
     })
@@ -446,12 +383,12 @@ function senseIn(addIt, triggerSense){
                     return (color(triggerSense));
                 })
                 .each("end", function(){
-                    if(addIt>threshold){
+                    // if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
                     d3.selectAll(".rollingCirc")
                     .transition()   
                     .duration(3000)
                     .attr("cx", function(d,i){
-                            return lmargin*3;
+                            return endOutX;
                     })   
                     .attr("cy", function(d,i){
                         if(d.sense==tSense){
@@ -477,24 +414,49 @@ function senseIn(addIt, triggerSense){
                             })                        
                         })
                     })
-                    }
-                    else{
-                        d3.selectAll(".rollingCirc")
+                    if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
+                        d3.selectAll(".endCirc")
                         .transition()
                         .duration(10)
-                        .attr("opacity",0)
+                        .attr("opacity", 1)
+                        .duration(2000)
+                        .attr("r", r*2)
                         .each("end", function(){
-                            d3.selectAll(".rollingCirc")
+                            d3.selectAll(".endCirc")
                             .transition()
-                            .duration(10)
-                            .attr("fill","none")
-                            .attr("cx", function(d,i){
-                                return littleL;
-                            })                             
-                            .attr("cy", function(d,i){
-                                return yIn(i);
-                            })                        
-                        })                        
+                            .duration(1000)
+                            .attr("r",r/2)
+                            .each("end", function(){
+                                d3.selectAll(".endCirc")
+                                .transition()
+                                .duration(2000)
+                                .attr("r", r*2) 
+                                .each("end", function(){
+                                    d3.selectAll(".endCirc")
+                                    .transition()
+                                    .duration(1000)
+                                    .attr("r",r/2)
+                                })                               
+                            })
+                        })
+                    } //THIS SHOULD  BE HAPPENING @END
+                    else{
+                        // d3.selectAll(".rollingCirc")
+                        // .transition()
+                        // .duration(10)
+                        // .attr("opacity",0)
+                        // .each("end", function(){
+                        //     d3.selectAll(".rollingCirc")
+                        //     .transition()
+                        //     .duration(10)
+                        //     .attr("fill","none")
+                        //     .attr("cx", function(d,i){
+                        //         return littleL;
+                        //     })                             
+                        //     .attr("cy", function(d,i){
+                        //         return yIn(i);
+                        //     })                        
+                        // })                        
                     }                                       
                 })  
             })
@@ -791,6 +753,117 @@ var color = d3.scale.ordinal()
 
 
 
+
+
+
+
+// function passSense(output){
+// if(output==0){
+// d3.selectAll(".inCirc")
+//     .transition()
+//     .duration(10)
+//     .attr("opacity",opacity)
+//     .each("end", function(){
+//         d3.selectAll(".inCirc")
+//             .transition()
+//             .duration(4000)      
+//             .attr("cx", function(d,i){
+//                 return 3+xIn(i)+Math.random(-1,1)*10;
+//             })
+//             .each("end", function(){
+//                 d3.selectAll(".inCirc")
+//                     .transition()
+//                     .duration(2000)
+//                     .attr("opacity",function(d,i){
+//                         return 0;
+//                     })
+//                     .each("end", function(){
+//                         d3.selectAll(".inCirc")
+//                         .transition()     
+//                         .duration(10)          
+//                         .attr("cx", function(d,i){
+//                             if(i%2==1){
+//                                 return 4+Math.random(-1,1)*10;
+//                             }
+//                             else{
+//                                 return 4-1*Math.random(-1,1)*10;
+//                             }
+//                         })
+//                         .attr("cy", function(d,i){
+//                             if(i%2==1){
+//                                 return yIn(i%3)+Math.random(-1,1)*10;
+//                             }
+//                             else{
+//                                 return yIn(i%3)-Math.random(-1,1)*10;
+//                             }
+//                         })
+//                     })
+//             })  
+//     })
+// }
+// else{
+//     d3.selectAll(".rollingCirc")
+//     .transition()
+//     .duration(100)
+//     .attr("opacity",opacity)
+//     .each("end", function(){
+//         d3.selectAll(".rollingCirc")
+//             .transition()
+//             .duration(3000)
+//             .attr("cx", lmargin)
+//             .each("end", function(){
+//                 d3.selectAll(".rollingCirc")
+//                 .transition()
+//                 .attr("fill", function(d,i){
+//                     if(i%2==1){
+//                         return (colorSpectrum[4]);
+//                     }
+//                     if(i%2==0){
+//                         return (colorSpectrum[5]);
+//                     }
+//                 })
+//                 .each("end", function(){
+//                     d3.selectAll(".rollingCirc")
+//                     .transition()   
+//                     .duration(3000)
+//                     .attr("cx", lmargin*3)   
+//                     .attr("cy", yMid)
+//                     .each("end", function(){
+//                         d3.selectAll(".rollingCirc")
+//                         .transition()
+//                         .duration(10)
+//                         .attr("opacity",0)
+//                         .each("end", function(){
+//                             d3.selectAll(".rollingCirc")
+//                             .transition()
+//                             .duration(10)
+//                             .attr("fill","none")
+//                             .attr("cx", function(d,i){
+//                                 return littleL;
+//                             })                             
+//                             .attr("cy", function(d,i){
+//                                 return yIn(i);
+//                             })                        
+//                         })
+//                     })                                       
+//                 })  
+//             })
+//     })
+// }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+////MUSIC STUFF
 
 // loop = new SeamlessLoop();
 
