@@ -19,6 +19,8 @@ var input = [];
 var trigOther = false;
 var endOutX = lmargin*3;
 var introDuration = 6000;
+var random = false;
+
 // var height = 800;
 // var r;
 var r = 10;
@@ -72,17 +74,13 @@ var randLength = 1000;
 
 
 
-
-
+// boolean 
 loadData("senses.csv")
 function loadData(csvName){
 
 d3.csv(csvName, function(thisData) {
 tData=(thisData);
-for (var i = 0; i < tData.length; i++) {
-      tData[i].weight = Math.random(-1,1);
-      console.log("generating weights")
-    }
+
 // if(tData.length>1){
 // calculate("sm");
 // calculate("to");
@@ -139,7 +137,9 @@ circle = vis.selectAll("neurons")
             return ("0,0");
         }
     })
-    .attr("stroke", "gray")
+    .attr("stroke", function(d,i){
+      return (color(d.sense));   
+    })
     .attr("opacity",0)
     .transition()
     .duration(introDuration)
@@ -456,17 +456,26 @@ console.log(tData[0].weight+"old weight?");
     error = threshold-addIt;
     console.log(error+"error");
 // //new weighting
-if(error>0){
+if(error>0 && random == true){
 for (i= 0; i<input.length; i++){
     changeWeight[i] = error*input[i];   
     tData[i].weight += .8*error*input[i]; 
 }
 }
 else{
+
+}
+if(error<0){
     trigger = true;
-    // if(error>0&&trigg)
     console.log("trigger"+trigger)
 }
+// if ()
+// else{
+//     trigger = true;
+//     // if(error>0&&trigg)
+//     console.log("trigger"+trigger)
+// }
+// }
 console.log(tData[0].weight+"new weight");
 // console.log(tData[0].weight+"new weights?");
 // for (i=0; i<tData.length; i++){ 
@@ -559,6 +568,38 @@ if(trigOther == true){
     calculate("sm");    
 }
 })
+
+$("#buttons").show()
+
+$("#refresh").on("click", function(){
+    random = true;
+for (var i = 0; i < tData.length; i++) {
+      tData[i].weight = Math.random(-1,1);
+      console.log("generating weights")
+      showLines();
+    }
+})
+    $("#smell").on("click", function(){
+        calculate("sm");
+      // loop.stop("sound" + 1);
+    })
+    $("#sound").on("click", function(){
+        calculate("to");
+        // soundsLoaded();
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
 //     b++;
 //     if(b==1){
 //         // if(trigger == true){
@@ -595,12 +636,7 @@ if(trigOther == true){
 
 //     }
 
-//     $("#smell").on("click", function(){
-//       loop.stop("sound" + 1);
-//     })
-//     $("#sound").on("click", function(){
-//         soundsLoaded();
-//     })
+
 
 //     if(b==5){
 //     $("p:first").replaceWith("<p>And then</p>");
