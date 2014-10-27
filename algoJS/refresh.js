@@ -18,7 +18,7 @@ var threshold = 1.1;
 var input = [];
 var trigOther = false;
 var endOutX = lmargin*3;
-
+var introDuration = 6000;
 // var height = 800;
 // var r;
 var r = 10;
@@ -142,7 +142,7 @@ circle = vis.selectAll("neurons")
     .attr("stroke", "gray")
     .attr("opacity",0)
     .transition()
-    .duration(8000)
+    .duration(introDuration)
     .attr("opacity",1);
 
 line = vis.selectAll("inLine")
@@ -210,7 +210,10 @@ endOutCirc = vis.selectAll("endCirc")
     .attr("fill", "none")
     .attr("stroke", "gray")
     .attr("stroke-width", strokeWeight)
-    .attr("opacity",0);
+    .attr("opacity",0)
+    .transition()
+    .duration(introDuration)
+    .attr("opacity",1);
 
 
 inputCirc = vis.selectAll("inCirc")
