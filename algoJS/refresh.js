@@ -14,7 +14,7 @@ var trigger = false;
 var tSense;
 var threshold = 1.1;
 var input = [];
-
+var trigOther = false;
 // var height = 800;
 // var r;
 var r = 10;
@@ -522,6 +522,7 @@ for (i= 0; i<input.length; i++){
 }
 else{
     trigger = true;
+    // if(error>0&&trigg)
     console.log("trigger"+trigger)
 }
 console.log(tData[0].weight+"new weight");
@@ -612,6 +613,9 @@ d3.select('#introNav2').on("click", function(){
     else{
         calculate("to");
     }
+if(trigOther == true){
+    calculate("sm");    
+}
 })
 //     b++;
 //     if(b==1){
