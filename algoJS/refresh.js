@@ -13,6 +13,7 @@ var addIt =0;
 var trigger = false;
 var tSense;
 var threshold = 1.1;
+var input = [];
 
 // var height = 800;
 // var r;
@@ -150,14 +151,17 @@ line = vis.selectAll("inLine")
         return yMid;
     })
     .attr("fill", "none")
-    .attr("stroke-dasharray", function(d,i){
-        if(i%2==1){
-            return ("4,4");
-        }
-        else{
-            return ("0,0");
-        }
+    .attr("stroke-weight", function(d,i){
+        return tData[i].weight;
     })
+    // .attr("stroke-dasharray", function(d,i){
+    //     if(i%2==1){
+    //         return ("4,4");
+    //     }
+    //     else{
+    //         return ("0,0");
+    //     }
+    // })
     .attr("stroke", "gray")
     .attr("opacity",0);
 
@@ -389,16 +393,15 @@ addIt = 0;
             // }
             console.log(addIt);
         }
-        if(addIt>threshold){
+        // if(addIt>threshold){
             // over = true;
-            triggerRoll(addIt, triggerSense);
             // console.log(addIt);
-        }else{
-            triggerRoll(addIt, triggerSense);
-        }
+        // }else{
+            // triggerRoll(addIt, triggerSense);
+        // }
     }
+    triggerRoll(addIt, triggerSense);
 }
-
 function senseIn(addIt, triggerSense){
     console.log(triggerSense);
     //if d.sense of rolling ball is the same as trigger sense
@@ -421,6 +424,14 @@ function senseIn(addIt, triggerSense){
                 d3.selectAll(".rollingCirc")
                 .transition()
                 .attr("fill", function(d,i){
+                        if(d.sense==tSense){
+                            input[i] = 1;
+                        }
+                        else{
+                            input[i] = 0;
+                        }
+                        console.log(input+"input");
+
                     return (color(triggerSense));
                 })
                 .each("end", function(){
@@ -429,9 +440,7 @@ function senseIn(addIt, triggerSense){
                     .transition()   
                     .duration(3000)
                     .attr("cx", function(d,i){
-                        if(d.sense==tSense){
                             return lmargin*3;
-                        }
                     })   
                     .attr("cy", function(d,i){
                         if(d.sense==tSense){
@@ -481,13 +490,31 @@ function senseIn(addIt, triggerSense){
     })
 }
 
+var changeWeight = [];
+var error = 0;
 function triggerRoll(addIt, triggerSense){
      console.log(addIt+"sum "+triggerSense+" sense");
      trigger = true;
      tSense = triggerSense;
-    //  if(b==1){
-    // if(addIt>theshold){
+console.log(tData[0].weight+"old weight?");
+//     //  if(b==1){
+    // if(addIt>threshold){
         senseIn(addIt, triggerSense);
+    // }
+    error = threshold-addIt;
+    console.log(error+"error");
+// //new weighting
+if(error>0){
+for (i= 0; i<input.length; i++){
+    changeWeight[i] = error*input[i];   
+    tData[i].weight += .01*error*input[i]; 
+}
+}
+console.log(tData[0].weight+"new weight");
+// console.log(tData[0].weight+"new weights?");
+// for (i=0; i<tData.length; i++){ 
+//     tData[i].weight = Math.random();
+// }
     // }
     // }
     //if d.sense is the triggersense, 
@@ -576,21 +603,22 @@ d3.select('#introNav2').on("click", function(){
         });
     }
     if(b==2){
-        calculate("sm");
+        calculate("to");
         // passSense(0);
         $("p:first").replaceWith("<p>And throw in a sound input from our sense cloud</p>");
         // soundsLoaded();
     }
     if(b==3){
-        calculate("so");
+        calculate("to");
         // showLines();
         // passSense(1)
         $("p:first").replaceWith("<p>Next let's try smell</p>");
         // loop.stop("sound" + 1);
     }
     if(b==4){
-        passSense(1)
-        $("#buttons").show()
+        calculate("sm");
+        // passSense(1)
+        // $("#buttons").show()
 
     }
 
