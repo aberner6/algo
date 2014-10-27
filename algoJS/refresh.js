@@ -384,8 +384,11 @@ d3.selectAll(".inLine")
     .duration(4000)
     .attr("opacity",1)
     .attr("stroke-width", function(d,i){
-        return tData[i].weight;
+        return tData[i].weight*2;
     })
+    // .attr("stroke", function(d,i){
+    //     return "rgb("+tData[i].weight*2;
+    // })
 }
 function calculate(triggerSense){
 console.log(triggerSense);
@@ -502,7 +505,6 @@ var changeWeight = [];
 var error = 0;
 function triggerRoll(addIt, triggerSense){
      console.log(addIt+"sum "+triggerSense+" sense");
-     trigger = true;
      tSense = triggerSense;
 console.log(tData[0].weight+"old weight?");
 //     //  if(b==1){
@@ -515,8 +517,12 @@ console.log(tData[0].weight+"old weight?");
 if(error>0){
 for (i= 0; i<input.length; i++){
     changeWeight[i] = error*input[i];   
-    tData[i].weight += .1*error*input[i]; 
+    tData[i].weight += .8*error*input[i]; 
 }
+}
+else{
+    trigger = true;
+    console.log("trigger"+trigger)
 }
 console.log(tData[0].weight+"new weight");
 // console.log(tData[0].weight+"new weights?");
@@ -600,7 +606,12 @@ d3.select("#enter").on("click", function(){
     $('#title').fadeOut("slow");
 })
 d3.select('#introNav2').on("click", function(){
-    calculate("sm")
+    if(trigger==false){
+        calculate("sm");
+    }
+    else{
+        calculate("to");
+    }
 })
 //     b++;
 //     if(b==1){
