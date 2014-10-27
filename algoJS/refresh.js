@@ -75,6 +75,10 @@ function loadData(csvName){
 
 d3.csv(csvName, function(thisData) {
 tData=(thisData);
+for (var i = 0; i < tData.length; i++) {
+      tData[i].weight = Math.random(-1,1);
+      console.log("generating weights")
+    }
 // if(tData.length>1){
 // calculate("sm");
 // calculate("to");
@@ -151,7 +155,7 @@ line = vis.selectAll("inLine")
         return yMid;
     })
     .attr("fill", "none")
-    .attr("stroke-weight", function(d,i){
+    .attr("stroke-width", function(d,i){
         return tData[i].weight;
     })
     // .attr("stroke-dasharray", function(d,i){
@@ -378,7 +382,10 @@ function showLines(){
 d3.selectAll(".inLine")
     .transition()
     .duration(4000)
-    .attr("opacity",1);
+    .attr("opacity",1)
+    .attr("stroke-width", function(d,i){
+        return tData[i].weight;
+    })
 }
 function calculate(triggerSense){
 console.log(triggerSense);
@@ -401,6 +408,7 @@ addIt = 0;
         // }
     }
     triggerRoll(addIt, triggerSense);
+        showLines();
 }
 function senseIn(addIt, triggerSense){
     console.log(triggerSense);
@@ -507,7 +515,7 @@ console.log(tData[0].weight+"old weight?");
 if(error>0){
 for (i= 0; i<input.length; i++){
     changeWeight[i] = error*input[i];   
-    tData[i].weight += .01*error*input[i]; 
+    tData[i].weight += .1*error*input[i]; 
 }
 }
 console.log(tData[0].weight+"new weight");
@@ -569,11 +577,17 @@ console.log(tData[0].weight+"new weight");
 
 
 
+$('#introNav2').tipsy({
+    gravity: 'w', 
+    html: true, 
+    title: function() {
+         return "Trigger next"+ '<br>';
+    }
+});
 
 
-
-$('.about').tipsy({
-    gravity: 'nw', 
+$('#moreInfoBtn').tipsy({
+    gravity: 'e', 
     html: true, 
     title: function() {
          return "Created by the Spatial Information Design Lab & Stefano Fusi Lab"
@@ -586,75 +600,77 @@ d3.select("#enter").on("click", function(){
     $('#title').fadeOut("slow");
 })
 d3.select('#introNav2').on("click", function(){
-    b++;
-    if(b==1){
-        // if(trigger == true){
-        calculate("sm");
-        // }
-        showLines();
-        // passSense(0);
-        // passSense(0);
-        intro = false;
-        $("p:first").replaceWith("<p>Let's consider a network of 6 neurons</p>");
-        // svg.call(transition, p0, p1);
-        $("#intro").animate({
-            top: "100px",
-            left: "200px",
-        });
-    }
-    if(b==2){
-        calculate("to");
-        // passSense(0);
-        $("p:first").replaceWith("<p>And throw in a sound input from our sense cloud</p>");
-        // soundsLoaded();
-    }
-    if(b==3){
-        calculate("to");
-        // showLines();
-        // passSense(1)
-        $("p:first").replaceWith("<p>Next let's try smell</p>");
-        // loop.stop("sound" + 1);
-    }
-    if(b==4){
-        calculate("sm");
-        // passSense(1)
-        // $("#buttons").show()
+    calculate("sm")
+})
+//     b++;
+//     if(b==1){
+//         // if(trigger == true){
+//         calculate("sm");
+//         // }
+//         showLines();
+//         // passSense(0);
+//         // passSense(0);
+//         intro = false;
+//         $("p:first").replaceWith("<p>Let's consider a network of 6 neurons</p>");
+//         // svg.call(transition, p0, p1);
+//         $("#intro").animate({
+//             top: "100px",
+//             left: "200px",
+//         });
+//     }
+//     if(b==2){
+//         calculate("to");
+//         // passSense(0);
+//         $("p:first").replaceWith("<p>And throw in a sound input from our sense cloud</p>");
+//         // soundsLoaded();
+//     }
+//     if(b==3){
+//         calculate("to");
+//         // showLines();
+//         // passSense(1)
+//         $("p:first").replaceWith("<p>Next let's try smell</p>");
+//         // loop.stop("sound" + 1);
+//     }
+//     if(b==4){
+//         calculate("sm");
+//         // passSense(1)
+//         // $("#buttons").show()
 
-    }
+//     }
 
-    $("#smell").on("click", function(){
-      loop.stop("sound" + 1);
-    })
-    $("#sound").on("click", function(){
-        soundsLoaded();
-    })
+//     $("#smell").on("click", function(){
+//       loop.stop("sound" + 1);
+//     })
+//     $("#sound").on("click", function(){
+//         soundsLoaded();
+//     })
 
-    if(b==5){
-    $("p:first").replaceWith("<p>And then</p>");
-        // svg.call(transition, p1, p2);
-        $("#buttons").hide();
-        loop.stop("sound" + 1);
+//     if(b==5){
+//     $("p:first").replaceWith("<p>And then</p>");
+//         // svg.call(transition, p1, p2);
+//         $("#buttons").hide();
+//         loop.stop("sound" + 1);
 
-        $("#intro").animate({
-            top: "100px",
-            left: "400px",
-        });
-    }
-    if(b==6){
-        $("#intro").animate({
-            top: "100px",
-            left: "600px",
-        });
-    $("p:first").replaceWith("<p>After that</p>");
-    }
-    if(b==7){
-        $("#intro").animate({
-            top: "100px",
-            left: "100px",
-        });
-    $("p:first").replaceWith("<p>Lastly</p>");        
-    }
-});
+//         $("#intro").animate({
+//             top: "100px",
+//             left: "400px",
+//         });
+//     }
+//     if(b==6){
+//         $("#intro").animate({
+//             top: "100px",
+//             left: "600px",
+//         });
+//     $("p:first").replaceWith("<p>After that</p>");
+//     }
+//     if(b==7){
+//         $("#intro").animate({
+//             top: "100px",
+//             left: "100px",
+//         });
+//     $("p:first").replaceWith("<p>Lastly</p>");        
+//     }
+// });
 
 var p0 = [width/2,height/2, windowHeight],
     p1 = [width/2, height/2, windowHeight],
