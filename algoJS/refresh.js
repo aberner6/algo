@@ -25,7 +25,7 @@ var r = 10;
 var a = false;
 var t = [];
 var o = [];
-// var strokeWeight = 1;
+var  strokeWeight= 1;
 // var lineColor = "gray";
 // var inColor = "gray";
 // var movingColor = "#438CA5";
@@ -208,22 +208,8 @@ endOutCirc = vis.selectAll("endCirc")
     .attr("cy", yMid)
     .attr("r", r)
     .attr("fill", "none")
-    .attr("stroke-dasharray", function(d,i){
-        if(i%2==1){
-            return ("4,4");
-        }
-        else{
-            return ("0,0");
-        }
-    })
-    .attr("stroke", function(d,i){
-        if(i%2==1){
-            return "#7372BE";//(colorSpectrum[4]);
-        }
-        if(i%2==0){
-            return "#C84961";//(colorSpectrum[5]);
-        }
-    })
+    .attr("stroke", "gray")
+    .attr("stroke-width", strokeWeight)
     .attr("opacity",0);
 
 
@@ -411,53 +397,44 @@ function senseIn(addIt, triggerSense){
                             })                             
                             .attr("cy", function(d,i){
                                 return yIn(i);
-                            })                        
-                        })
-                    })
-                    if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
-                        d3.selectAll(".endCirc")
-                        .transition()
-                        .duration(10)
-                        .attr("opacity", 1)
-                        .duration(2000)
-                        .attr("r", r*2)
-                        .each("end", function(){
-                            d3.selectAll(".endCirc")
-                            .transition()
-                            .duration(1000)
-                            .attr("r",r/2)
+                            })
                             .each("end", function(){
-                                d3.selectAll(".endCirc")
-                                .transition()
-                                .duration(2000)
-                                .attr("r", r*2) 
-                                .each("end", function(){
+                            if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
                                     d3.selectAll(".endCirc")
                                     .transition()
-                                    .duration(1000)
-                                    .attr("r",r/2)
-                                })                               
-                            })
+                                    .duration(10)
+                                    .attr("opacity", 1)
+                                    .duration(4000)
+                                    .attr("r", r/2)
+                                    .attr("stroke-width", r*2)
+                                    .attr("stroke", function(d,i){
+                                        return (color(triggerSense));
+                                    })
+                                    .each("end", function(){
+                                        d3.selectAll(".endCirc")
+                                        .transition()
+                                        .duration(1000)
+                                        // .attr("r",r/2)
+                                        .attr("stroke-width", r)
+                                        .each("end", function(){
+                                            d3.selectAll(".endCirc")
+                                            .transition()
+                                            .duration(2000)
+                                            .attr("r", r/2) 
+                                            .each("end", function(){
+                                                d3.selectAll(".endCirc")
+                                                .transition()
+                                                .duration(1000)
+                                                .attr("r",r)
+                                                .attr("stroke", "gray")
+                                                .attr("stroke-width", strokeWeight)
+                                            })                               
+                                        })
+                                    })
+                                } //THIS SHOULD  BE HAPPENING @END
+                            })                        
                         })
-                    } //THIS SHOULD  BE HAPPENING @END
-                    else{
-                        // d3.selectAll(".rollingCirc")
-                        // .transition()
-                        // .duration(10)
-                        // .attr("opacity",0)
-                        // .each("end", function(){
-                        //     d3.selectAll(".rollingCirc")
-                        //     .transition()
-                        //     .duration(10)
-                        //     .attr("fill","none")
-                        //     .attr("cx", function(d,i){
-                        //         return littleL;
-                        //     })                             
-                        //     .attr("cy", function(d,i){
-                        //         return yIn(i);
-                        //     })                        
-                        // })                        
-                    }                                       
+                    })                                      
                 })  
             })
     })
