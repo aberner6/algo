@@ -207,7 +207,7 @@ endOutCirc = vis.selectAll("endCirc")
     .attr("cx", endOutX)
     .attr("cy", yMid)
     .attr("r", r)
-    .attr("fill", "none")
+    .attr("fill", "white")
     .attr("stroke", "gray")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",0)
@@ -339,7 +339,7 @@ addIt = 0;
     triggerRoll(addIt, triggerSense);
         showLines();
 }
-function senseIn(addIt, triggerSense){
+function senseIn(addIt, triggerSense, error){
     console.log(triggerSense);
     //if d.sense of rolling ball is the same as trigger sense
     //calculate(triggerSense)
@@ -372,6 +372,7 @@ function senseIn(addIt, triggerSense){
                     return (color(triggerSense));
                 })
                 .each("end", function(){
+
                     // if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
                     d3.selectAll(".rollingCirc")
                     .transition()   
@@ -386,6 +387,29 @@ function senseIn(addIt, triggerSense){
                     })
                     ////then disappear
                     .each("end", function(){
+                        d3.selectAll(".endCirc")
+                        .transition()
+                        .duration(2000)
+                        .attr("fill", "gray")
+                        .attr("opacity", function(){
+                            if (error>0){
+                                return .1; 
+                            }
+                            if(error<0){
+                                return error;
+                            }
+                        })
+                        .each("end", function(){
+                            d3.selectAll(".endCirc")
+                            .transition()
+                            .duration(100)
+                            .attr("opacity",1)
+                            .attr("fill", "white")
+                            .attr("stroke", "gray")
+                            .attr("stroke-width", strokeWeight)
+                        })
+                        // .each("end", function(){
+                        // .attr("ry", function(){})
                         d3.selectAll(".rollingCirc")
                         .transition()
                         .duration(10)
@@ -430,6 +454,8 @@ function senseIn(addIt, triggerSense){
                                                 .duration(1000)
                                                 .attr("r",r)
                                                 .attr("stroke", "gray")
+                                                .attr("opacity",1)
+                                                .attr("fill", "white")
                                                 .attr("stroke-width", strokeWeight)
                                             })                               
                                         })
@@ -437,6 +463,10 @@ function senseIn(addIt, triggerSense){
                                 } //THIS SHOULD  BE HAPPENING @END
                             })                        
                         })
+
+
+                        // })
+
                     })                                      
                 })  
             })
@@ -451,10 +481,11 @@ function triggerRoll(addIt, triggerSense){
 console.log(tData[0].weight+"old weight?");
 //     //  if(b==1){
     // if(addIt>threshold){
-        senseIn(addIt, triggerSense);
     // }
     error = threshold-addIt;
     console.log(error+"error");
+        senseIn(addIt, triggerSense, error);
+
 // //new weighting
 if(error>0 && random == true){
 for (i= 0; i<input.length; i++){
@@ -580,11 +611,11 @@ for (var i = 0; i < tData.length; i++) {
     }
 })
     $("#smell").on("click", function(){
-        calculate("sm");
+        calculate("to");
       // loop.stop("sound" + 1);
     })
     $("#sound").on("click", function(){
-        calculate("to");
+        calculate("sm");
         // soundsLoaded();
     })
 

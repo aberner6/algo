@@ -271,14 +271,27 @@ font-family: 'Georgia';
 position: fixed;
 /* left: 20px; */
 /* left: 55%; */
-top: 67px;
+top: 63px;
 border-radius: 10px;
 padding: 6px 10px;
 /* padding: 6px 13px; */
 font-size: 15px;
 text-decoration: none;
-margin-left: 150px;
+margin-left: 139px;
 float: left;
+/* left: 20px; */
+/* padding: 6px 13px; */
+/*opacity: 0.5;
+background-color: #777;
+font-family: 'Georgia';
+position: fixed;
+top: 67px;
+border-radius: 10px;
+padding: 6px 10px;
+font-size: 15px;
+text-decoration: none;
+margin-left: 150px;
+float: left;*/
 /*  opacity: 0.5;
   background-color: #777;
   font-family: 'Georgia';
