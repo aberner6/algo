@@ -5,15 +5,24 @@ yIn, xIn,
 path,
 circle, line, rollingCirc, cloudCirc, endOutCirc;
 var moveAround;
+
 var windowWidth = window.outerWidth,
     windowHeight= window.innerHeight,
     height = windowHeight,
     width = windowWidth;
+var lmargin = windowWidth/4;
+var yMid = windowHeight/2;
+$(window).resize(function() {
+// windowWidth = window.outerWidth,
+//     windowHeight= window.innerHeight,
+//     lmargin = windowWidth/4,
+//     yMid = windowHeight/2;
+    // transPos();
+});
 var addIt =0;
 var trigger = false;
 var tSense;
-var lmargin = 200;
-var yMid = height/2;
+
 var threshold = 1.1;
 var input = [];
 var trigOther = false;
@@ -76,6 +85,8 @@ var randLength = 1000;
 
 // boolean 
 loadData("senses.csv")
+    // transPos();
+
 function loadData(csvName){
 
 d3.csv(csvName, function(thisData) {
@@ -101,6 +112,7 @@ var color = d3.scale.ordinal()
     .range(colorSpectrum);
 t = [1, 2, 3];
 
+// function transparentos(){
 yIn = d3.scale.linear()
     .domain([0, thisData.length-1])
     .range([height/4, height-height/4]);
@@ -149,7 +161,14 @@ circle = vis.selectAll("neurons")
     .attr("opacity",0)
     .transition()
     .duration(introDuration)
-    .attr("opacity",1);
+    .attr("opacity",1)
+    .each("end", function(){
+        $("#neurons").slideDown().animate({
+            top: yMid,
+            left: lmargin+r,
+
+        });
+    })
 
 line = vis.selectAll("inLine")
     .data(thisData)
@@ -228,8 +247,14 @@ endOutCirc = vis.selectAll("endCirc")
     .attr("opacity",0)
     .transition()
     .duration(introDuration)
-    .attr("opacity",.1)
-    .attr("stroke-opacity",1);
+    .attr("opacity",.5)
+    .attr("stroke-opacity",1)
+    .each("end", function(){
+        $("#output").slideDown().animate({
+            top: yMid,
+            left: endOutX+r,
+        });
+    })
 
 
 inputCirc = vis.selectAll("inCirc")
@@ -303,7 +328,7 @@ cloudCirc = vis.selectAll("cloudCirc")
     .attr("stroke", function(d,i){
         return color(i);
     })
-
+// }
 function moveAround(secsie){
 d3.selectAll(".cloudCirc")
     .transition()
@@ -638,8 +663,11 @@ if(trigOther == true){
     calculate("sm");    
 }
 })
+        $("#senseCloud").slideDown().animate({
+            top: "51%",
+        });
+$("#buttons").show();
 
-$("#buttons").show()
 
 $("#refresh").on("click", function(){
     random = true;

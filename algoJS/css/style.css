@@ -10,6 +10,82 @@ canvas{
 	top:0px;
 	position:absolute;
 }
+canvas{
+  left:0px;
+  top:0px;
+  position:absolute;
+}
+
+
+/*<div id = "senseCloud">{ sense cloud }</div>
+<div id = "neurons">{ neurons }</div>
+<div id = "connections">{ connections }</div>
+<div id = "output">{ output neuron }</div>*/
+
+#senseCloud{
+  position:absolute;
+  left:1%;
+  top:0px;
+
+    border-radius: 10px;
+  padding: 2px 4px;
+  background-color:white;
+  opacity:.7;
+
+  display:none;
+}
+
+#neurons{
+    top:0px;
+
+    position:absolute;
+  left:30%;
+    border-radius: 10px;
+  padding: 2px 4px;
+    background-color:white;
+opacity:.7;
+
+  display:none;
+}
+
+#connections{
+    top:0px;
+
+      position:absolute;
+  left:45%;
+    border-radius: 10px;
+  padding: 2px 4px;
+    background-color:white;
+opacity:.7;
+  display:none;
+}
+
+#output{
+    top:0px;
+
+        position:absolute;
+  left:80%;
+  top:;
+    border-radius: 10px;
+  padding: 2px 4px;
+    background-color:white;
+opacity:.7;
+
+  display:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 #circle
 {
 border-radius: 100% 100% 100% 100%;
