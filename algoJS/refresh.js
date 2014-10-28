@@ -12,6 +12,11 @@ var windowWidth = window.outerWidth,
     width = windowWidth;
 var lmargin = windowWidth/4;
 var yMid = windowHeight/2;
+
+
+var yMap = d3.scale.linear()
+            .domain([0, 1])
+            .range([-height, height*2])
 $(window).resize(function() {
 // windowWidth = window.outerWidth,
 //     windowHeight= window.innerHeight,
@@ -36,7 +41,7 @@ var r = 10;
 var a = false;
 var t = [];
 var o = [];
-var  strokeWeight= 1;
+var  strokeWeight= 2;
 // var lineColor = "gray";
 // var inColor = "gray";
 // var movingColor = "#438CA5";
@@ -119,6 +124,9 @@ yIn = d3.scale.linear()
 yRand = d3.scale.linear()
     .domain([0, randLength])
     .range([0, height]);
+xRand = d3.scale.linear()
+    .domain([0, randLength])
+    .range([0, width+lmargin])
 xIn = d3.scale.linear()
     .domain([0, numInput])
     .range([lmargin, width+lmargin])
@@ -128,14 +136,16 @@ var myVar=setInterval(function () {myTimer()}, 1000);
 function myTimer() {
     d = new Date();
     secs = d.getMilliseconds();
+    // if(intro==false){
     moveAround(secs/10);
+// }
 }
 
 circle = vis.selectAll("neurons")
     .data(thisData)
     .enter()
     .append("circle").attr("class","neurons")
-    .attr("cx", lmargin)
+    .attr("cx", width)
     .attr("cy", function(d,i){
         return yIn(i);
     })
@@ -158,18 +168,26 @@ circle = vis.selectAll("neurons")
         }
       // return (color(d.sense));   
     })
-    .attr("opacity",0)
+    .attr("stroke-width", strokeWeight)
+    .attr("opacity",1);
+function neuronsIn(){
+if(intro == false){
+    circle
     .transition()
     .duration(introDuration/2)
-    .attr("opacity",1)
+    // .attr("opacity",1)
+    .attr("cx", lmargin)
     .each("end", function(){
         $("#neurons").slideDown().animate({
             top: yMid,
             left: lmargin+r,
         });
-        $("#title").fadeIn(introDuration/2);
-
+        outputIn();
+        // $("#title").fadeIn(introDuration/2);
     })
+}
+}
+
 
 line = vis.selectAll("inLine")
     .data(thisData)
@@ -239,23 +257,27 @@ endOutCirc = vis.selectAll("endCirc")
     .data(d3.range(1))
     .enter()
     .append("circle").attr("class","endCirc")
-    .attr("cx", endOutX)
+    .attr("cx", width+endOutX)
     .attr("cy", yMid)
     .attr("r", r)
     .attr("fill", "white")
     .attr("stroke", "gray")
     .attr("stroke-width", strokeWeight)
-    .attr("opacity",0)
+    .attr("opacity",1);
+function outputIn(){
+    endOutCirc
     .transition()
-    .duration(introDuration)
-    .attr("opacity",.5)
-    .attr("stroke-opacity",1)
+    .delay(3000)
+    .duration(introDuration/2)
+    .attr("cx", endOutX)
+    // .attr("stroke-opacity",1)
     .each("end", function(){
         $("#output").slideDown().animate({
             top: yMid,
             left: endOutX+r,
         });
     })
+}
 
 inputCirc = vis.selectAll("inCirc")
     .data(d3.range(numInput))
@@ -299,24 +321,28 @@ inputCirc = vis.selectAll("inCirc")
     // "gray");
 
 
-
 cloudCirc = vis.selectAll("cloudCirc")
     .data(d3.range(randLength))
     .enter()
     .append("circle").attr("class", "cloudCirc")
     .attr("cx", function(d,i){
-            return 5+Math.random(-1,1);
+
+            return xRand(i)+Math.random(-1,1);//+secs/10;
+            // return 5+Math.random(-1,1);
     })
     .attr("cy", function(d,i){
             // console.log(i);
-            return yRand(i)+Math.random(-1,1);
+            // return 5+Math.random(-1,1);
+            return yMap(Math.random());
     })
     .attr("r", r*1.5)
     .attr("opacity",opacity)
     // .attr("fill", function(d,i){
     //     return color(i);
     // })
-    .attr("fill", "none")
+    .attr("fill", function(d,i){
+        return color(i);
+    })
     .attr("stroke-dasharray", function(d,i){
         if(i%2==1){
             return ("4,4");
@@ -330,16 +356,47 @@ cloudCirc = vis.selectAll("cloudCirc")
     })
 // }
 function moveAround(secsie){
+if(intro==false){
 d3.selectAll(".cloudCirc")
     .transition()
-    .duration(3000)
+    .duration(1000)
     .attr("cx", function(d,i){
-            return Math.random(-1,1)*secsie;
+            return Math.random(-1,1)*150;
     })
     .attr("cy", function(d,i){
             // console.log(i);
-            return yRand(i)+Math.random(-1,1)*secsie/2;
+            return yRand(i)+Math.random(-1,1)*100;
     })
+    // .attr("fill", "none")
+}
+else{
+ d3.selectAll(".cloudCirc")
+    .transition()
+    .duration(3000)
+    .attr("cx", function(d,i){
+
+            return xRand(i)+Math.random(-1,1);//+secs/10;
+            // return 5+Math.random(-1,1);
+    })
+    .attr("cy", function(d,i){
+            // console.log(i);
+            // return 5+Math.random(-1,1);
+            return yMap(Math.random());
+    }) 
+    // .each("end", function(){
+        // d3.selectAll(".cloudCirc")
+        //     .transition()
+        //     // .delay(8000)
+        //     .duration(3000)
+        //     .attr("cx", function(d,i){
+        // intro = false;
+        //             return Math.random(-1,1)*secsie;
+        //     })
+        //     .attr("cy", function(d,i){
+        //             return yRand(i)+Math.random(-1,1)*secsie/2;
+        //     })
+    // })
+}
 }
 
 //    // .attr("transform", "translate("+lmargin*4+",0)")
@@ -679,7 +736,15 @@ if(trigOther == true){
 })
         $("#senseCloud").slideDown().animate({
             top: "51%",
-        });
+            left: width/2,
+        }).on("click", function(){
+            intro = false;
+        $("#senseCloud").animate({
+            // top: "51%",
+            left: "1%",
+        })
+            neuronsIn();
+        })
 
 
 $("#refresh").on("click", function(){
