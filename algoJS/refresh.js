@@ -160,14 +160,15 @@ circle = vis.selectAll("neurons")
     })
     .attr("opacity",0)
     .transition()
-    .duration(introDuration)
+    .duration(introDuration/2)
     .attr("opacity",1)
     .each("end", function(){
         $("#neurons").slideDown().animate({
             top: yMid,
             left: lmargin+r,
-
         });
+        $("#title").fadeIn(introDuration/2);
+
     })
 
 line = vis.selectAll("inLine")
@@ -255,7 +256,6 @@ endOutCirc = vis.selectAll("endCirc")
             left: endOutX+r,
         });
     })
-
 
 inputCirc = vis.selectAll("inCirc")
     .data(d3.range(numInput))
@@ -485,6 +485,10 @@ function senseIn(addIt, triggerSense, error){
                             .attr("r",r*1.5)
                             .each("end", function(){
                             if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
+                                $("#output").slideDown().animate({
+                                    top: yMid,
+                                });
+
                                     d3.selectAll(".endCirc")
                                     .transition()
                                     .duration(10)
@@ -513,6 +517,7 @@ function senseIn(addIt, triggerSense, error){
                                             .duration(2000)
                                             .attr("r", r/2) 
                                             .each("end", function(){
+                                $("#output").slideUp("fast");
                                                 d3.selectAll(".endCirc")
                                                 .transition()
                                                 .duration(1000)
@@ -649,8 +654,17 @@ $('#moreInfoBtn').tipsy({
 });
 var b = 0;
 d3.select("#enter").on("click", function(){
-    $('#intro').slideDown("slow");
-    $('#title').fadeOut("slow");
+    $('#intro').fadeIn("slow");
+    $("#buttons").show(3000);
+
+    $('#title').fadeOut("fast");
+})
+d3.select("#ok").on("click", function(){
+    $('#intro2').fadeIn(1000);
+    $('#intro').fadeOut("fast");
+        // $('#intro2').fadeOut("slow");
+$( "#intro2" ).delay( 8000 ).slideUp( 2000);
+
 })
 d3.select('#introNav2').on("click", function(){
     if(trigger==false){
@@ -666,22 +680,41 @@ if(trigOther == true){
         $("#senseCloud").slideDown().animate({
             top: "51%",
         });
-$("#buttons").show();
 
 
 $("#refresh").on("click", function(){
+    $( "#intro2" ).slideDown( 2000, function(){
+$("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
+    })
+    $( "#intro2", function(){
+$("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
+    })
+    $( "#intro2" ).delay(1000).slideDown("fast");
+
     random = true;
 for (var i = 0; i < tData.length; i++) {
       tData[i].weight = Math.random(-1,1);
       console.log("generating weights")
       showLines();
     }
+    $( "#intro2" ).delay(7000).slideUp();
 })
     $("#smell").on("click", function(){
+        $("#senseCloud, #neurons, #output").fadeOut("fast");
+        $("#connections").slideDown().animate({
+            top: "25%",
+        });
+        $("#connections").delay(3000).slideUp();
         calculate("to");
       // loop.stop("sound" + 1);
     })
     $("#sound").on("click", function(){
+        $("#senseCloud, #neurons, #output").fadeOut("fast");
+        $("#connections").slideDown().animate({
+            top: "25%",
+        });
+        $("#connections").delay(3000).slideUp();
+
         calculate("sm");
         // soundsLoaded();
     })
