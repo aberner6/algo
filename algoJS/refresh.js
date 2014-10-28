@@ -129,16 +129,22 @@ circle = vis.selectAll("neurons")
     })
     .attr("r", r)
     .attr("fill", "none")
-    .attr("stroke-dasharray", function(d,i){
-        if(i%2==1){
-            return ("4,4");
-        }
-        else{
-            return ("0,0");
-        }
-    })
+    // .attr("stroke-dasharray", function(d,i){
+    //     if(i%2==1){
+    //         return ("4,4");
+    //     }
+    //     else{
+    //         return ("0,0");
+    //     }
+    // })
     .attr("stroke", function(d,i){
-      return (color(d.sense));   
+        if(d.sense=="sm"){
+            return color1;
+        }
+        if(d.sense=="to"){
+            return color2;
+        }
+      // return (color(d.sense));   
     })
     .attr("opacity",0)
     .transition()
@@ -180,23 +186,32 @@ rollingCirc = vis.selectAll("rollingCirc")
     .attr("cy", function(d,i){
         return yIn(i);
     })
-    .attr("r", r)
+    .attr("r", r*1.5)
     .attr("fill", "none")
-    .attr("stroke-dasharray", function(d,i){
-        if(i%2==1){
-            return ("4,4");
-        }
-        else{
-            return ("0,0");
-        }
-    })
+    // .attr("stroke-dasharray", function(d,i){
+    //     if(i%2==1){
+    //         return ("4,4");
+    //     }
+    //     else{
+    //         return ("0,0");
+    //     }
+    // })
     .attr("stroke", function(d,i){
-        if(i%2==1){
-            return "#7372BE";//(colorSpectrum[4]);
-        }
-        if(i%2==0){
-            return "#C84961";//(colorSpectrum[5]);
-        }
+        // if(d.sense=="sm"){
+        //     return color1;
+        // }
+        // if(d.sense=="to"){
+        //     return color2;
+        // }
+        // else{
+            return color(d.sense);
+        // }
+        // if(i%2==1){
+        //     return "#7372BE";//(colorSpectrum[4]);
+        // }
+        // if(i%2==0){
+        //     return "#C84961";//(colorSpectrum[5]);
+        // }
     })
     .attr("opacity",0);
 
@@ -213,7 +228,8 @@ endOutCirc = vis.selectAll("endCirc")
     .attr("opacity",0)
     .transition()
     .duration(introDuration)
-    .attr("opacity",1);
+    .attr("opacity",.1)
+    .attr("stroke-opacity",1);
 
 
 inputCirc = vis.selectAll("inCirc")
@@ -239,14 +255,14 @@ inputCirc = vis.selectAll("inCirc")
     .attr("r", r)
     .attr("opacity",0)
     .attr("fill", "none")
-    .attr("stroke-dasharray", function(d,i){
-        if(i%2==1){
-            return ("4,4");
-        }
-        if(i%2==0){
-            return ("0,0");
-        }
-    })
+    // .attr("stroke-dasharray", function(d,i){
+    //     if(i%2==1){
+    //         return ("4,4");
+    //     }
+    //     if(i%2==0){
+    //         return ("0,0");
+    //     }
+    // })
     .attr("stroke", function(d,i){
         if(i%2==1){
             return (color1);
@@ -270,7 +286,7 @@ cloudCirc = vis.selectAll("cloudCirc")
             // console.log(i);
             return yRand(i)+Math.random(-1,1);
     })
-    .attr("r", r)
+    .attr("r", r*1.5)
     .attr("opacity",opacity)
     // .attr("fill", function(d,i){
     //     return color(i);
@@ -352,11 +368,20 @@ function senseIn(addIt, triggerSense, error){
     .transition()
     .duration(100)
     .attr("opacity",opacity)
+    .attr("stroke", function(d,i){
+        if(triggerSense=="sm"){
+            return color1;
+        }
+        if(triggerSense=="to"){
+            return color2;
+        }
+    })
     .each("end", function(){
         d3.selectAll(".rollingCirc")
             .transition()
             .duration(3000)
             .attr("cx", lmargin)
+            .attr("r",r)
             .each("end", function(){
                 d3.selectAll(".rollingCirc")
                 .transition()
@@ -368,15 +393,22 @@ function senseIn(addIt, triggerSense, error){
                             input[i] = 0;
                         }
                         console.log(input+"input");
-
-                    return (color(triggerSense));
+                        if(triggerSense=="sm"){
+                            return color1;
+                        }
+                        if(triggerSense=="to"){
+                            return color2;
+                        }
+                    // return (color(triggerSense));
                 })
+                .attr("r", r/1.5)
                 .each("end", function(){
 
                     // if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
                     d3.selectAll(".rollingCirc")
                     .transition()   
                     .duration(3000)
+
                     .attr("cx", function(d,i){
                             return endOutX;
                     })   
@@ -403,7 +435,7 @@ function senseIn(addIt, triggerSense, error){
                             d3.selectAll(".endCirc")
                             .transition()
                             .duration(100)
-                            .attr("opacity",1)
+                            .attr("opacity",.1)
                             .attr("fill", "white")
                             .attr("stroke", "gray")
                             .attr("stroke-width", strokeWeight)
@@ -425,6 +457,7 @@ function senseIn(addIt, triggerSense, error){
                             .attr("cy", function(d,i){
                                 return yIn(i);
                             })
+                            .attr("r",r*1.5)
                             .each("end", function(){
                             if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
                                     d3.selectAll(".endCirc")
@@ -435,7 +468,13 @@ function senseIn(addIt, triggerSense, error){
                                     .attr("r", r/2)
                                     .attr("stroke-width", r*2)
                                     .attr("stroke", function(d,i){
-                                        return (color(triggerSense));
+                        if(triggerSense=="sm"){
+                            return color1;
+                        }
+                        if(triggerSense=="to"){
+                            return color2;
+                        }
+                                        // return (color(triggerSense));
                                     })
                                     .each("end", function(){
                                         d3.selectAll(".endCirc")
@@ -454,7 +493,7 @@ function senseIn(addIt, triggerSense, error){
                                                 .duration(1000)
                                                 .attr("r",r)
                                                 .attr("stroke", "gray")
-                                                .attr("opacity",1)
+                                                .attr("opacity",.1)
                                                 .attr("fill", "white")
                                                 .attr("stroke-width", strokeWeight)
                                             })                               
