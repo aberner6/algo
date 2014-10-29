@@ -68,7 +68,8 @@ var colorSpectrum = [];
         // links.push({"source":neuronA[i],"target":neuronB[i]}) 
     // }
 // }
-
+var sense = false;
+var neurons = false;
 svg = d3.select("#container")
     .append("svg")
     .attr("width", width)
@@ -136,20 +137,20 @@ var myVar=setInterval(function () {myTimer()}, 1000);
 function myTimer() {
     d = new Date();
     secs = d.getMilliseconds();
-    // if(intro==false){
+    if(sense==true){
     moveAround(secs/10);
-// }
+    }
 }
 
 circle = vis.selectAll("neurons")
     .data(thisData)
     .enter()
     .append("circle").attr("class","neurons")
-    .attr("cx", width)
+    .attr("cx", lmargin)
     .attr("cy", function(d,i){
         return yIn(i);
     })
-    .attr("r", r)
+    .attr("r", 0)
     .attr("fill", "none")
     // .attr("stroke-dasharray", function(d,i){
     //     if(i%2==1){
@@ -171,22 +172,31 @@ circle = vis.selectAll("neurons")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",1);
 function neuronsIn(){
-if(intro == false){
+// if(intro == false){
+        $("#neurons").slideDown().animate({
+            top: yMid-2,
+            left: lmargin+r-107,
+        });
     circle
     .transition()
-    .duration(introDuration/2)
+    .duration(3000)
     // .attr("opacity",1)
-    .attr("cx", lmargin)
-    .each("end", function(){
-        $("#neurons").slideDown().animate({
-            top: yMid,
-            left: lmargin+r,
-        });
-        outputIn();
-        // $("#title").fadeIn(introDuration/2);
+    .attr("r", function(){
+        return r;
     })
+    .each("end", function(){
+        showLines();
+ 
+// if(neurons){
+// }
+
+                // outputI n();
+
+        neurons = true;
+    })
+// }
 }
-}
+
 
 
 line = vis.selectAll("inLine")
@@ -265,18 +275,18 @@ endOutCirc = vis.selectAll("endCirc")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",1);
 function outputIn(){
-    endOutCirc
-    .transition()
-    .delay(3000)
-    .duration(introDuration/2)
-    .attr("cx", endOutX)
-    // .attr("stroke-opacity",1)
-    .each("end", function(){
         $("#output").slideDown().animate({
             top: yMid,
             left: endOutX+r,
         });
-    })
+    endOutCirc
+    .transition()
+    // .delay(1000)
+    .duration(2000)
+    .attr("cx", endOutX)
+    // .attr("stroke-opacity",1)
+    // .each("end", function(){
+    // })
 }
 
 inputCirc = vis.selectAll("inCirc")
@@ -336,7 +346,7 @@ cloudCirc = vis.selectAll("cloudCirc")
             return yMap(Math.random());
     })
     .attr("r", r*1.5)
-    .attr("opacity",opacity)
+    .attr("opacity",0)
     // .attr("fill", function(d,i){
     //     return color(i);
     // })
@@ -401,14 +411,23 @@ else{
 
 //    // .attr("transform", "translate("+lmargin*4+",0)")
 function showLines(){
+    // }
+        $("#connections").slideDown().animate({
+            top: "51%",
+        });
 d3.selectAll(".inLine")
     .transition()
-    .duration(4000)
+    .duration(2000)
     .attr("opacity",function(d,i){
         return tData[i].weight*2;
     })
     .attr("stroke-width", function(d,i){
         return tData[i].weight*2;
+    })
+    .each("end", function(){
+        // $("#title p").append("<p>linked through weighted lines to an output node</p>");
+        // showLines();
+        outputIn();        
     })
     // .attr("stroke", function(d,i){
     //     return "rgb("+tData[i].weight*2;
@@ -710,12 +729,38 @@ $('#moreInfoBtn').tipsy({
     }
 });
 var b = 0;
-d3.select("#enter").on("click", function(){
-    $('#intro').fadeIn("slow");
-    $("#buttons").show(3000);
 
-    $('#title').fadeOut("fast");
+
+//sensecloud
+    // $("#buttons").show(3000);
+$("#title").fadeIn(introDuration/2);
+
+d3.select("#enter").on("click", function(){
+        $("#title").animate({
+            top: "10%",
+        });
+   $("p").replaceWith("<p>A simple neuron can be composed of:</p>");
+        // svg.call(transition, p0, p1);
+
+neuronsIn();
+    $("#title .p1").delay(1000).fadeIn(500);     
+    $("#title .p2").delay(3000).fadeIn(500);     
+    $("#title .p3").delay(5000).fadeIn(500);     
+
+// d3.select("#title p").transition().delay(introDuration/2).duration(100)
+//     .attr("opacity", function(){
+//         $("#title p").append(" linked through weighted lines to an output node</p>");        
+//     } )
+
+// if(neurons==true){
+
+// }
+        // outputIn();
+
+    // $('#intro').fadeIn("slow");
+    // $('#title').fadeOut("fast");
 })
+
 d3.select("#ok").on("click", function(){
     $('#intro2').fadeIn(1000);
     $('#intro').fadeOut("fast");
@@ -734,6 +779,7 @@ if(trigOther == true){
     calculate("sm");    
 }
 })
+if(sense==true){
         $("#senseCloud").slideDown().animate({
             top: "51%",
             left: width/2,
@@ -743,8 +789,9 @@ if(trigOther == true){
             // top: "51%",
             left: "1%",
         })
-            neuronsIn();
         })
+}
+
 
 
 $("#refresh").on("click", function(){

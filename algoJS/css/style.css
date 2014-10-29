@@ -39,7 +39,7 @@ canvas{
     top:0px;
 
     position:absolute;
-  left:30%;
+  left:25%;
     border-radius: 10px;
   padding: 2px 4px;
     background-color:white;
@@ -121,7 +121,7 @@ z-index:1;
 #title{
 	position:absolute;
 z-index: 1000;
-margin-top: 20%;
+top: 39%;
 margin-left: 38%;
 display:none;
 }
@@ -137,8 +137,12 @@ padding: 7px;
 opacity: .8;
 /* display: none; */
 font-size: 12pt;
-width: 40%;
+width: 400px;
+
 border-bottom: 1px solid lightgray;
+}
+.title1 .p1, .p2, .p3{
+  display:none;
 }
 #enter{
 width: 0.8em;
@@ -150,7 +154,7 @@ border-right: 1px solid gray;
 border-bottom: 1px solid gray;
 padding:5px;
 cursor: pointer;
-margin-left: 19%;
+margin-left: 200px;
 }
 #enter:hover{
 background-color: darkgray;
@@ -221,6 +225,8 @@ color: white;
 position: absolute;
 z-index: 1000;
 top: 51px;
+/*top:39%;*/
+/*left:50%;*/
 left:54%;
 display: none;
 width: 300px;
