@@ -173,6 +173,8 @@ circle = vis.selectAll("neurons")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",1);
 function neuronsIn(){
+       $("#title p").replaceWith("<p>A simple neuron can be composed of:</p>");
+
 // if(intro == false){
  // function init() {
                 // $('#neurons').animate({rotate: rotation}, 0, function () {
@@ -325,6 +327,7 @@ function outputIn(){
     // .attr("stroke-opacity",1)
     // .each("end", function(){
     // })
+$("#enter").slideDown();
 }
 
 inputCirc = vis.selectAll("inCirc")
@@ -774,10 +777,10 @@ var b = 0;
 $("#title").fadeIn(introDuration/2);
 
 d3.select("#enter").on("click", function(){
+    $("#enter").slideUp();
         $("#title").animate({
             top: "10%",
         });
-   $("p").replaceWith("<p>A simple neuron can be composed of:</p>");
         // svg.call(transition, p0, p1);
 
 neuronsIn();
