@@ -174,6 +174,19 @@ circle = vis.selectAll("neurons")
     .attr("opacity",1);
 function neuronsIn(){
        $("#title p").replaceWith("<p>A simple neuron can be composed of:</p>");
+var p = $( "#title p" );
+var position = p.position();
+    var newLine = vis.selectAll("newLine")
+    .data(d3.range(1))
+    .enter()
+    .append("line").attr("class","newLine")
+    .attr("x1", position.left)
+    .attr("y1",position.top)
+    .attr("x2", position.left)
+    .attr("y2", position.top)
+    .attr("stroke", "gray");
+
+    // .attr("stroke-width")
 
 // if(intro == false){
  // function init() {
@@ -220,6 +233,7 @@ function neuronsIn(){
 
         neurons = true;
     })
+// callProgressButton(1);    
 // }
 }
 
@@ -252,7 +266,7 @@ line = vis.selectAll("inLine")
     })
     .attr("fill", "none")
     .attr("stroke-width", function(d,i){
-        return tData[i].weight;
+        return Math.random();
     })
     // .attr("stroke-dasharray", function(d,i){
     //     if(i%2==1){
@@ -459,12 +473,10 @@ function showLines(){
 d3.selectAll(".inLine")
     .transition()
     .duration(2000)
-    .attr("opacity",function(d,i){
-        return tData[i].weight*2;
-    })
-    .attr("stroke-width", function(d,i){
-        return tData[i].weight*2;
-    })
+    .attr("opacity",1)
+    // .attr("stroke-width", function(d,i){
+    //     return tData[i].weight*2;
+    // })
     .each("end", function(){
         // $("#title p").append("<p>linked through weighted lines to an output node</p>");
         // showLines();
@@ -1151,6 +1163,26 @@ var color = d3.scale.ordinal()
 //     })
 // }
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

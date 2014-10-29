@@ -126,6 +126,16 @@ margin-left: 38%;
 display:none;
 }
 .title1{
+
+/*border-left: 1px solid white;
+border-bottom: 1px solid white;
+border-right: 1px solid white;*/
+
+
+
+
+
+
 /*position: absolute;*/
 /* border-radius: 100% 100% 100% 100%; */
 
@@ -139,7 +149,7 @@ opacity: .8;
 font-size: 12pt;
 width: 400px;
 
-border-bottom: 1px solid lightgray;
+/*border-bottom: 1px solid lightgray;*/
 }
 .title1 .p1, .p2, .p3{
   display:none;
@@ -585,3 +595,30 @@ position: absolute;*/
 	color: white;
 	background-color: red;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
