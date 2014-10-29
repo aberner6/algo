@@ -12,7 +12,8 @@ var windowWidth = window.outerWidth,
     width = windowWidth;
 var lmargin = windowWidth/4;
 var yMid = windowHeight/2;
-
+var rotation = 10;
+var swingtime = 1600;
 
 var yMap = d3.scale.linear()
             .domain([0, 1])
@@ -173,10 +174,33 @@ circle = vis.selectAll("neurons")
     .attr("opacity",1);
 function neuronsIn(){
 // if(intro == false){
+ // function init() {
+                // $('#neurons').animate({rotate: rotation}, 0, function () {
+                //     $('#neurons').css("display", "block");
+                //     rotation *= -1;
+                //     pendulumswing();
+                //      slideDown();
+                // });
+            // }
+ 
+//             function pendulumswing() {
+//                 $('#neurons').animate({rotate: rotation},swingtime, "swing", function(){
+//                      rotation *= -1;
+//                      pendulumswing();
+//                 });
+//             }
+//                      slideDown();
+// function slideDown(){
         $("#neurons").slideDown().animate({
             top: yMid-2,
             left: lmargin+r-107,
-        });
+        },2000)
+    //     .animate({rotate: rotation}, 0, function () {
+    //                 $('#neurons').css("display", "block");
+    //                 rotation *= -1;
+    //                 pendulumswing();
+    //             })
+    // }
     circle
     .transition()
     .duration(3000)
@@ -203,13 +227,26 @@ line = vis.selectAll("inLine")
     .data(thisData)
     .enter()
     .append("line").attr("class","inLine")
-    .attr("x1", lmargin)
+    .attr("x1", lmargin+r/2+strokeWeight*2)
     .attr("y1", function(d,i){
         return yIn(i);
     })
-    .attr("x2", endOutX)
+    .attr("x2", function(d,i){
+        if(i==1){
+            return endOutX-r*1.5;          
+        }
+        return endOutX-r;
+    })
     .attr("y2", function(d,i){
-        return yMid;
+        if(i==0){
+            return yMid-r;
+        }
+        if(i==1){
+            return yMid;            
+        }
+        if(i==2){
+            return yMid+r;
+        }
     })
     .attr("fill", "none")
     .attr("stroke-width", function(d,i){
@@ -271,6 +308,7 @@ endOutCirc = vis.selectAll("endCirc")
     .attr("cy", yMid)
     .attr("r", r)
     .attr("fill", "white")
+    .attr("stroke-dasharray", "4,4")
     .attr("stroke", "gray")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",1);
