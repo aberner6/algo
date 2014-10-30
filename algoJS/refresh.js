@@ -152,7 +152,7 @@ circle = vis.selectAll("neurons")
         return yIn(i);
     })
     .attr("r", 0)
-    .attr("fill", "none")
+    .attr("fill", "white")
     // .attr("stroke-dasharray", function(d,i){
     //     if(i%2==1){
     //         return ("4,4");
@@ -173,7 +173,7 @@ circle = vis.selectAll("neurons")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",1);
 function neuronsIn(){
-       $("#title p").replaceWith("<p>A simple neuron can be represented as:</p>");
+       $("#title p").replaceWith("<p>A simple model of a neuron's computation:</p>");
 var p = $( "#title p" );
 var position = p.position();
     var newLine = vis.selectAll("newLine")
@@ -209,7 +209,7 @@ var position = p.position();
 // function slideDown(){
         $("#neurons").slideDown().animate({
             top: yMid-2,
-            left: lmargin+r-107,
+            left: lmargin+r-147,//107,
         },2000)
     //     .animate({rotate: rotation}, 0, function () {
     //                 $('#neurons').css("display", "block");
@@ -346,18 +346,18 @@ function outputIn(){
 .each("end", function(){
     introTalk = false;
  $("#neurons p:first").replaceWith(" ");
- $("#neurons").animate({
-    top:0,
-            // top: yMid/2-r/2,
-            // left: lmargin+r-137,
-            left: lmargin+r-107,
-        }); 
+ // $("#neurons").animate({
+ //    top:0,
+ //            // top: yMid/2-r/2,
+ //            // left: lmargin+r-137,
+ //            left: lmargin+r-107,
+ //        }); 
 // $("#title .p1").append(": taking input of smell and touch")
  $("#title .p1").replaceWith(" ")
  $("#title .p2").replaceWith(" ")
 $("#title .p3").replaceWith(" ")
 
- $("#title").replaceWith(" ")
+ $("#title").replaceWith(" ");
 
 d3.selectAll(".neurons")
 .transition()
@@ -417,6 +417,9 @@ d3.selectAll(".neurons")
     d3.select(this)
     .transition()
     .attr("stroke-width", strokeWeight*3);
+$("#intro").show().animate({
+    left: lmargin,
+})
 })
 .on("mouseout", function(){
      d3.select(this)
