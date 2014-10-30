@@ -35,7 +35,7 @@ var trigOther = false;
 var endOutX = lmargin*3;
 var introDuration = 6000;
 var random = false;
-
+var inputDone = false;
 // var height = 800;
 // var r;
 var r = 10;
@@ -57,7 +57,7 @@ var soundsLoaded;
 var intro = true;
 var tData = [];
 var myTimer;
-
+var introTalk = true;
 var colorSpectrum = [];
 // loadData("senses.csv")
 // function loadData(csvName){
@@ -162,10 +162,10 @@ circle = vis.selectAll("neurons")
     //     }
     // })
     .attr("stroke", function(d,i){
-        if(d.sense=="sm"){
+        if(d.sense=="smell"){
             return color1;
         }
-        if(d.sense=="to"){
+        if(d.sense=="touch"){
             return color2;
         }
       // return (color(d.sense));   
@@ -173,7 +173,7 @@ circle = vis.selectAll("neurons")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",1);
 function neuronsIn(){
-       $("#title p").replaceWith("<p>A simple neuron can be composed of:</p>");
+       $("#title p").replaceWith("<p>A simple neuron can be represented as:</p>");
 var p = $( "#title p" );
 var position = p.position();
     var newLine = vis.selectAll("newLine")
@@ -184,7 +184,8 @@ var position = p.position();
     .attr("y1",position.top)
     .attr("x2", position.left)
     .attr("y2", position.top)
-    .attr("stroke", "gray");
+    .attr("stroke", "gray")
+    .attr("fill", "gray");
 
     // .attr("stroke-width")
 
@@ -266,7 +267,7 @@ line = vis.selectAll("inLine")
     })
     .attr("fill", "none")
     .attr("stroke-width", function(d,i){
-        return Math.random();
+        return Math.random()+.1;
     })
     // .attr("stroke-dasharray", function(d,i){
     //     if(i%2==1){
@@ -341,7 +342,101 @@ function outputIn(){
     // .attr("stroke-opacity",1)
     // .each("end", function(){
     // })
-$("#enter").slideDown();
+// $("#enter").slideDown();
+.each("end", function(){
+    introTalk = false;
+ $("#neurons p:first").replaceWith(" ");
+ $("#neurons").animate({
+    top:0,
+            // top: yMid/2-r/2,
+            // left: lmargin+r-137,
+            left: lmargin+r-107,
+        }); 
+// $("#title .p1").append(": taking input of smell and touch")
+ $("#title .p1").replaceWith(" ")
+ $("#title .p2").replaceWith(" ")
+$("#title .p3").replaceWith(" ")
+
+ $("#title").replaceWith(" ")
+
+d3.selectAll(".neurons")
+.transition()
+.duration(introDuration/2)
+.attr("stroke-width", strokeWeight*2)
+.each("end", function(d,i){
+    d3.selectAll(".neurons")
+    .transition()
+    .duration(introDuration/2)
+    .attr("stroke-width", strokeWeight);
+})
+var text = vis.selectAll("text")
+    .data(tData)
+    .enter()
+    .append("text").attr("class", "text")
+    .attr("opacity",0)
+    .attr("x", lmargin-r*8)
+    .attr("y", function(d,i){
+        return yIn(i)+r/2;
+    })
+    .text(function(d,i){
+        return "{ "+d.sense+" }";
+    })
+    .attr("fill", function(d,i){
+        if (d.sense=="smell"){
+            return color1;
+        }
+        if(d.sense=="touch"){
+            return color2;
+        }
+    })
+    .transition()
+    .duration(3000)
+    .attr("opacity",1);
+    inputDone = true;
+// if(inputDone){
+//     callSenseStart();
+// }
+})
+
+}
+
+if(neurons!="undefined"){
+d3.selectAll(".neurons")
+.on("click", function(d,i){
+    d3.select(this);
+    console.log(this);
+    console.log(this.sense);
+    if (d.sense=="smell"){
+        calculate("smell");
+    }
+    if(d.sense=="touch"){
+        calculate("touch");
+    }
+})
+.on("mouseover", function(){
+    d3.select(this)
+    .transition()
+    .attr("stroke-width", strokeWeight*3);
+})
+.on("mouseout", function(){
+     d3.select(this)
+    .transition()
+    .attr("stroke-width", strokeWeight);   
+})
+}
+function callSenseStart(){
+if(inputDone==true){
+calculate("smell");
+
+var myVar=setInterval(function () {myTimer()}, 3000);
+    function myTimer() {
+        calculate("touch");
+    }
+    inputDone = false;
+}
+else{
+    clearInterval(myVar);
+}
 }
 
 inputCirc = vis.selectAll("inCirc")
@@ -480,7 +575,9 @@ d3.selectAll(".inLine")
     .each("end", function(){
         // $("#title p").append("<p>linked through weighted lines to an output node</p>");
         // showLines();
-        outputIn();        
+        if(introTalk){
+        outputIn();   
+        }     
     })
     // .attr("stroke", function(d,i){
     //     return "rgb("+tData[i].weight*2;
@@ -523,10 +620,10 @@ function senseIn(addIt, triggerSense, error){
     .duration(100)
     .attr("opacity",opacity)
     .attr("stroke", function(d,i){
-        if(triggerSense=="sm"){
+        if(triggerSense=="smell"){
             return color1;
         }
-        if(triggerSense=="to"){
+        if(triggerSense=="touch"){
             return color2;
         }
     })
@@ -547,10 +644,10 @@ function senseIn(addIt, triggerSense, error){
                             input[i] = 0;
                         }
                         console.log(input+"input");
-                        if(triggerSense=="sm"){
+                        if(triggerSense=="smell"){
                             return color1;
                         }
-                        if(triggerSense=="to"){
+                        if(triggerSense=="touch"){
                             return color2;
                         }
                     // return (color(triggerSense));
@@ -626,10 +723,10 @@ function senseIn(addIt, triggerSense, error){
                                     .attr("r", r/2)
                                     .attr("stroke-width", r*2)
                                     .attr("stroke", function(d,i){
-                        if(triggerSense=="sm"){
+                        if(triggerSense=="smell"){
                             return color1;
                         }
-                        if(triggerSense=="to"){
+                        if(triggerSense=="touch"){
                             return color2;
                         }
                                         // return (color(triggerSense));
@@ -823,13 +920,13 @@ $( "#intro2" ).delay( 8000 ).slideUp( 2000);
 })
 d3.select('#introNav2').on("click", function(){
     if(trigger==false){
-        calculate("sm");
+        calculate("smell");
     }
     else{
-        calculate("to");
+        calculate("touch");
     }
 if(trigOther == true){
-    calculate("sm");    
+    calculate("smell");    
 }
 })
 if(sense==true){
@@ -880,7 +977,7 @@ for (var i = 0; i < tData.length; i++) {
         });
         $("#connections").delay(3000).slideUp();
 
-        calculate("sm");
+        calculate("smell");
         // soundsLoaded();
     })
 
