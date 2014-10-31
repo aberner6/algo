@@ -805,7 +805,6 @@ function senseIn(addIt, triggerSense, error){
                                             .each("end", function(){
                                 $("#check").slideUp("fast");
                                 $("#refresh, #refreshp").show().slideDown();
-myPulse=setInterval(function () {pulseTimer()}, 3000);
 
     d3.selectAll(".inLine")
     .transition()
@@ -1040,6 +1039,7 @@ if(sense==true){
 
 
 $("#refresh").on("click", function(){
+myPulse=setInterval(function () {pulseTimer()}, 3000);
 
 //     $( "#intro2" ).slideDown( 2000, function(){
 // $("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
