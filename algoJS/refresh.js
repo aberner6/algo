@@ -59,6 +59,7 @@ var tData = [];
 var myTimer;
 var introTalk = true;
 var colorSpectrum = [];
+var myPulse;
 // loadData("senses.csv")
 // function loadData(csvName){
 // d3.csv(csvName, function(thisData) {
@@ -371,16 +372,10 @@ $("#title .p3").replaceWith(" ")
 
  $("#title").replaceWith(" ");
 
-d3.selectAll(".neurons")
-.transition()
-.duration(introDuration/2)
-.attr("stroke-width", strokeWeight*2)
-.each("end", function(d,i){
-    d3.selectAll(".neurons")
-    .transition()
-    .duration(introDuration/2)
-    .attr("stroke-width", strokeWeight);
-})
+// pulseNeurons();
+myPulse=setInterval(function () {pulseTimer()}, 3000);
+
+
 var text = vis.selectAll("text")
     .data(tData)
     .enter()
@@ -412,10 +407,27 @@ var text = vis.selectAll("text")
 
 }
 
+    function pulseTimer() {
+        pulseNeurons();
+    }
+function pulseNeurons(){
+d3.selectAll(".neurons")
+.transition()
+.duration(1000)
+.attr("stroke-width", strokeWeight*3)
+.each("end", function(d,i){
+    d3.selectAll(".neurons")
+    .transition()
+    .duration(1000)
+    .attr("stroke-width", strokeWeight);
+})
+}
 if(neurons!="undefined"){
             // calculate("touch");
 d3.selectAll(".neurons")
 .on("click", function(d,i){
+    clearInterval(myPulse);
+
 $("#output").slideUp();
     d3.select(this);
     console.log(this);
@@ -751,6 +763,7 @@ function senseIn(addIt, triggerSense, error){
                                 // $("#output").slideDown().animate({
                                 //     top: yMid,
                                 // });
+
     d3.selectAll(".inLine")
     .transition()
     // .duration()
@@ -792,6 +805,8 @@ function senseIn(addIt, triggerSense, error){
                                             .each("end", function(){
                                 $("#check").slideUp("fast");
                                 $("#refresh, #refreshp").show().slideDown();
+myPulse=setInterval(function () {pulseTimer()}, 3000);
+
     d3.selectAll(".inLine")
     .transition()
     .attr("x2", function(d,i){
@@ -824,6 +839,8 @@ function senseIn(addIt, triggerSense, error){
                                     })
                                 } //THIS SHOULD  BE HAPPENING @END
                                 else{
+myPulse=setInterval(function () {pulseTimer()}, 3000);
+
                                  $("#x").show().slideDown();
                                     d3.selectAll(".rollingCirc")
                                     .transition()
@@ -1023,6 +1040,7 @@ if(sense==true){
 
 
 $("#refresh").on("click", function(){
+
 //     $( "#intro2" ).slideDown( 2000, function(){
 // $("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
 //     })
