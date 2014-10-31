@@ -14,7 +14,7 @@ var lmargin = windowWidth/4;
 var yMid = windowHeight/2;
 var rotation = 10;
 var swingtime = 1600;
-
+var nextAnimation = false;
 var yMap = d3.scale.linear()
             .domain([0, 1])
             .range([-height, height*2])
@@ -370,7 +370,9 @@ d3.selectAll(".neurons")
 })
 
 }
-if(neurons!="undefined"){
+
+function prepEndText(){
+if(nextAnimation==true){
 d3.selectAll(".endText")
     .transition()
     .delay(10000)
@@ -390,6 +392,12 @@ d3.selectAll(".endText")
             .attr("y",yMid+r/2)
             .attr("opacity",1)        
     })
+}
+}
+
+
+if(neurons!="undefined"){
+
 
             // calculate("touch");
 d3.selectAll(".neurons")
@@ -741,8 +749,9 @@ function senseIn(addIt, triggerSense, error){
                                             .attr("r", r/2) 
                                             .each("end", function(){
                                 $("#check").slideUp("fast");
-                                $("#refresh, #refreshp").show().slideDown();
-
+                                if(tData[0].weight==1){
+                                    $("#refresh, #refreshp").show().slideDown();
+                                }
     d3.selectAll(".inLine")
     .transition()
     .attr("x2", function(d,i){
@@ -898,6 +907,8 @@ var b = 0;
 $("#title").fadeIn(introDuration/2);
 
 d3.select("#enter").on("click", function(){
+nextAnimation = true;
+prepEndText();
     $("#enter").slideUp();
         $("#title").animate({
             top: "10%",
@@ -962,10 +973,10 @@ $("#refreshp").hide();
     random = true;
 for (var i = 0; i < tData.length; i++) {
    tData[i].weight = Math.random();
+         showLines();
 } 
       // tData[i].weight = Math.random(-1,1);
       // console.log("generating weights")
-      // showLines();
     // }
     $( "#intro2" ).delay(7000).slideUp();
 })
