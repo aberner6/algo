@@ -434,7 +434,7 @@ if(neurons!="undefined"){
 d3.selectAll(".neurons")
 .on("click", function(d,i){
     clearInterval(myPulse);
-
+$("#intro").fadeOut()
 $("#output").slideUp();
     d3.select(this);
     console.log(this);
@@ -601,7 +601,7 @@ else{
 function showLines(){
     // }
         $("#connections").slideDown().animate({
-            top: "51%",
+            top: "33%",
         });
 d3.selectAll(".inLine")
     .transition()
