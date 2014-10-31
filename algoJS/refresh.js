@@ -228,8 +228,8 @@ var position = p.position();
 //                      slideDown();
 // function slideDown(){
         $("#neurons").slideDown().animate({
-            top: yMid-2,
-            left: lmargin+r-147,//107,
+            top: yIn(0),
+            left: lmargin+r-150,//107,
         },2000)
     //     .animate({rotate: rotation}, 0, function () {
     //                 $('#neurons').css("display", "block");
