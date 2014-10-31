@@ -152,10 +152,17 @@ $("#x").animate({
     top: yMid-2,
     left: endOutX-r/2-6,
 }); 
-// $("#refresh").animate({
-//     top: "51%"
-//     // left: ,
-// });
+$("#refresh").animate({
+    // top: "51%"
+    left: lmargin*2,
+});
+$("#refreshp").animate({
+    // top: "51%"
+    left: lmargin*2-55,
+});
+$("#connections").animate({
+    left: lmargin*2-60,
+});
 circle = vis.selectAll("neurons")
     .data(thisData)
     .enter()
