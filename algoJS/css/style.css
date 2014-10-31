@@ -147,13 +147,17 @@ top: 39%;
 margin-left: 38%;
 display:none;
 }
+.textIs{
+  width:100px;
+}
 .title1{
 
-/*border-left: 1px solid white;
-border-bottom: 1px solid white;
-border-right: 1px solid white;*/
+border-left: 1px solid gray;
+border-bottom: 1px solid gray;
+border-right: 1px solid gray;
 
-
+padding-left: 5px;
+padding-right: 5px;
 
 
 
@@ -256,7 +260,7 @@ color: white;
 #intro{
 position: absolute;
 z-index: 1000;
-top: 51px;
+top: 60px;
 /*top:39%;*/
 /*left:50%;*/
 left:25%;
@@ -270,13 +274,13 @@ background-color: white;
 #intro2{
 position: absolute;
 z-index: 1000;
-top: 51px;
-left: 58%;
+top: 60px;
+left: 75%;
 display: none;
-width: 300px;
+width: 250px;
 color: #777;
-background-color: rgb(154, 255, 255);
-
+background-color: white;
+display:none;
 /*background-color: white;
 *//* opacity: .8; */
 /* width: 100%; */
@@ -288,12 +292,10 @@ padding-right: 5px;
 /* padding-top: 5px; */
 border-bottom: 1px dashed gray;
 font-size: 14px;
-/* line-height: 14px; */
-/* padding: 5px; */
 border-left: 1px dashed gray;
 border-right: 1px dashed gray;
 
-background-color: rgb(154, 255, 255);
+/*background-color: rgb(154, 255, 255);*/
 
 /* text-align: center; */
 /*color: #777;
@@ -466,8 +468,8 @@ width: 200px
 #refreshp{
 position: fixed;
 display: none;
-top: 37%;
-left: 45%;
+top: 55%;
+left: 25%;
 position: absolute;
 color: #777;
 background-color: white;
@@ -488,9 +490,9 @@ opacity: 0.3;
 background-color: #777;
 position: fixed;
 display: none;
-top: 32.5%;
+top: 50%;
 
-left: 53%;
+left: 25%;
 position: absolute;
 border-radius: 15px;
 padding: 3px 4px 5px;

@@ -145,8 +145,8 @@ function myTimer() {
 }
 
 $("#check").animate({
-    top: yMid,
-    left: endOutX+r+11,
+    top: yMid+20,
+    left: endOutX+r+11-30,
 }); 
 $("#x").animate({
     top: yMid-2,
@@ -154,11 +154,11 @@ $("#x").animate({
 }); 
 $("#refresh").animate({
     // top: "51%"
-    left: lmargin*2,
+    left:lmargin+100,
 });
 $("#refreshp").animate({
     // top: "51%"
-    left: lmargin*2-55,
+    left:lmargin+100,
 });
 $("#connections").animate({
     left: lmargin*2-60,
@@ -207,55 +207,22 @@ var position = p.position();
     .attr("stroke", "gray")
     .attr("fill", "gray");
 
-    // .attr("stroke-width")
-
-// if(intro == false){
- // function init() {
-                // $('#neurons').animate({rotate: rotation}, 0, function () {
-                //     $('#neurons').css("display", "block");
-                //     rotation *= -1;
-                //     pendulumswing();
-                //      slideDown();
-                // });
-            // }
- 
-//             function pendulumswing() {
-//                 $('#neurons').animate({rotate: rotation},swingtime, "swing", function(){
-//                      rotation *= -1;
-//                      pendulumswing();
-//                 });
-//             }
-//                      slideDown();
-// function slideDown(){
         $("#neurons").slideDown().animate({
             top: yIn(0),
             left: lmargin+r-150,//107,
         },2000)
-    //     .animate({rotate: rotation}, 0, function () {
-    //                 $('#neurons').css("display", "block");
-    //                 rotation *= -1;
-    //                 pendulumswing();
-    //             })
-    // }
+
     circle
     .transition()
     .duration(3000)
-    // .attr("opacity",1)
     .attr("r", function(){
         return r;
     })
     .each("end", function(){
         showLines();
- 
-// if(neurons){
-// }
-
-                // outputI n();
 
         neurons = true;
     })
-// callProgressButton(1);    
-// }
 }
 
 
@@ -310,30 +277,8 @@ rollingCirc = vis.selectAll("rollingCirc")
     })
     .attr("r", r*1.5)
     .attr("fill", "none")
-    // .attr("stroke-dasharray", function(d,i){
-    //     if(i%2==1){
-    //         return ("4,4");
-    //     }
-    //     else{
-    //         return ("0,0");
-    //     }
-    // })
     .attr("stroke", function(d,i){
-        // if(d.sense=="sm"){
-        //     return color1;
-        // }
-        // if(d.sense=="to"){
-        //     return color2;
-        // }
-        // else{
             return color(d.sense);
-        // }
-        // if(i%2==1){
-        //     return "#7372BE";//(colorSpectrum[4]);
-        // }
-        // if(i%2==0){
-        //     return "#C84961";//(colorSpectrum[5]);
-        // }
     })
     .attr("opacity",0);
 
@@ -349,6 +294,15 @@ endOutCirc = vis.selectAll("endCirc")
     .attr("stroke", "gray")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",1);
+var endText = vis.selectAll("endText")
+    .data(d3.range(1))
+    .enter()
+    .append("text").attr("class", "endText")
+    .attr("x", endOutX+r*1.5)
+    .attr("y", yMid-r*2)
+    .attr("fill", "gray")
+    .text("{ output threshold = "+threshold+" }")
+    .attr("opacity",0)
 function outputIn(){
         $("#output").slideDown().animate({
             top: yMid,
@@ -359,41 +313,30 @@ function outputIn(){
     // .delay(1000)
     .duration(2000)
     .attr("cx", endOutX)
-    // .attr("stroke-opacity",1)
-    // .each("end", function(){
-    // })
-// $("#enter").slideDown();
+
 .each("end", function(){
     introTalk = false;
- $("#neurons p:first").replaceWith(" ");
- // $("#neurons").animate({
- //    top:0,
- //            // top: yMid/2-r/2,
- //            // left: lmargin+r-137,
- //            left: lmargin+r-107,
- //        }); 
-// $("#title .p1").append(": taking input of smell and touch")
- $("#title .p1").replaceWith(" ")
- $("#title .p2").replaceWith(" ")
-$("#title .p3").replaceWith(" ")
+ $("#neurons p:first").replaceWith("<p></p>");
+ $("#title .p1").replaceWith("<p></p>")
+ $("#title .p2").replaceWith("<p></p>")
+$("#title .p3").replaceWith("<p></p>")
 
- $("#title").replaceWith(" ");
+ $("#title").replaceWith("<p></p>");
 
-// pulseNeurons();
-myPulse=setInterval(function () {pulseTimer()}, 3000);
+myPulse=setInterval(function () {pulseTimer()}, 1000);
 
 
-var text = vis.selectAll("text")
+var text = vis.selectAll("textIs")
     .data(tData)
     .enter()
-    .append("text").attr("class", "text")
+    .append("text").attr("class", "textIs")
     .attr("opacity",0)
-    .attr("x", lmargin-r*8)
+    .attr("x", lmargin-r*14)
     .attr("y", function(d,i){
         return yIn(i)+r/2;
     })
     .text(function(d,i){
-        return "{ "+d.sense+" }";
+        return "{ input of: "+d.sense+" }";
     })
     .attr("fill", function(d,i){
         if (d.sense=="smell"){
@@ -407,9 +350,6 @@ var text = vis.selectAll("text")
     .duration(3000)
     .attr("opacity",1);
     inputDone = true;
-// if(inputDone){
-//     callSenseStart();
-// }
 })
 
 }
@@ -420,16 +360,37 @@ var text = vis.selectAll("text")
 function pulseNeurons(){
 d3.selectAll(".neurons")
 .transition()
-.duration(1000)
+.duration(500)
 .attr("stroke-width", strokeWeight*3)
 .each("end", function(d,i){
     d3.selectAll(".neurons")
     .transition()
-    .duration(1000)
+    .duration(500)
     .attr("stroke-width", strokeWeight);
 })
+
 }
 if(neurons!="undefined"){
+d3.selectAll(".endText")
+    .transition()
+    .delay(10000)
+    .duration(100)
+    .attr("y",yMid-20)
+    .each("end", function(d,i){
+        $("#output").slideUp();
+        $("#intro2").delay(1000).show(1000).slideDown().animate({
+            // top:
+            left:endOutX,
+        });
+
+        d3.selectAll(".endText")
+            .transition()
+            .delay(1000)
+            .duration(2000)
+            .attr("y",yMid+r/2)
+            .attr("opacity",1)        
+    })
+
             // calculate("touch");
 d3.selectAll(".neurons")
 .on("click", function(d,i){
@@ -440,9 +401,11 @@ $("#output").slideUp();
     console.log(this);
     console.log(this.sense);
     if (d.sense=="smell"){
+addIt = 0;
         calculate("smell");
     }
     if(d.sense=="touch"){
+addIt = 0;
         console.log(d.sense)
         calculate("touch");
     }
@@ -574,35 +537,18 @@ else{
     .attr("cx", function(d,i){
 
             return xRand(i)+Math.random(-1,1);//+secs/10;
-            // return 5+Math.random(-1,1);
     })
     .attr("cy", function(d,i){
-            // console.log(i);
-            // return 5+Math.random(-1,1);
             return yMap(Math.random());
     }) 
-    // .each("end", function(){
-        // d3.selectAll(".cloudCirc")
-        //     .transition()
-        //     // .delay(8000)
-        //     .duration(3000)
-        //     .attr("cx", function(d,i){
-        // intro = false;
-        //             return Math.random(-1,1)*secsie;
-        //     })
-        //     .attr("cy", function(d,i){
-        //             return yRand(i)+Math.random(-1,1)*secsie/2;
-        //     })
-    // })
 }
 }
 
-//    // .attr("transform", "translate("+lmargin*4+",0)")
 function showLines(){
-    // }
-        $("#connections").slideDown().animate({
-            top: "33%",
-        });
+d3.selectAll(".weightText").remove();
+        // $("#connections").slideDown().animate({
+        //     top: "33%",
+        // });
 d3.selectAll(".inLine")
     .transition()
     .duration(2000)
@@ -611,49 +557,45 @@ d3.selectAll(".inLine")
         return tData[i].weight;
     })
     .each("end", function(){
-        // $("#title p").append("<p>linked through weighted lines to an output node</p>");
-        // showLines();
         if(introTalk){
         outputIn();   
         }     
     })
-    // .attr("stroke", function(d,i){
-    //     return "rgb("+tData[i].weight*2;
-    // })
+var weightText = vis.selectAll("weightText")
+    .data(tData)
+    .enter()
+    .append("text").attr("class", "weightText")
+    .attr("x", lmargin+100)
+    .attr("y", function(d,i){
+        if(yIn(i)<height/2){
+            return yIn(i)+10;            
+        }
+        else{
+            return yIn(i)-10;            
+        }
+    })
+    .attr("fill","gray")
+    .text(function(d,i){
+        return "{ link weight = "+Math.floor(tData[i].weight * 100) / 100+" }";
+    })
 }
 function calculate(triggerSense){
 console.log(triggerSense);
 // boolean over = false;
-addIt = 0;
 
     for (i=0; i<tData.length; i++){
         if(tData[i].sense==triggerSense){
-            // if(i>0){
-                addIt += parseInt(tData[i].weight);
-                // console.log(tData[i].weight);
-            // }
+                addIt += tData[i].weight;
             console.log(addIt);
         }
-        // if(addIt>threshold){
-            // over = true;
-            // console.log(addIt);
-        // }else{
-            // triggerRoll(addIt, triggerSense);
-        // }
     }
     triggerRoll(addIt, triggerSense);
-        showLines();
+        // showLines();
+
 }
 function senseIn(addIt, triggerSense, error){
     console.log(triggerSense);
-    //if d.sense of rolling ball is the same as trigger sense
-    //calculate(triggerSense)
-    //roll ball down to output
-    //which will trigger roll or not
-    // showLines();
-    // passSense(1)
     d3.selectAll(".rollingCirc")
-    // rollingCirc
     .transition()
     .duration(100)
     .attr("opacity",opacity)
@@ -688,7 +630,6 @@ function senseIn(addIt, triggerSense, error){
                         if(triggerSense=="touch"){
                             return color2;
                         }
-                    // return (color(triggerSense));
                 })
                 .attr("r", r/1.5)
                 .each("end", function(){
@@ -698,18 +639,15 @@ function senseIn(addIt, triggerSense, error){
                     .duration(3000)
 
                     .attr("cx", function(d,i){
-                        if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
+                        if(addIt>=threshold){//THIS SHOULD  BE HAPPENING @END
                             return endOutX;
                         }else{
-                            // if(i==1){
                                 return endOutX-r*1.5;          
-                            // }
-                            // return endOutX-r;
                         }
                     })   
                     .attr("cy", function(d,i){
                         if(d.sense==tSense){
-                        if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
+                        if(addIt>=threshold){//THIS SHOULD  BE HAPPENING @END
                             return yMid;
                         }else{
                             if(i==0){
@@ -766,20 +704,14 @@ function senseIn(addIt, triggerSense, error){
                             })
                             .attr("r",r*1.5)
                             .each("end", function(){
-                            if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
-                                // $("#output").slideDown().animate({
-                                //     top: yMid,
-                                // });
+                            if(addIt>=threshold){//THIS SHOULD  BE HAPPENING @END
 
     d3.selectAll(".inLine")
     .transition()
-    // .duration()
     .attr("x2", function(d,i){
         return endOutX-r/2;
     })
-    // .attr("y2", function(d,i){
-    //         return yMid-r/2;
-    // })
+
                                 $("#check").show().slideDown();
 
                                     d3.selectAll(".endCirc")
@@ -796,13 +728,11 @@ function senseIn(addIt, triggerSense, error){
                         if(triggerSense=="touch"){
                             return color2;
                         }
-                                        // return (color(triggerSense));
                                     })
                                     .each("end", function(){
                                         d3.selectAll(".endCirc")
                                         .transition()
                                         .duration(1000)
-                                        // .attr("r",r/2)
                                         .attr("stroke-width", r)
                                         .each("end", function(){
                                             d3.selectAll(".endCirc")
@@ -816,10 +746,7 @@ function senseIn(addIt, triggerSense, error){
     d3.selectAll(".inLine")
     .transition()
     .attr("x2", function(d,i){
-        // if(i==1){
             return endOutX-r*1.5;          
-        // }
-        // return endOutX-r;
     })
     .attr("y2", function(d,i){
         if(i==0){
@@ -874,10 +801,7 @@ function triggerRoll(addIt, triggerSense){
      console.log(addIt+"sum "+triggerSense+" sense");
      tSense = triggerSense;
 console.log(tData[0].weight+"old weight?");
-//     //  if(b==1){
-    // if(addIt>threshold){
-    // }
-    //answer[trigS]
+
     error = threshold-addIt;
     console.log(error+"error");
         senseIn(addIt, triggerSense, error);
@@ -888,6 +812,7 @@ for (i= 0; i<input.length; i++){
     changeWeight[i] = error*input[i];   
     tData[i].weight += .8*error*input[i]; 
 }
+showLines();
 }
 else{
 
@@ -896,22 +821,8 @@ if(error<0){
     trigger = true;
     console.log("trigger"+trigger)
 }
-// if ()
-// else{
-//     trigger = true;
-//     // if(error>0&&trigg)
-//     console.log("trigger"+trigger)
-// }
-// }
+
 console.log(tData[0].weight+"new weight");
-// console.log(tData[0].weight+"new weights?");
-// for (i=0; i<tData.length; i++){ 
-//     tData[i].weight = Math.random();
-// }
-    // }
-    // }
-    //if d.sense is the triggersense, 
-    //send that ball through to the output
 }
 
 
@@ -1047,21 +958,15 @@ if(sense==true){
 
 $("#refresh").on("click", function(){
 myPulse=setInterval(function () {pulseTimer()}, 3000);
-
-//     $( "#intro2" ).slideDown( 2000, function(){
-// $("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
-//     })
-//     $( "#intro2", function(){
-// $("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
-//     })
-//     $( "#intro2" ).delay(1000).slideDown("fast");
 $("#refreshp").hide();
     random = true;
 for (var i = 0; i < tData.length; i++) {
-      tData[i].weight = Math.random(-1,1);
-      console.log("generating weights")
-      showLines();
-    }
+   tData[i].weight = Math.random();
+} 
+      // tData[i].weight = Math.random(-1,1);
+      // console.log("generating weights")
+      // showLines();
+    // }
     $( "#intro2" ).delay(7000).slideUp();
 })
     $("#smell").on("click", function(){
@@ -1083,83 +988,6 @@ for (var i = 0; i < tData.length; i++) {
         calculate("smell");
         // soundsLoaded();
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-//     b++;
-//     if(b==1){
-//         // if(trigger == true){
-//         calculate("sm");
-//         // }
-//         showLines();
-//         // passSense(0);
-//         // passSense(0);
-//         intro = false;
-//         $("p:first").replaceWith("<p>Let's consider a network of 6 neurons</p>");
-//         // svg.call(transition, p0, p1);
-//         $("#intro").animate({
-//             top: "100px",
-//             left: "200px",
-//         });
-//     }
-//     if(b==2){
-//         calculate("to");
-//         // passSense(0);
-//         $("p:first").replaceWith("<p>And throw in a sound input from our sense cloud</p>");
-//         // soundsLoaded();
-//     }
-//     if(b==3){
-//         calculate("to");
-//         // showLines();
-//         // passSense(1)
-//         $("p:first").replaceWith("<p>Next let's try smell</p>");
-//         // loop.stop("sound" + 1);
-//     }
-//     if(b==4){
-//         calculate("sm");
-//         // passSense(1)
-//         // $("#buttons").show()
-
-//     }
-
-
-
-//     if(b==5){
-//     $("p:first").replaceWith("<p>And then</p>");
-//         // svg.call(transition, p1, p2);
-//         $("#buttons").hide();
-//         loop.stop("sound" + 1);
-
-//         $("#intro").animate({
-//             top: "100px",
-//             left: "400px",
-//         });
-//     }
-//     if(b==6){
-//         $("#intro").animate({
-//             top: "100px",
-//             left: "600px",
-//         });
-//     $("p:first").replaceWith("<p>After that</p>");
-//     }
-//     if(b==7){
-//         $("#intro").animate({
-//             top: "100px",
-//             left: "100px",
-//         });
-//     $("p:first").replaceWith("<p>Lastly</p>");        
-//     }
-// });
 
 var p0 = [width/2,height/2, windowHeight],
     p1 = [width/2, height/2, windowHeight],
