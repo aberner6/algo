@@ -29,7 +29,7 @@ var addIt =0;
 var trigger = false;
 var tSense;
 
-var threshold = 1.1;
+var threshold = .5;
 var input = [];
 var trigOther = false;
 var endOutX = lmargin*3;
@@ -143,6 +143,18 @@ function myTimer() {
     }
 }
 
+$("#check").animate({
+    top: yMid,
+    left: endOutX+r+11,
+}); 
+$("#x").animate({
+    top: yMid-2,
+    left: endOutX-r/2-6,
+}); 
+// $("#refresh").animate({
+//     top: "51%"
+//     // left: ,
+// });
 circle = vis.selectAll("neurons")
     .data(thisData)
     .enter()
@@ -249,25 +261,25 @@ line = vis.selectAll("inLine")
         return yIn(i);
     })
     .attr("x2", function(d,i){
-        if(i==1){
+        // if(i==1){
             return endOutX-r*1.5;          
-        }
-        return endOutX-r;
+        // }
+        // return endOutX-r;
     })
     .attr("y2", function(d,i){
         if(i==0){
-            return yMid-r;
+            return yMid-r/2;
         }
         if(i==1){
             return yMid;            
         }
         if(i==2){
-            return yMid+r;
+            return yMid+r/2;
         }
     })
     .attr("fill", "none")
     .attr("stroke-width", function(d,i){
-        return Math.random()+.1;
+        return Math.random();
     })
     // .attr("stroke-dasharray", function(d,i){
     //     if(i%2==1){
@@ -401,8 +413,10 @@ var text = vis.selectAll("text")
 }
 
 if(neurons!="undefined"){
+            // calculate("touch");
 d3.selectAll(".neurons")
 .on("click", function(d,i){
+$("#output").slideUp();
     d3.select(this);
     console.log(this);
     console.log(this.sense);
@@ -410,6 +424,7 @@ d3.selectAll(".neurons")
         calculate("smell");
     }
     if(d.sense=="touch"){
+        console.log(d.sense)
         calculate("touch");
     }
 })
@@ -484,7 +499,24 @@ inputCirc = vis.selectAll("inCirc")
     // "gray");
 
 
-cloudCirc = vis.selectAll("cloudCirc")
+
+// }
+function moveAround(secsie){
+if(intro==false){
+d3.selectAll(".cloudCirc")
+    .transition()
+    .duration(1000)
+    .attr("cx", function(d,i){
+            return Math.random(-1,1)*150;
+    })
+    .attr("cy", function(d,i){
+            // console.log(i);
+            return yRand(i)+Math.random(-1,1)*100;
+    })
+    // .attr("fill", "none")
+}
+else{
+    cloudCirc = vis.selectAll("cloudCirc")
     .data(d3.range(randLength))
     .enter()
     .append("circle").attr("class", "cloudCirc")
@@ -517,22 +549,6 @@ cloudCirc = vis.selectAll("cloudCirc")
     .attr("stroke", function(d,i){
         return color(i);
     })
-// }
-function moveAround(secsie){
-if(intro==false){
-d3.selectAll(".cloudCirc")
-    .transition()
-    .duration(1000)
-    .attr("cx", function(d,i){
-            return Math.random(-1,1)*150;
-    })
-    .attr("cy", function(d,i){
-            // console.log(i);
-            return yRand(i)+Math.random(-1,1)*100;
-    })
-    // .attr("fill", "none")
-}
-else{
  d3.selectAll(".cloudCirc")
     .transition()
     .duration(3000)
@@ -572,9 +588,9 @@ d3.selectAll(".inLine")
     .transition()
     .duration(2000)
     .attr("opacity",1)
-    // .attr("stroke-width", function(d,i){
-    //     return tData[i].weight*2;
-    // })
+    .attr("stroke-width", function(d,i){
+        return tData[i].weight;
+    })
     .each("end", function(){
         // $("#title p").append("<p>linked through weighted lines to an output node</p>");
         // showLines();
@@ -658,17 +674,35 @@ function senseIn(addIt, triggerSense, error){
                 .attr("r", r/1.5)
                 .each("end", function(){
 
-                    // if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
                     d3.selectAll(".rollingCirc")
                     .transition()   
                     .duration(3000)
 
                     .attr("cx", function(d,i){
+                        if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
                             return endOutX;
+                        }else{
+                            // if(i==1){
+                                return endOutX-r*1.5;          
+                            // }
+                            // return endOutX-r;
+                        }
                     })   
                     .attr("cy", function(d,i){
                         if(d.sense==tSense){
+                        if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
                             return yMid;
+                        }else{
+                            if(i==0){
+                                return yMid-r/2;
+                            }
+                            if(i==1){
+                                return yMid;            
+                            }
+                            if(i==2){
+                                return yMid+r/2;
+                            }                            
+                        }
                         }
                     })
                     ////then disappear
@@ -714,9 +748,19 @@ function senseIn(addIt, triggerSense, error){
                             .attr("r",r*1.5)
                             .each("end", function(){
                             if(addIt>threshold){//THIS SHOULD  BE HAPPENING @END
-                                $("#output").slideDown().animate({
-                                    top: yMid,
-                                });
+                                // $("#output").slideDown().animate({
+                                //     top: yMid,
+                                // });
+    d3.selectAll(".inLine")
+    .transition()
+    // .duration()
+    .attr("x2", function(d,i){
+        return endOutX-r/2;
+    })
+    // .attr("y2", function(d,i){
+    //         return yMid-r/2;
+    // })
+                                $("#check").show().slideDown();
 
                                     d3.selectAll(".endCirc")
                                     .transition()
@@ -746,7 +790,27 @@ function senseIn(addIt, triggerSense, error){
                                             .duration(2000)
                                             .attr("r", r/2) 
                                             .each("end", function(){
-                                $("#output").slideUp("fast");
+                                $("#check").slideUp("fast");
+                                $("#refresh, #refreshp").show().slideDown();
+    d3.selectAll(".inLine")
+    .transition()
+    .attr("x2", function(d,i){
+        // if(i==1){
+            return endOutX-r*1.5;          
+        // }
+        // return endOutX-r;
+    })
+    .attr("y2", function(d,i){
+        if(i==0){
+            return yMid-r/2;
+        }
+        if(i==1){
+            return yMid;            
+        }
+        if(i==2){
+            return yMid+r/2;
+        }
+    })
                                                 d3.selectAll(".endCirc")
                                                 .transition()
                                                 .duration(1000)
@@ -759,6 +823,16 @@ function senseIn(addIt, triggerSense, error){
                                         })
                                     })
                                 } //THIS SHOULD  BE HAPPENING @END
+                                else{
+                                 $("#x").show().slideDown();
+                                    d3.selectAll(".rollingCirc")
+                                    .transition()
+                                    .duration(2000) 
+                                    .attr("opacity",1)
+                                    .each("end", function(){
+                                        $("#x").slideUp("fast");
+                                    })                               
+                                }
                             })                        
                         })
 
@@ -780,6 +854,7 @@ console.log(tData[0].weight+"old weight?");
 //     //  if(b==1){
     // if(addIt>threshold){
     // }
+    //answer[trigS]
     error = threshold-addIt;
     console.log(error+"error");
         senseIn(addIt, triggerSense, error);
@@ -948,14 +1023,14 @@ if(sense==true){
 
 
 $("#refresh").on("click", function(){
-    $( "#intro2" ).slideDown( 2000, function(){
-$("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
-    })
-    $( "#intro2", function(){
-$("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
-    })
-    $( "#intro2" ).delay(1000).slideDown("fast");
-
+//     $( "#intro2" ).slideDown( 2000, function(){
+// $("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
+//     })
+//     $( "#intro2", function(){
+// $("p").replaceWith("<p>Now when you trigger sound or smell, you are teaching the network to respond to that sense. It may take a few tries.</p>");
+//     })
+//     $( "#intro2" ).delay(1000).slideDown("fast");
+$("#refreshp").hide();
     random = true;
 for (var i = 0; i < tData.length; i++) {
       tData[i].weight = Math.random(-1,1);
