@@ -5,6 +5,7 @@ yIn, xIn,
 path,
 circle, line, rollingCirc, cloudCirc, endOutCirc;
 var moveAround;
+var theIndex = [];
 
 var windowWidth = window.outerWidth,
     windowHeight= window.innerHeight,
@@ -82,7 +83,7 @@ vis = svg //for the visualization
       "translate("+ 0 + "," + 0 + ")");  
 o = [1, 2];
 var numInput = 100;
-var randLength = 1000;
+var randLength = 500;
 
 
 
@@ -123,7 +124,7 @@ t = [1, 2, 3];
 // function transparentos(){
 yIn = d3.scale.linear()
     .domain([0, thisData.length-1])
-    .range([height/4, height-height/4]);
+    .range([height/3, height-height/5]);
 yRand = d3.scale.linear()
     .domain([0, randLength])
     .range([0, height]);
@@ -134,7 +135,7 @@ xIn = d3.scale.linear()
     .domain([0, numInput])
     .range([lmargin, width+lmargin])
 // function simpleStuff(thisData){
-var myVar=setInterval(function () {myTimer()}, 1000);
+var myVar=setInterval(function () {myTimer()}, 4000);
 
 function myTimer() {
     d = new Date();
@@ -143,7 +144,15 @@ function myTimer() {
     moveAround(secs/10);
     }
 }
-
+$("#intro2").animate({
+    // left: endOutX+r+11-30,
+    left:endOutX,
+});
+$("#equation").animate({
+    top: yMid-60,
+    // left: endOutX+r+11-30,
+    left:endOutX,
+});
 $("#check").animate({
     top: yMid+20,
     left: endOutX+r+11-30,
@@ -158,7 +167,7 @@ $("#refresh").animate({
 });
 $("#refreshp").animate({
     // top: "51%"
-    left:lmargin+100,
+    left:lmargin+135,
 });
 $("#connections").animate({
     left: lmargin*2-60,
@@ -282,6 +291,37 @@ rollingCirc = vis.selectAll("rollingCirc")
     })
     .attr("opacity",0);
 
+cloudCirc = vis.selectAll("cloudCirc")
+    .data(d3.range(randLength))
+    .enter()
+    .append("circle").attr("class", "cloudCirc")
+    .attr("r", r*1.5)
+    .attr("opacity",.6)
+    // .attr("fill", function(d,i){
+    //     return color(i);
+    // })
+    .attr("fill", function(d,i){
+        return color(i);
+    })
+    .attr("stroke-dasharray", function(d,i){
+        if(i%2==1){
+            return ("4,4");
+        }
+        if(i%2==0){
+            return ("0,0");
+        }
+    })
+    .attr("stroke", function(d,i){
+        return color(i);
+    })
+    .attr("cx", function(d,i){
+            return -350;
+    })
+    .attr("cy", function(d,i){
+            // console.log(i);
+            return yRand(i)+Math.random(-1,1)*100;
+    });
+
 endOutCirc = vis.selectAll("endCirc")
     .data(d3.range(1))
     .enter()
@@ -317,14 +357,21 @@ function outputIn(){
 .each("end", function(){
     introTalk = false;
  $("#neurons p:first").replaceWith("<p></p>");
- $("#title .p1").replaceWith("<p></p>")
- $("#title .p2").replaceWith("<p></p>")
+ $("#title .p1").replaceWith("<p>Let's send in all the senses - represented as that big cloud that surrounds us all of the time.</p>")
 $("#title .p3").replaceWith("<p></p>")
+ $("#title .p2").hide();
+  $("#title .p2").replaceWith("<p>Click one input to direct a sense towards it.</p>")
+  $("#title .p2").delay(2000).show();
 
- $("#title").replaceWith("<p></p>");
+$("#title p:first").replaceWith("");
+$("#title").animate({
+    left:-lmargin,
+})
+
+// moveAround(secs);
+sense = true;
 
 myPulse=setInterval(function () {pulseTimer()}, 1000);
-
 
 var text = vis.selectAll("textIs")
     .data(tData)
@@ -380,10 +427,7 @@ d3.selectAll(".endText")
     .attr("y",yMid-20)
     .each("end", function(d,i){
         $("#output").slideUp();
-        $("#intro2").delay(1000).show(1000).slideDown().animate({
-            // top:
-            left:endOutX,
-        });
+
 
         d3.selectAll(".endText")
             .transition()
@@ -403,7 +447,11 @@ if(neurons!="undefined"){
 d3.selectAll(".neurons")
 .on("click", function(d,i){
     clearInterval(myPulse);
-$("#intro").fadeOut()
+
+moveAround(secs);
+$("#title").fadeOut()
+
+// $("#intro").hide()
 $("#output").slideUp();
     d3.select(this);
     console.log(this);
@@ -419,14 +467,17 @@ addIt = 0;
     }
 })
 .on("mouseover", function(){
+$("#title").fadeOut()
+
     d3.select(this)
     .transition()
     .attr("stroke-width", strokeWeight*3);
-$("#intro").show().animate({
-    left: lmargin,
-})
+// $("#intro").show().animate({
+//     left: lmargin,
+// })
 })
 .on("mouseout", function(){
+// $("#intro").hide();
      d3.select(this)
     .transition()
     .attr("stroke-width", strokeWeight);   
@@ -492,10 +543,10 @@ inputCirc = vis.selectAll("inCirc")
 
 // }
 function moveAround(secsie){
-if(intro==false){
+// if(intro==false){
 d3.selectAll(".cloudCirc")
     .transition()
-    .duration(1000)
+    .duration(2000)
     .attr("cx", function(d,i){
             return Math.random(-1,1)*150;
     })
@@ -504,52 +555,32 @@ d3.selectAll(".cloudCirc")
             return yRand(i)+Math.random(-1,1)*100;
     })
     // .attr("fill", "none")
-}
-else{
-    cloudCirc = vis.selectAll("cloudCirc")
-    .data(d3.range(randLength))
-    .enter()
-    .append("circle").attr("class", "cloudCirc")
-    .attr("cx", function(d,i){
+// }
+// else{
+//     d3.selectAll(".cloudCirc")
+//     .attr("cx", function(d,i){
 
-            return xRand(i)+Math.random(-1,1);//+secs/10;
-            // return 5+Math.random(-1,1);
-    })
-    .attr("cy", function(d,i){
-            // console.log(i);
-            // return 5+Math.random(-1,1);
-            return yMap(Math.random());
-    })
-    .attr("r", r*1.5)
-    .attr("opacity",0)
-    // .attr("fill", function(d,i){
-    //     return color(i);
-    // })
-    .attr("fill", function(d,i){
-        return color(i);
-    })
-    .attr("stroke-dasharray", function(d,i){
-        if(i%2==1){
-            return ("4,4");
-        }
-        if(i%2==0){
-            return ("0,0");
-        }
-    })
-    .attr("stroke", function(d,i){
-        return color(i);
-    })
- d3.selectAll(".cloudCirc")
-    .transition()
-    .duration(3000)
-    .attr("cx", function(d,i){
+//             return xRand(i)+Math.random(-1,1);//+secs/10;
+//             // return 5+Math.random(-1,1);
+//     })
+//     .attr("cy", function(d,i){
+//             // console.log(i);
+//             // return 5+Math.random(-1,1);
+//             return yMap(Math.random());
+//     })
 
-            return xRand(i)+Math.random(-1,1);//+secs/10;
-    })
-    .attr("cy", function(d,i){
-            return yMap(Math.random());
-    }) 
-}
+//  d3.selectAll(".cloudCirc")
+//     .transition()
+//     .duration(3000)
+//     .attr("cx", function(d,i){
+
+//             return xRand(i)+Math.random(-1,1);//+secs/10;
+//     })
+//     .attr("cy", function(d,i){
+//         intro = false;
+//             return yMap(Math.random());
+//     }) 
+// }
 }
 
 function showLines(){
@@ -594,14 +625,19 @@ console.log(triggerSense);
     for (i=0; i<tData.length; i++){
         if(tData[i].sense==triggerSense){
                 addIt += tData[i].weight;
-            console.log(addIt);
+        theIndex=i;
+                console.log(theIndex);
+                console.log(addIt);
         }
     }
-    triggerRoll(addIt, triggerSense);
+    triggerRoll(addIt, triggerSense, theIndex);
         // showLines();
 
 }
-function senseIn(addIt, triggerSense, error){
+function senseIn(addIt, triggerSense, error, theIndexI){
+$("#intro2").slideDown("slow");       
+
+    var thisIndex = theIndexI;
     console.log(triggerSense);
     d3.selectAll(".rollingCirc")
     .transition()
@@ -719,7 +755,13 @@ function senseIn(addIt, triggerSense, error){
     .attr("x2", function(d,i){
         return endOutX-r/2;
     })
+        // if(tData[thisIndex].weight>threshold){
+       $("#equation p").replaceWith("<p>input of "+1+"* link weight of "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b>>=</b> threshold of "+threshold+"</p>");
+        // }
+//something like input * the weight of that neuron ?> ?< output
+    console.log(tData[thisIndex].weight+"index weight");
 
+        $("#equation").show(1000).slideDown();
                                 $("#check").show().slideDown();
 
                                     d3.selectAll(".endCirc")
@@ -749,6 +791,8 @@ function senseIn(addIt, triggerSense, error){
                                             .attr("r", r/2) 
                                             .each("end", function(){
                                 $("#check").slideUp("fast");
+                                $("#equation").hide();
+                                $("#intro2").hide();
                                 if(tData[0].weight==1){
                                     $("#refresh, #refreshp").show().slideDown();
                                 }
@@ -781,6 +825,17 @@ function senseIn(addIt, triggerSense, error){
                                     })
                                 } //THIS SHOULD  BE HAPPENING @END
                                 else{
+//maybe after randomziation?
+//maybe after randomziation?
+
+        // else{
+       $("#equation p").replaceWith("<p>input of "+1+"* link weight of "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b><</b> threshold of "+threshold+"</p>");
+        // }
+        //something like input * the weight of that neuron ?> ?< output
+    console.log(tData[theIndexI].weight+"index weight");
+
+        $("#equation").show(1000).slideDown();
+
 myPulse=setInterval(function () {pulseTimer()}, 3000);
 
                                  $("#x").show().slideDown();
@@ -790,6 +845,9 @@ myPulse=setInterval(function () {pulseTimer()}, 3000);
                                     .attr("opacity",1)
                                     .each("end", function(){
                                         $("#x").slideUp("fast");
+                                        $("#intro2").hide();
+                                        $("#equation").hide();
+
                                     })                               
                                 }
                             })                        
@@ -806,14 +864,16 @@ myPulse=setInterval(function () {pulseTimer()}, 3000);
 
 var changeWeight = [];
 var error = 0;
-function triggerRoll(addIt, triggerSense){
+function triggerRoll(addIt, triggerSense, theIndexIs){
      console.log(addIt+"sum "+triggerSense+" sense");
      tSense = triggerSense;
 console.log(tData[0].weight+"old weight?");
 
     error = threshold-addIt;
     console.log(error+"error");
-        senseIn(addIt, triggerSense, error);
+
+    senseIn(addIt, triggerSense, error, theIndexIs);
+    console.log(theIndexIs+"indexis");
 
 // //new weighting
 if(error>0 && random == true){
@@ -824,8 +884,10 @@ for (i= 0; i<input.length; i++){
 showLines();
 }
 else{
-
 }
+// if(theIndex>0){
+// }
+
 if(error<0){
     trigger = true;
     console.log("trigger"+trigger)
@@ -879,6 +941,13 @@ console.log(tData[0].weight+"new weight");
 
 
 
+$('.neurons').tipsy({
+    gravity: 'w', 
+    html: true, 
+    title: function() {
+         return "Trigger a sense input";
+    }
+});
 
 
 
@@ -911,7 +980,7 @@ nextAnimation = true;
 prepEndText();
     $("#enter").slideUp();
         $("#title").animate({
-            top: "10%",
+            top: "8%",
         });
         // svg.call(transition, p0, p1);
 
