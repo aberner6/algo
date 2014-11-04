@@ -600,9 +600,14 @@ float: left;*/
 #container{
 z-index: 1;
 margin-left: 0px;
-margin-top:10px;
+/*margin-top:10px;*/
 }
-
+#game{
+z-index: 1;
+margin-left: 0px;
+margin-top:10px;
+background-color:rgb(10,200,244);
+}
 
 header#navbar {
 font-family: 'Lato-Light', sans-serif;

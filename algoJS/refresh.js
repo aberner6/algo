@@ -92,9 +92,106 @@ var randLength = 500;
 
 
 
-// boolean 
-loadData("senses.csv")
-    // transPos();
+
+var hTopMargin = height/10;
+var hMargin = 1.4;
+var leftMargin = width/6;
+var pathLength = 200;
+var rRad = 20;
+var tRad = 20;
+var xLMap = d3.scale.linear()
+    .domain([0, pathLength])
+    .range([leftMargin, width/2]);
+
+var xRMap = d3.scale.linear()
+    .domain([0, pathLength])
+    .range([width-leftMargin, width/2]);
+
+var hMap = d3.scale.linear()
+    .domain([0, pathLength])
+    .range([height/hMargin, hTopMargin]);
+
+var svg1 = d3.select("#game")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    // .attr("fill",)
+
+var trailCircle = svg1.selectAll("trail")
+    .data(d3.range([pathLength]))
+    .enter().append("circle")
+    .attr("class", function(d,i){
+        return "trail"+i;
+    })
+    .attr("cx", function(d,i){
+        if(i%2==0){
+         return xRMap(i);      
+        }
+        return xLMap(i);
+    })
+    .attr("cy", function(d,i){
+        return hMap(i);
+    })
+    .attr("r", tRad)
+    .attr("fill", "gray")
+    .attr("opacity",.7)
+    .attr("stroke","white")
+
+thisCircle = svg1.selectAll("runner")
+    .data(d3.range(2))
+    .enter().append("circle")
+    .attr("class", function(d,i){
+        return "runner"+i;
+    })
+    .attr("cx", function(d,i){
+        if(i%2==0){
+            return leftMargin;
+        }
+        return width-leftMargin;
+    })
+    .attr("cy", height/hMargin+rRad)
+    .attr("r", rRad)
+    .attr("fill", "white")
+    .attr("opacity",1)
+    .attr("stroke","teal")
+
+thisCircle.on("click", function(){
+    d3.select(this)
+    // thisCircle
+    .transition()
+    .duration(2000)
+    .attr("cx", width/2)
+    .attr("cy", hTopMargin)
+    .each("end", function(d,i){
+        d3.select(this).remove();
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//to load the scientific description
+// loadData("senses.csv")
 
 function loadData(csvName){
 
