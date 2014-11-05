@@ -37,19 +37,12 @@ var endOutX = lmargin*3;
 var introDuration = 6000;
 var random = false;
 var inputDone = false;
-// var height = 800;
-// var r;
 var r = 10;
 var a = false;
 var t = [];
 var o = [];
 var  strokeWeight= 2;
-// var lineColor = "gray";
-// var inColor = "gray";
-// var movingColor = "#438CA5";
-// var outColor = "gray";
 var startUp, shiftAway, endOutput, rollingCircle;
-// var distBetween = 40;
 var opacity = .5;
 var littleL = 4;
 var d;
@@ -61,16 +54,6 @@ var myTimer;
 var introTalk = true;
 var colorSpectrum = [];
 var myPulse;
-// loadData("senses.csv")
-// function loadData(csvName){
-// d3.csv(csvName, function(thisData) {
-    // for (i=0; i<data.length; i++){
-        // sense[i] = data[i].sense;
-        // weight[i] = data[i].weight;
-        // thisData.push({"sense":data[i].sense, "weight": data[i].weight})
-        // links.push({"source":neuronA[i],"target":neuronB[i]}) 
-    // }
-// }
 var sense = false;
 var neurons = false;
 svg = d3.select("#container")
@@ -92,6 +75,14 @@ var randLength = 500;
 
 
 
+
+
+
+
+
+
+
+var whatClicked;
 
 var hTopMargin = height/4;//10;
 var hMargin = 1.4;
@@ -126,6 +117,164 @@ var svg1 = d3.select("#game")
     .attr("width", width)
     .attr("height", height)
     // .attr("fill",)
+
+
+
+
+loadIt("senses.csv")
+
+function loadIt(csvName){
+
+d3.csv(csvName, function(thisData) {
+    tData=thisData;
+    if(tData.length>0){
+        for (var i = 0; i < tData.length; i++) {
+           tData[i].weight = Math.random();
+        } 
+        gaming();
+    }
+})
+}
+
+
+
+// myPulse=setInterval(function () {pulseTimer()}, 1000);
+// function pulseTimer() {
+//     pulseInputs();
+// }
+
+// $('.runner').tipsy({
+//     gravity: 'w', 
+//     html: true, 
+//     title: function() {
+//          return "Trigger a sense input";
+//     }
+// });
+
+
+$('#moreInfoBtn').tipsy({
+    gravity: 'e', 
+    html: true, 
+    title: function() {
+         return "Created by the Spatial Information Design Lab & Stefano Fusi Lab"
+         +'<br>'+'Researcher: Lyudmila Kushmir'+'<br>'+"Designer/Developer: Annelie Berner"+ '<br>';
+    }
+});
+
+
+
+// function pulseInputs(){
+//     d3.selectAll(".runner")
+//     .transition()
+//     .duration(500)
+//     .attr("stroke-width", strokeWeight*3)
+//     .each("end", function(d,i){
+//         d3.selectAll(".runner")
+//         .transition()
+//         .duration(500)
+//         .attr("stroke-width", strokeWeight);
+//     })
+// }
+function gaming(){
+function calculate(triggerSense){
+console.log(triggerSense+"inside calculate");
+    for (i=0; i<tData.length; i++){
+        if(tData[i].sense==triggerSense){
+            addIt += tData[i].weight;
+            theIndex=i;
+                console.log(theIndex);
+                console.log(addIt);
+        }
+    }
+    triggerRoll(addIt, triggerSense, theIndex);
+}
+
+// if(addIt>=threshold){//THIS SHOULD  BE HAPPENING @END
+//     return //BLAH
+// }else{
+//  return //BLAH      
+// }
+// console.log(tData[theIndexI].weight+"index weight");
+
+
+function showCaptions(addIs, senseIs, errorIs,thisIndex){
+// console.log(addIs+"addis"+ senseIs+"senseis"+ errorIs+"erroris"+thisIndex+"thisindex")
+// myPulse=setInterval(function () {pulseTimer()}, 3000);  
+}
+
+var error = 0;
+function triggerRoll(addIt, triggerSense, theIndexIs){
+     // console.log(addIt+"sum "+triggerSense+" sense");
+     tSense = triggerSense;
+    console.log(tData[0].weight+"old weight?");
+
+    error = threshold-addIt;
+    console.log(error+"error");
+
+    // showCaptions(addIt, triggerSense, error,theIndexIs);
+    // console.log(theIndexIs+"indexis");
+
+    // //new weighting
+    if(error>0){ //&& random == true){
+        for (i= 0; i<input.length; i++){
+            tData[i].weight += .8*error*input[i]; 
+        }
+    // showLines();
+    }
+    else{
+        console.log("all set"+error>0+"see?"+error)
+    }    
+    // if(error<0){
+    //     trigger = true;
+    //     console.log("trigger"+trigger)
+    // }
+console.log(tData[0].weight+"new weight?");
+}
+// $("#equation p").replaceWith("<p>input of "+1+"* link weight of "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b>>=</b> threshold of "+threshold+"</p>");
+// $("#equation").show(1000);
+// $("#equation").delay(2000).hide();
+
+// else{
+// $("#equation p").replaceWith("<p>input of "+1+"* link weight of "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b><</b> threshold of "+threshold+"</p>");
+// console.log(tData[theIndexI].weight+"index weight");
+// $("#equation").show(1000).show();
+// $("#equation").delay(2000).hide();
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var pathRight = svg1.selectAll("pathRight")
     .data(d3.range(2))
@@ -224,7 +373,8 @@ var trailRight = svg1.selectAll("trailRight")
 
 var thisCircle;
 thisCircle  = svg1.selectAll("runner")
-    .data(d3.range(2))
+    .data(tData)
+    // .data(d3.range(2))
     .enter().append("circle")
     .attr("class", function(d,i){
         return "runner";
@@ -246,7 +396,8 @@ function makeNewCirc(){
     console.log("making new")
     // return
 thisCircle  = svg1.selectAll("runner")
-    .data(d3.range(2))
+    .data(tData)
+    // .data(d3.range(2))
     .enter().append("circle")
     .attr("class", function(d,i){
         return "runner";
@@ -263,7 +414,30 @@ thisCircle  = svg1.selectAll("runner")
     .attr("opacity",1)
     .attr("stroke","none")
 clickFunction();
+// makeText();
 }
+
+function makeText(){
+d3.selectAll(".captions").remove();
+console.log(tData[0].weight+"tData[0].weight inside make text")
+var weightText = svg1.selectAll("captions")
+    .data(tData)
+    .enter()
+    .append("text").attr("class", "captions")
+    .attr("x", 200)
+    .attr("y", function(d,i){
+        return 100+i*20;
+    })
+    .attr("fill","gray")
+    .text(function(d,i){
+        return "Link "+i+": "+Math.floor(tData[i].weight * 100) / 100;
+    })     
+}
+
+
+
+
+
 clickFunction();
 
 var l = 0;
@@ -272,6 +446,26 @@ var r = 0;
 var whatIs;
 function clickFunction(){
 d3.selectAll(".runner").on("click", function(){
+makeText();
+
+    // clearInterval(myPulse);
+whatClicked = d3.select(this);
+console.log(whatClicked.data()[0].sense)
+    if (whatClicked.data()[0].sense=="smell"){
+console.log(whatClicked.data()[0].sense)
+        addIt = 0;
+        calculate("smell");
+    }
+    if(whatClicked.data()[0].sense=="touch"){
+console.log(whatClicked.data()[0].sense)
+        addIt = 0;
+        calculate("touch");
+    }
+
+
+
+
+
 
 whatIs = d3.select(this).attr("cx");
 if(whatIs<width/2){
@@ -362,6 +556,58 @@ function bumpUp(high){
         .attr("cy", hTopMargin-rRad)        
     })
 }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -483,14 +729,6 @@ circle = vis.selectAll("neurons")
     })
     .attr("r", 0)
     .attr("fill", "white")
-    // .attr("stroke-dasharray", function(d,i){
-    //     if(i%2==1){
-    //         return ("4,4");
-    //     }
-    //     else{
-    //         return ("0,0");
-    //     }
-    // })
     .attr("stroke", function(d,i){
         if(d.sense=="smell"){
             return color1;
@@ -716,7 +954,6 @@ d3.selectAll(".neurons")
     .duration(500)
     .attr("stroke-width", strokeWeight);
 })
-
 }
 
 function prepEndText(){

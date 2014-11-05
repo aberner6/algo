@@ -16,7 +16,16 @@ canvas{
   position:absolute;
 }
 
-
+@font-face {
+  font-family: 'SFDigitalReadout-Medium';
+  src: url('SFDigitalReadout-Medium.ttf');
+  /*font-size: 24px;*/
+  font-weight: normal;
+  font-style: normal;
+} 
+.captions{
+font-family:'SFDigitalReadout-Medium';
+}
 /*<div id = "senseCloud">{ sense cloud }</div>
 <div id = "neurons">{ neurons }</div>
 <div id = "connections">{ connections }</div>
