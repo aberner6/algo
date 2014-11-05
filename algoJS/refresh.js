@@ -109,7 +109,8 @@ var xRMap = d3.scale.linear()
 
 var hMap = d3.scale.linear()
     .domain([0, pathLength])
-    .range([height/hMargin, hTopMargin]);
+    .range([height/hMargin, hTopMargin-rRad]);
+    // .attr("cy", hTopMargin-rRad)
 
 var opaMap = d3.scale.linear()
     .domain([0, pathLength])
@@ -303,20 +304,43 @@ d3.selectAll(".trailRight")
     .duration(2000)
     .attr("cx", width/2)
     .attr("cy", hTopMargin-rRad)
+    .attr("r", function(d,i){
+        if(whatIs<width/2){
+            return oMap(l)*50;
+        } else{
+            return oMap(r)*50;
+        }
+    })
     // .call(twizzle, 2000)
     // .call(plonk, 2000)
     .each("end", function(d,i){
-if(whatIs<width/2){
-    bumpUp(l);
-} else{
-    bumpUp(r);
-}
-        d3.select(this).remove();
+        if(whatIs<width/2){
+            bumpUp(l);
+        } else{
+            bumpUp(r);
+        }
+        d3.select(this)
+        .transition()
+        .attr("stroke","white")
+        .attr("fill","none")
+        .each("end", function(){
+            d3.select(this).remove();
+        })
     })
     makeNewCirc();
 })
 }
 
+var winCircle  = svg1.selectAll("win")
+    .data(d3.range(1))
+    .enter().append("circle")
+    .attr("class","win")
+    .attr("cx", width/2)
+    .attr("cy", hTopMargin-rRad*4)
+    .attr("r", rRad)
+    .attr("fill", "none")
+    .attr("opacity",1)
+    .attr("stroke","white")  
 
 var bumpCircle  = svg1.selectAll("bump")
     .data(d3.range(1))
