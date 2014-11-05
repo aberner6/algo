@@ -137,11 +137,14 @@ var trailCircle = svg1.selectAll("trail")
     .attr("opacity",.7)
     .attr("stroke","white")
 
+var thisCircle;
+makeNewCirc();
+function makeNewCirc(){
 thisCircle = svg1.selectAll("runner")
     .data(d3.range(2))
     .enter().append("circle")
     .attr("class", function(d,i){
-        return "runner"+i;
+        return "runner";
     })
     .attr("cx", function(d,i){
         if(i%2==0){
@@ -154,18 +157,33 @@ thisCircle = svg1.selectAll("runner")
     .attr("fill", "white")
     .attr("opacity",1)
     .attr("stroke","teal")
-
-thisCircle.on("click", function(){
+clickFunction();
+}
+function clickFunction(){
+d3.selectAll(".runner").on("click", function(){
+    console.log("hey")
     d3.select(this)
     // thisCircle
     .transition()
     .duration(2000)
     .attr("cx", width/2)
     .attr("cy", hTopMargin)
+    // .call(twizzle, 2000)
+    // .call(plonk, 2000)
     .each("end", function(d,i){
         d3.select(this).remove();
     })
+    makeNewCirc();
 })
+}
+
+
+
+
+
+
+
+
 
 
 
