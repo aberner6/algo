@@ -96,20 +96,29 @@ var randLength = 500;
 var hTopMargin = height/10;
 var hMargin = 1.4;
 var leftMargin = width/6;
-var pathLength = 200;
+var pathLength = 100;
 var rRad = 20;
 var tRad = 20;
 var xLMap = d3.scale.linear()
     .domain([0, pathLength])
-    .range([leftMargin, width/2]);
+    .range([leftMargin+rRad/2+4, width/2]);
 
 var xRMap = d3.scale.linear()
     .domain([0, pathLength])
-    .range([width-leftMargin, width/2]);
+    .range([width-leftMargin-rRad/2-4, width/2]);
 
 var hMap = d3.scale.linear()
     .domain([0, pathLength])
     .range([height/hMargin, hTopMargin]);
+
+var opaMap = d3.scale.linear()
+    .domain([0, pathLength])
+    .range([1, 0]);
+
+var oMap = d3.scale.linear()
+    .domain([0, 100])
+    .range([0, 1]);
+
 
 var svg1 = d3.select("#game")
     .append("svg")
@@ -117,16 +126,61 @@ var svg1 = d3.select("#game")
     .attr("height", height)
     // .attr("fill",)
 
-var trailCircle = svg1.selectAll("trail")
+var pathRight = svg1.selectAll("pathRight")
+    .data(d3.range(2))
+    .enter().append("line")
+    .attr("class", function(d,i){
+        return "pathRight";
+    })
+    .attr("x1", function(d,i){
+        if(i%2==0){
+            return width-leftMargin-rRad;      
+        }
+            return width-leftMargin+rRad; 
+    })
+    .attr("x2", function(d,i){
+        if(i%2==0){
+            return width/2-rRad;
+        }
+        return width/2+rRad;
+    })
+    .attr("y1", height/hMargin+rRad)    
+    .attr("y2", hTopMargin)
+    .attr("fill", "gray")
+    .attr("opacity",1)
+    .attr("stroke","white")
+var pathLeft = svg1.selectAll("pathLeft")
+    .data(d3.range(2))
+    .enter().append("line")
+    .attr("class", function(d,i){
+        return "pathLeft";
+    })
+    .attr("x1", function(d,i){
+        if(i%2==0){
+            return leftMargin-rRad; 
+         }     
+            return leftMargin+rRad; 
+    })
+    .attr("x2", function(d,i){
+        if(i%2==0){
+            return width/2-rRad;
+        }
+        return width/2+rRad;
+    })
+    .attr("y1", height/hMargin+rRad)    
+    .attr("y2", hTopMargin)
+    .attr("fill", "gray")
+    .attr("opacity",1)
+    .attr("stroke","white")
+
+
+var trailLeft = svg1.selectAll("trailLeft")
     .data(d3.range([pathLength]))
     .enter().append("circle")
     .attr("class", function(d,i){
-        return "trail"+i;
+        return "trailLeft";
     })
     .attr("cx", function(d,i){
-        if(i%2==0){
-         return xRMap(i);      
-        }
         return xLMap(i);
     })
     .attr("cy", function(d,i){
@@ -134,13 +188,50 @@ var trailCircle = svg1.selectAll("trail")
     })
     .attr("r", tRad)
     .attr("fill", "gray")
-    .attr("opacity",.7)
+    .attr("opacity",0)
+    .attr("stroke","white")
+
+var trailRight = svg1.selectAll("trailRight")
+    .data(d3.range([pathLength]))
+    .enter().append("circle")
+    .attr("class", function(d,i){
+        return "trailRight";
+    })
+    .attr("cx", function(d,i){
+         return xRMap(i);      
+    })
+    .attr("cy", function(d,i){
+        return hMap(i);
+    })
+    .attr("r", tRad)
+    .attr("fill", "gray")
+    .attr("opacity",0)
     .attr("stroke","white")
 
 var thisCircle;
-makeNewCirc();
+thisCircle  = svg1.selectAll("runner")
+    .data(d3.range(2))
+    .enter().append("circle")
+    .attr("class", function(d,i){
+        return "runner";
+    })
+    .attr("r", rRad)
+    .attr("fill", "white")
+    .attr("opacity",1)
+    .attr("stroke","none")
+    .attr("cx", function(d,i){
+        if(i%2==0){
+            return leftMargin;
+        }
+        return width-leftMargin;
+    })
+    .attr("cy", height/hMargin+rRad)
+
+// makeNewCirc();
 function makeNewCirc(){
-thisCircle = svg1.selectAll("runner")
+    console.log("making new")
+    // return
+thisCircle  = svg1.selectAll("runner")
     .data(d3.range(2))
     .enter().append("circle")
     .attr("class", function(d,i){
@@ -156,14 +247,45 @@ thisCircle = svg1.selectAll("runner")
     .attr("r", rRad)
     .attr("fill", "white")
     .attr("opacity",1)
-    .attr("stroke","teal")
+    .attr("stroke","none")
 clickFunction();
 }
+clickFunction();
+
+var l = 0;
+var r = 0;
+
+var whatIs;
 function clickFunction(){
 d3.selectAll(".runner").on("click", function(){
-    console.log("hey")
+
+whatIs = d3.select(this).attr("cx");
+if(whatIs<width/2){
+l+=1;
+d3.selectAll(".trailLeft")
+    .attr("opacity", function(d,i){
+        if(i<=l*3){
+            return oMap(l);//opaMap(i)*oMap(l);
+        }
+        else{
+            return 0;
+        }
+    });
+}
+else{
+r+=1;
+d3.selectAll(".trailRight")
+    .attr("opacity", function(d,i){
+        if(i<=r*3){
+            return oMap(r);//opaMap(i)*oMap(r);
+        }
+        else{
+            return 0;
+        }
+    });
+}
+
     d3.select(this)
-    // thisCircle
     .transition()
     .duration(2000)
     .attr("cx", width/2)
