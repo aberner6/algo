@@ -93,7 +93,7 @@ var randLength = 500;
 
 
 
-var hTopMargin = height/10;
+var hTopMargin = height/4;//10;
 var hMargin = 1.4;
 var leftMargin = width/6;
 var pathLength = 100;
@@ -139,13 +139,19 @@ var pathRight = svg1.selectAll("pathRight")
             return width-leftMargin+rRad; 
     })
     .attr("x2", function(d,i){
-        if(i%2==0){
-            return width/2-rRad;
-        }
-        return width/2+rRad;
+        // if(i%2==0){
+        //     return width/2;//-rRad/4;
+        // }
+        // return width/2+rRad/2;
+        return width/2;
     })
     .attr("y1", height/hMargin+rRad)    
-    .attr("y2", hTopMargin)
+    .attr("y2", function(d,i){
+        if(i%2==1){
+            return hTopMargin-rRad*2;
+        }
+        return hTopMargin;
+    })
     .attr("fill", "gray")
     .attr("opacity",1)
     .attr("stroke","white")
@@ -162,13 +168,20 @@ var pathLeft = svg1.selectAll("pathLeft")
             return leftMargin+rRad; 
     })
     .attr("x2", function(d,i){
-        if(i%2==0){
-            return width/2-rRad;
-        }
-        return width/2+rRad;
+        // if(i%2==0){
+        //     return width/2-rRad/2;
+        // }
+        // return width/2+rRad/4;
+         return width/2;
     })
-    .attr("y1", height/hMargin+rRad)    
-    .attr("y2", hTopMargin)
+    .attr("y1", height/hMargin+rRad) 
+    .attr("y2", function(d,i){
+        if(i%2==0){
+            return hTopMargin-rRad*2;
+        }
+        return hTopMargin;
+    })   
+    // .attr("y2", hTopMargin)
     .attr("fill", "gray")
     .attr("opacity",1)
     .attr("stroke","white")
@@ -289,14 +302,41 @@ d3.selectAll(".trailRight")
     .transition()
     .duration(2000)
     .attr("cx", width/2)
-    .attr("cy", hTopMargin)
+    .attr("cy", hTopMargin-rRad)
     // .call(twizzle, 2000)
     // .call(plonk, 2000)
     .each("end", function(d,i){
+if(whatIs<width/2){
+    bumpUp(l);
+} else{
+    bumpUp(r);
+}
         d3.select(this).remove();
     })
     makeNewCirc();
 })
+}
+
+
+var bumpCircle  = svg1.selectAll("bump")
+    .data(d3.range(1))
+    .enter().append("circle")
+    .attr("class","bump")
+    .attr("cx", width/2)
+    .attr("cy", hTopMargin-rRad)
+    .attr("r", rRad/4)
+    .attr("fill", "white")
+    .attr("opacity",1)
+    .attr("stroke","none")   
+function bumpUp(high){
+    d3.selectAll(".bump")
+    .transition()
+    .attr("cy", hTopMargin-rRad-high*2)
+    .each("end", function(){
+        d3.selectAll(".bump")
+        .transition()
+        .attr("cy", hTopMargin-rRad)        
+    })
 }
 
 
