@@ -203,6 +203,7 @@ function showCaptions(addIs, senseIs, errorIs,thisIndex){
 }
 
 var error = 0;
+makeText(); 
 function triggerRoll(addIt, triggerSense, theIndexIs){
      // console.log(addIt+"sum "+triggerSense+" sense");
      tSense = triggerSense;
@@ -217,7 +218,8 @@ function triggerRoll(addIt, triggerSense, theIndexIs){
     // //new weighting
     if(error>0){ //&& random == true){
         for (i= 0; i<input.length; i++){
-            tData[i].weight += .8*error*input[i]; 
+            tData[i].weight += .8*error*input[i];
+makeText(); 
         }
     // showLines();
     }
@@ -446,7 +448,6 @@ var r = 0;
 var whatIs;
 function clickFunction(){
 d3.selectAll(".runner").on("click", function(){
-makeText();
 
     // clearInterval(myPulse);
 whatClicked = d3.select(this);
@@ -454,11 +455,13 @@ console.log(whatClicked.data()[0].sense)
     if (whatClicked.data()[0].sense=="smell"){
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
+        input[0] = 1;
         calculate("smell");
     }
     if(whatClicked.data()[0].sense=="touch"){
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
+        input[0] = 1;
         calculate("touch");
     }
 
