@@ -107,10 +107,17 @@ var opaMap = d3.scale.linear()
     .domain([0, pathLength])
     .range([1, 0]);
 
+// var oMap = d3.scale.linear()
+//     .domain([0, 100])
+//     .range([0, 1]);
+
 var oMap = d3.scale.linear()
-    .domain([0, 100])
+    .domain([0, threshold*pathLength])
     .range([0, 1]);
 
+var weightOpaMap = d3.scale.linear()
+    .domain([0, .5])
+    .range([0, 1]);
 
 var svg1 = d3.select("#game")
     .append("svg")
@@ -176,7 +183,7 @@ $('#moreInfoBtn').tipsy({
 //     })
 // }
 function gaming(){
-function calculate(triggerSense){
+function calculate(triggerSense, xPos){
 console.log(triggerSense+"inside calculate");
     for (i=0; i<tData.length; i++){
         if(tData[i].sense==triggerSense){
@@ -186,7 +193,7 @@ console.log(triggerSense+"inside calculate");
                 console.log(addIt);
         }
     }
-    triggerRoll(addIt, triggerSense, theIndex);
+    triggerRoll(addIt, triggerSense, theIndex, xPos);
 }
 
 // if(addIt>=threshold){//THIS SHOULD  BE HAPPENING @END
@@ -206,7 +213,7 @@ var error = 0;
 // makeText(); 
 makeText(tData,0); 
 
-function triggerRoll(addIt, triggerSense, theIndexIs){
+function triggerRoll(addIt, triggerSense, theIndexIs, xPos){
 
      // console.log(addIt+"sum "+triggerSense+" sense");
      tSense = triggerSense;
@@ -223,6 +230,7 @@ function triggerRoll(addIt, triggerSense, theIndexIs){
         for (i= 0; i<input.length; i++){
             tData[i].weight += .8*error*input[i];
 makeText(tData,theIndexIs); 
+changeCircs(tData,theIndexIs, xPos);
 
         }
     // showLines();
@@ -458,52 +466,49 @@ d3.selectAll(".runner").on("click", function(){
 
     // clearInterval(myPulse);
 whatClicked = d3.select(this);
+whatIs = d3.select(this).attr("cx");
+
 console.log(whatClicked.data()[0].sense)
     if (whatClicked.data()[0].sense=="smell"){
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
         input[0] = 1;
             input[1] = 0;
-        calculate("smell");
+        calculate("smell", whatIs);
     }
     if(whatClicked.data()[0].sense=="touch"){
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
             input[0] = 0;
         input[1] = 1;
-        calculate("touch");
+        calculate("touch", whatIs);
     }
 
 
-
-
-
-
-whatIs = d3.select(this).attr("cx");
-if(whatIs<width/2){
-l+=1;
-d3.selectAll(".trailLeft")
-    .attr("opacity", function(d,i){
-        if(i<=l*3){
-            return oMap(l);//opaMap(i)*oMap(l);
-        }
-        else{
-            return 0;
-        }
-    });
-}
-else{
-r+=1;
-d3.selectAll(".trailRight")
-    .attr("opacity", function(d,i){
-        if(i<=r*3){
-            return oMap(r);//opaMap(i)*oMap(r);
-        }
-        else{
-            return 0;
-        }
-    });
-}
+// if(whatIs<width/2){
+// l+=1;
+// d3.selectAll(".trailLeft")
+//     .attr("opacity", function(d,i){
+//         if(i<=l*3){
+//             return oMap(l);//opaMap(i)*oMap(l);
+//         }
+//         else{
+//             return 0;
+//         }
+//     });
+// }
+// else{
+// r+=1;
+// d3.selectAll(".trailRight")
+//     .attr("opacity", function(d,i){
+//         if(i<=r*3){
+//             return oMap(r);//opaMap(i)*oMap(r);
+//         }
+//         else{
+//             return 0;
+//         }
+//     });
+// }
 
     d3.select(this)
     .transition()
@@ -535,6 +540,56 @@ d3.selectAll(".trailRight")
     })
     makeNewCirc();
 })
+}
+
+function changeCircs(newData,indexCircs, xPos){
+if(xPos<width/2){
+l+=1;
+d3.selectAll(".trailLeft")
+    .attr("opacity", function(d,i){
+        // console.log(weightOpaMap(newData[indexCircs].weight)+"weightOpaMap")
+        var howFar = newData[indexCircs].weight*pathLength;
+        if(i<=howFar+threshold*pathLength){
+            return oMap(howFar);
+        }
+        else{
+            return 0;
+        }
+        // return (newData[indexCircs].weight)
+        // newData[indexCircs].weight*10;
+
+        // if(i<=l*3){
+        //     return oMap(l);
+        // }
+        // else{
+        //     return 0;
+        // }
+    });
+}
+else{
+    console.log(xPos+"greater than width/2?")
+r+=1;
+d3.selectAll(".trailRight")
+    .attr("opacity", function(d,i){
+        var howFar = newData[indexCircs].weight*pathLength;
+        if(i<=howFar+threshold*pathLength){
+        //if(i<=howFar){
+            return oMap(howFar);
+        }
+        else{
+            return 0;
+        }
+
+
+        // if(i<=r*3){
+        //     return oMap(r);
+        // }
+        // else{
+        //     return 0;
+        // }
+    });
+}
+
 }
 
 var winCircle  = svg1.selectAll("win")
