@@ -24,6 +24,7 @@ canvas{
   font-style: normal;
 } 
 .captions{
+font-size: 18px;
 font-family:'SFDigitalReadout-Medium';
 }
 /*<div id = "senseCloud">{ sense cloud }</div>

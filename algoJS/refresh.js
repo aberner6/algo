@@ -203,11 +203,14 @@ function showCaptions(addIs, senseIs, errorIs,thisIndex){
 }
 
 var error = 0;
-makeText(); 
+// makeText(); 
+makeText(tData,0); 
+
 function triggerRoll(addIt, triggerSense, theIndexIs){
+
      // console.log(addIt+"sum "+triggerSense+" sense");
      tSense = triggerSense;
-    console.log(tData[0].weight+"old weight?");
+    console.log(tData[theIndexIs].weight+"old weight?");
 
     error = threshold-addIt;
     console.log(error+"error");
@@ -219,18 +222,21 @@ function triggerRoll(addIt, triggerSense, theIndexIs){
     if(error>0){ //&& random == true){
         for (i= 0; i<input.length; i++){
             tData[i].weight += .8*error*input[i];
-makeText(); 
+makeText(tData,theIndexIs); 
+
         }
     // showLines();
     }
+
     else{
-        console.log("all set"+error>0+"see?"+error)
+
+        // console.log("all set"+error>0+"see?"+error)
     }    
     // if(error<0){
     //     trigger = true;
     //     console.log("trigger"+trigger)
     // }
-console.log(tData[0].weight+"new weight?");
+console.log(tData[theIndexIs].weight+"new weight?");
 }
 // $("#equation p").replaceWith("<p>input of "+1+"* link weight of "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b>>=</b> threshold of "+threshold+"</p>");
 // $("#equation").show(1000);
@@ -419,11 +425,12 @@ clickFunction();
 // makeText();
 }
 
-function makeText(){
+function makeText(newData, indexText){
 d3.selectAll(".captions").remove();
-console.log(tData[0].weight+"tData[0].weight inside make text")
+console.log(newData+"newdata");
+console.log(newData[indexText].weight+" newData[indextext].weight inside make text")
 var weightText = svg1.selectAll("captions")
-    .data(tData)
+    .data(newData)
     .enter()
     .append("text").attr("class", "captions")
     .attr("x", 200)
@@ -432,7 +439,7 @@ var weightText = svg1.selectAll("captions")
     })
     .attr("fill","gray")
     .text(function(d,i){
-        return "Link "+i+": "+Math.floor(tData[i].weight * 100) / 100;
+        return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100;
     })     
 }
 
@@ -456,12 +463,14 @@ console.log(whatClicked.data()[0].sense)
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
         input[0] = 1;
+            input[1] = 0;
         calculate("smell");
     }
     if(whatClicked.data()[0].sense=="touch"){
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
-        input[0] = 1;
+            input[0] = 0;
+        input[1] = 1;
         calculate("touch");
     }
 
