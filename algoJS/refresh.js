@@ -235,7 +235,8 @@ changeCircs(tData,theIndexIs, xPos);
     }
 
     else{
-
+makeText(tData,theIndexIs); 
+changeCircs(tData,theIndexIs, xPos);
         // console.log("all set"+error>0+"see?"+error)
     }    
     // if(error<0){
@@ -442,22 +443,54 @@ var weightRect = svg1.selectAll("rectC")
     .attr("width",180)
     .attr("height",50)
     .attr("fill","white")
-    .attr("stroke", "white");  
+    .attr("stroke", "white"); 
+
+var midLine = svg1.selectAll("midlineC")
+    .data(d3.range(1))
+    .enter()
+    .append("line").attr("class", "midlineC")
+    .attr("x1", 190)
+    .attr("y1", 105)
+    .attr("x2", 370)
+    .attr("y2", 105)
+    .attr("fill","gray")
+    .attr("stroke","gray")
+    .attr("stroke-weight",.1)
+
 
 var weightLine = svg1.selectAll("lineC")
-    .data(d3.range(4))
+    .data(d3.range(3))
     .enter()
     .append("line").attr("class", "lineC")
     .attr("x1", function(d,i){
+        if(i==1){
+            return 190 + 115;
+        }
+        if(i==2){
+            return 190 + 135;
+        }
+        if(i==3){
+            // return 190 + 175;
+        }
         return 190 + i+ 70;
     })
     .attr("y1", 80)
     .attr("x2", function(d,i){
+        if(i==1){
+            return 190 + 115;
+        }
+        if(i==2){
+            return 190 + 135;
+        }
+        if(i==3){
+            // return 190 + 175;
+        }
         return 190 + i+ 70;
     })
     .attr("y2", 130)
     .attr("fill","gray")
     .attr("stroke","gray")
+    .attr("stroke-weight",.1)
 
 d3.selectAll(".captions").remove();
 console.log(newData+"newdata");
@@ -527,32 +560,6 @@ console.log(whatClicked.data()[0].sense)
         calcGame("touch", whatIs);
     }
 
-
-// if(whatIs<width/2){
-// l+=1;
-// d3.selectAll(".trailLeft")
-//     .attr("opacity", function(d,i){
-//         if(i<=l*3){
-//             return oMap(l);//opaMap(i)*oMap(l);
-//         }
-//         else{
-//             return 0;
-//         }
-//     });
-// }
-// else{
-// r+=1;
-// d3.selectAll(".trailRight")
-//     .attr("opacity", function(d,i){
-//         if(i<=r*3){
-//             return oMap(r);//opaMap(i)*oMap(r);
-//         }
-//         else{
-//             return 0;
-//         }
-//     });
-// }
-
     d3.select(this)
     .transition()
     .duration(2000)
@@ -568,11 +575,6 @@ console.log(whatClicked.data()[0].sense)
     // .call(twizzle, 2000)
     // .call(plonk, 2000)
     .each("end", function(d,i){
-        if(whatIs<width/2){
-            bumpUp(l);
-        } else{
-            bumpUp(r);
-        }
         d3.select(this)
         .transition()
         .attr("stroke","white")
@@ -598,15 +600,7 @@ d3.selectAll(".trailLeft")
         else{
             return 0;
         }
-        // return (newData[indexCircs].weight)
-        // newData[indexCircs].weight*10;
-
-        // if(i<=l*3){
-        //     return oMap(l);
-        // }
-        // else{
-        //     return 0;
-        // }
+        bumpUp(newData[indexCircs].weight);
     });
 }
 else{
@@ -622,14 +616,7 @@ d3.selectAll(".trailRight")
         else{
             return 0;
         }
-
-
-        // if(i<=r*3){
-        //     return oMap(r);
-        // }
-        // else{
-        //     return 0;
-        // }
+            bumpUp(newData[indexCircs].weight);
     });
 }
 
@@ -657,13 +644,19 @@ var bumpCircle  = svg1.selectAll("bump")
     .attr("opacity",1)
     .attr("stroke","none")   
 function bumpUp(high){
+var mapBump = d3.scale.linear()
+    .domain([0,1])
+    .range([hTopMargin-rRad, hTopMargin-rRad*6])
+
     d3.selectAll(".bump")
     .transition()
-    .attr("cy", hTopMargin-rRad-high*2)
+    .attr("cy", hTopMargin-rRad)
     .each("end", function(){
         d3.selectAll(".bump")
         .transition()
-        .attr("cy", hTopMargin-rRad)        
+        .attr("cy", function(){
+            return mapBump(high)
+        });        
     })
 }
 }
