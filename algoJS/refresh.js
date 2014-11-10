@@ -8,7 +8,7 @@ var moveAround;
 var theIndex = [];
 
 var windowWidth = window.outerWidth,
-    windowHeight= window.innerHeight,
+    windowHeight= window.innerHeight-50,
     height = windowHeight,
     width = windowWidth;
 var lmargin = windowWidth/4;
@@ -56,14 +56,7 @@ var colorSpectrum = [];
 var myPulse;
 var sense = false;
 var neurons = false;
-svg = d3.select("#container")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height);
-vis = svg //for the visualization
-    .append('svg:g')
-    .attr("transform",
-      "translate("+ 0 + "," + 0 + ")");  
+
 o = [1, 2];
 var numInput = 100;
 var randLength = 500;
@@ -697,11 +690,36 @@ function bumpUp(high){
 
 
 
+$('#enterGame').tipsy({
+    gravity: 'nw', 
+    html: true, 
+    title: function() {
+         return "Return to Part I: Game";
+    }
+});
 
+$('#enterContainer').tipsy({
+    gravity: 'sw', 
+    html: true, 
+    title: function() {
+         return "Part II: Scientific Explanation";
+    }
+});
 
+$("#enterGame").on("click", function(){
+    $("#container").slideUp("slow");
+    $("#game").slideDown("slow");
+    // $("#enterGame").show();
+})
+$("#enterContainer").on("click", function(){
+    $("#game").slideUp("slow");
+    
+    $("#enterGame").show();
 
-
-
+    $("#container").slideDown("slow", function(){
+        loadData("senses.csv");
+    });
+})
 
 
 
@@ -711,7 +729,14 @@ function bumpUp(high){
 // loadData("senses.csv")
 
 function loadData(csvName){
-
+svg = d3.select("#container")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+vis = svg //for the visualization
+    .append('svg:g')
+    .attr("transform",
+      "translate("+ 0 + "," + 0 + ")");  
 d3.csv(csvName, function(thisData) {
 tData=(thisData);
 

@@ -33,10 +33,10 @@
 
                 if (typeof this.$element[0].nearestViewportElement == 'object') {
                     // SVG
-					var el = this.$element[0];
+                    var el = this.$element[0];
                     var rect = el.getBoundingClientRect();
-					pos.width = rect.width;
-					pos.height = rect.height;
+                    pos.width = rect.width;
+                    pos.height = rect.height;
                 }
 
                 
@@ -174,8 +174,8 @@
         options = $.extend({}, $.fn.tipsy.defaults, options);
 
         if (options.hoverlock && options.delayOut === 0) {
-	    options.delayOut = 100;
-	}
+        options.delayOut = 100;
+    }
         
         function get(ele) {
             var tipsy = $.data(ele, 'tipsy');
@@ -271,18 +271,18 @@
      *        component.
      */
      $.fn.tipsy.autoBounds = function(margin, prefer) {
-		return function() {
-			var dir = {ns: prefer[0], ew: (prefer.length > 1 ? prefer[1] : false)},
-			    boundTop = $(document).scrollTop() + margin,
-			    boundLeft = $(document).scrollLeft() + margin,
-			    $this = $(this);
+        return function() {
+            var dir = {ns: prefer[0], ew: (prefer.length > 1 ? prefer[1] : false)},
+                boundTop = $(document).scrollTop() + margin,
+                boundLeft = $(document).scrollLeft() + margin,
+                $this = $(this);
 
-			if ($this.offset().top < boundTop) dir.ns = 'n';
-			if ($this.offset().left < boundLeft) dir.ew = 'w';
-			if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
-			if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
+            if ($this.offset().top < boundTop) dir.ns = 'n';
+            if ($this.offset().left < boundLeft) dir.ew = 'w';
+            if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
+            if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
 
-			return dir.ns + (dir.ew ? dir.ew : '');
-		};
+            return dir.ns + (dir.ew ? dir.ew : '');
+        };
     };
 })(jQuery);

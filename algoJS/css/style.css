@@ -15,6 +15,55 @@ canvas{
   top:0px;
   position:absolute;
 }
+#enterGame{
+  display:none;
+  position:absolute;
+  top: 50px;
+  left: 40px;
+  padding:10px;
+  opacity:.8;
+  width: 0.8em;
+  z-index: 20;
+  background-color: gray;
+  line-height: 0px;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+  padding: 5px;
+  cursor: pointer;
+}
+#enterGame:hover {
+  background-color: darkgray;
+  border-left: 1px solid yellow;
+  border-right: 1px solid yellow;
+  border-bottom: 1px solid yellow;
+  cursor: pointer;
+}
+#enterContainer{
+  position:absolute;
+  bottom: .5%;
+  left: 40px;
+  padding:10px;
+  opacity:.8;
+  width: 0.8em;
+  z-index: 20;
+  background-color: gray;
+  line-height: 0px;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+  padding: 5px;
+  cursor: pointer;
+}
+
+#enterContainer:hover{
+  background-color: darkgray;
+  border-left: 1px solid yellow;
+  border-right: 1px solid yellow;
+  border-bottom: 1px solid yellow;
+  cursor: pointer;
+}
+
 
 @font-face {
   font-family: 'SFDigitalReadout-Medium';
@@ -133,7 +182,7 @@ z-index:1;
 
 
 #moreInfoBtn {
-  opacity: 0.5;
+/*  opacity: 0.5;
   background-color: #777;
   font-family: 'Georgia';
   position: fixed;
@@ -142,7 +191,23 @@ z-index:1;
   border-radius: 10px;
   padding: 6px 13px;
   font-size: 15px;
-  text-decoration: none; }
+  text-decoration: none;*/
+opacity: 0.8;
+background-color: #777;
+font-family: 'Georgia';
+position: fixed;
+right: 10px;
+top: 12px;
+/* border-radius: 10px; */
+padding: 4px 6px 4px 6px;
+font-size: 12px;
+text-align: center;
+text-decoration: none;
+font-weight:bold; 
+}
+
+
+
   #moreInfoBtn:hover {
     -webkit-transition: opacity 0.3s;
     opacity: 0.9;
@@ -610,6 +675,7 @@ float: left;*/
 #container{
 z-index: 1;
 margin-left: 0px;
+display: none;
 /*margin-top:10px;*/
 }
 #game{
