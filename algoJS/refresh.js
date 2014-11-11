@@ -181,8 +181,9 @@ $('#moreInfoBtn').tipsy({
 //     })
 // }
 function gaming(){
-function calcGame(triggerSense, xPos){
+function calcGame(triggerSense, xPos, clicks){
 console.log(triggerSense+"inside calculate");
+console.log(clicks+"clicks")
     for (i=0; i<tData.length; i++){
         if(tData[i].sense==triggerSense){
             addIt += tData[i].weight;
@@ -191,7 +192,7 @@ console.log(triggerSense+"inside calculate");
                 console.log(addIt);
         }
     }
-    triggerRollGame(addIt, triggerSense, theIndex, xPos);
+    triggerRollGame(addIt, triggerSense, theIndex, xPos, clicks);
 }
 
 // if(addIt>=threshold){//THIS SHOULD  BE HAPPENING @END
@@ -211,7 +212,10 @@ var error = 0;
 // makeText(); 
 makeText(tData,0); 
 
-function triggerRollGame(addIt, triggerSense, theIndexIs, xPos){
+var learning = d3.scale.linear()
+    .domain([0,10])
+    .range([0,1])
+function triggerRollGame(addIt, triggerSense, theIndexIs, xPos,clicks){
 
      // console.log(addIt+"sum "+triggerSense+" sense");
      tSense = triggerSense;
@@ -222,11 +226,13 @@ function triggerRollGame(addIt, triggerSense, theIndexIs, xPos){
 
     // showCaptions(addIt, triggerSense, error,theIndexIs);
     // console.log(theIndexIs+"indexis");
+learningConstant = learning(clicks);
+console.log(learningConstant+"learning")
 
     // //new weighting
     if(error>0){ //&& random == true){
         for (i= 0; i<input.length; i++){
-            tData[i].weight += .8*error*input[i];
+            tData[i].weight += learningConstant*error*input[i];
 makeText(tData,theIndexIs); 
 changeCircs(tData,theIndexIs, xPos);
 
@@ -507,7 +513,7 @@ var weightText = svg1.selectAll("captions")
     .attr("fill","gray")
     .text(function(d,i){
         if(Math.floor(newData[i].weight * 100) / 100 >= threshold){
-            if(wasClicked){
+            if(wasClicked && newData[indexText].weight>=threshold){
                 $("#refresh1p").slideDown();
             }
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
@@ -529,17 +535,22 @@ var weightText = svg1.selectAll("captions")
     })     
 }
 $("#refresh1p").animate({
-    left: width/2,
-    top: hTopMargin-rRad*4,
+    left: width/2+12,
+    top: hTopMargin-rRad*4-6,
 })
 $("#refresh1p").on("click", function(){
+s = 0;
+u = 0;
+d3.selectAll(".win")
+    .transition()
+    .attr("fill", "none");
     for (var i = 0; i < tData.length; i++) {
         tData[i].weight = Math.random();
     } 
     makeText(tData,0);
      d3.selectAll(".trailLeft, .trailRight")
         .transition()
-        .duration(3000)
+        // .duration(3000)
         .attr('opacity',0);
 $("#refresh1p").hide();
 })
@@ -549,8 +560,8 @@ $("#refresh1p").hide();
 
 clickFunction();
 
-var l = 0;
-var r = 0;
+var s = 0;
+var u = 0;
 
 var whatIs;
 function clickFunction(){
@@ -562,18 +573,20 @@ whatIs = d3.select(this).attr("cx");
 
 console.log(whatClicked.data()[0].sense)
     if (whatClicked.data()[0].sense=="smell"){
+    s+=1;
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
         input[0] = 1;
             input[1] = 0;
-        calcGame("smell", whatIs);
+        calcGame("smell", whatIs,s);
     }
     if(whatClicked.data()[0].sense=="touch"){
+        u+=1;
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
             input[0] = 0;
         input[1] = 1;
-        calcGame("touch", whatIs);
+        calcGame("touch", whatIs,u);
     }
 
     d3.select(this)
@@ -581,13 +594,13 @@ console.log(whatClicked.data()[0].sense)
     .duration(2000)
     .attr("cx", width/2)
     .attr("cy", hTopMargin-rRad)
-    .attr("r", function(d,i){
-        if(whatIs<width/2){
-            return oMap(l)*50;
-        } else{
-            return oMap(r)*50;
-        }
-    })
+    // .attr("r", function(d,i){
+    //     if(whatIs<width/2){
+    //         return oMap(l)*50;
+    //     } else{
+    //         return oMap(r)*50;
+    //     }
+    // })
     // .call(twizzle, 2000)
     // .call(plonk, 2000)
     .each("end", function(d,i){
@@ -603,7 +616,8 @@ console.log(whatClicked.data()[0].sense)
     makeNewCirc();
 })
 }
-
+var l = 0;
+var r = 0;
 function changeCircs(newData,indexCircs, xPos){
 if(xPos<width/2){
 l+=1;
@@ -675,7 +689,16 @@ var mapBump = d3.scale.linear()
         .transition()
         .attr("cy", function(){
             return mapBump(high)
-        });        
+        })
+        .each("end", function(){
+            if(high>=.5){
+                d3.selectAll(".win")
+                .transition()
+                .attr("fill", "white") //should be something like the other thing in science with dashed
+                // .each("end", )
+                //also change learning constant
+            }
+        })        
     })
 }
 }
