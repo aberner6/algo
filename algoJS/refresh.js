@@ -365,7 +365,7 @@ var trailLeft = svg1.selectAll("trailLeft")
         return hMap(i);
     })
     .attr("r", tRad)
-    .attr("fill", "gray")
+    .attr("fill", "none")
     .attr("opacity",0)
     .attr("stroke","white")
 
@@ -382,7 +382,7 @@ var trailRight = svg1.selectAll("trailRight")
         return hMap(i);
     })
     .attr("r", tRad)
-    .attr("fill", "gray")
+    .attr("fill", "none")
     .attr("opacity",0)
     .attr("stroke","white")
 
@@ -432,7 +432,7 @@ clickFunction();
 // makeText();
 }
 
-
+var wasClicked = false;
 function makeText(newData, indexText){
 var weightRect = svg1.selectAll("rectC")
     .data(d3.range(1))
@@ -507,6 +507,9 @@ var weightText = svg1.selectAll("captions")
     .attr("fill","gray")
     .text(function(d,i){
         if(Math.floor(newData[i].weight * 100) / 100 >= threshold){
+            if(wasClicked){
+                $("#refresh1p").slideDown();
+            }
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
                 return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" >= "+threshold;
             }
@@ -524,9 +527,22 @@ var weightText = svg1.selectAll("captions")
             // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+      "   <    "+threshold;                       
         }
     })     
-
 }
-
+$("#refresh1p").animate({
+    left: width/2,
+    top: hTopMargin-rRad*4,
+})
+$("#refresh1p").on("click", function(){
+    for (var i = 0; i < tData.length; i++) {
+        tData[i].weight = Math.random();
+    } 
+    makeText(tData,0);
+     d3.selectAll(".trailLeft, .trailRight")
+        .transition()
+        .duration(3000)
+        .attr('opacity',0);
+$("#refresh1p").hide();
+})
 
 
 
@@ -539,7 +555,7 @@ var r = 0;
 var whatIs;
 function clickFunction(){
 d3.selectAll(".runner").on("click", function(){
-
+wasClicked = true;
     // clearInterval(myPulse);
 whatClicked = d3.select(this);
 whatIs = d3.select(this).attr("cx");
@@ -581,6 +597,7 @@ console.log(whatClicked.data()[0].sense)
         .attr("fill","none")
         .each("end", function(){
             d3.select(this).remove();
+            wasClicked = false;
         })
     })
     makeNewCirc();
@@ -592,6 +609,7 @@ if(xPos<width/2){
 l+=1;
 d3.selectAll(".trailLeft")
     .attr("opacity", function(d,i){
+        bumpUp(newData[indexCircs].weight);
         // console.log(weightOpaMap(newData[indexCircs].weight)+"weightOpaMap")
         var howFar = newData[indexCircs].weight*pathLength;
         if(i<=howFar+threshold*pathLength){
@@ -600,7 +618,6 @@ d3.selectAll(".trailLeft")
         else{
             return 0;
         }
-        bumpUp(newData[indexCircs].weight);
     });
 }
 else{
@@ -608,6 +625,7 @@ else{
 r+=1;
 d3.selectAll(".trailRight")
     .attr("opacity", function(d,i){
+            bumpUp(newData[indexCircs].weight);
         var howFar = newData[indexCircs].weight*pathLength;
         if(i<=howFar+threshold*pathLength){
         //if(i<=howFar){
@@ -616,7 +634,6 @@ d3.selectAll(".trailRight")
         else{
             return 0;
         }
-            bumpUp(newData[indexCircs].weight);
     });
 }
 
@@ -645,11 +662,13 @@ var bumpCircle  = svg1.selectAll("bump")
     .attr("stroke","none")   
 function bumpUp(high){
 var mapBump = d3.scale.linear()
-    .domain([0,1])
-    .range([hTopMargin-rRad, hTopMargin-rRad*6])
+    .domain([0,.5])
+    .range([hTopMargin-rRad, hTopMargin-rRad*5])
 
     d3.selectAll(".bump")
     .transition()
+    // .delay(000)
+    .duration(2000)
     .attr("cy", hTopMargin-rRad)
     .each("end", function(){
         d3.selectAll(".bump")
@@ -660,7 +679,6 @@ var mapBump = d3.scale.linear()
     })
 }
 }
-
 
 
 
@@ -1122,36 +1140,36 @@ function prepEndText(){
 
 
 if(neurons!="undefined" && cloudCirc != "undefined"){
-d3.selectAll(".cloudCirc")
-    .on("click", function(d,i){
-    introTalk = true;
-        thisCloudCirc = d3.select(this);
-        clearInterval(myPulse);
-        moveAround(secs);
-        $("#title").fadeOut()
-        $("#output").slideUp();
-        d3.select(this);
-        if (d.sense=="smell"){
-            addIt = 0;
-            calculate("smell");
-        }
-        if(d.sense=="touch"){
-            addIt = 0;
-            console.log(d.sense)
-            calculate("touch");
-        }
-    })
-    .on("mouseover", function(){
-        $("#title").fadeOut()
-        d3.select(this)
-        .transition()
-        .attr("stroke-width", strokeWeight*3);
-    })
-    .on("mouseout", function(){
-         d3.select(this)
-        .transition()
-        .attr("stroke-width", strokeWeight);   
-    })
+// d3.selectAll(".cloudCirc")
+//     .on("click", function(d,i){
+//     introTalk = true;
+//         thisCloudCirc = d3.select(this);
+//         clearInterval(myPulse);
+//         // moveAround(secs);
+//         $("#title").fadeOut()
+//         $("#output").slideUp();
+//         d3.select(this);
+//         if (d.sense=="smell"){
+//             addIt = 0;
+//             calculate("smell");
+//         }
+//         if(d.sense=="touch"){
+//             addIt = 0;
+//             console.log(d.sense)
+//             calculate("touch");
+//         }
+//     })
+//     .on("mouseover", function(){
+//         $("#title").fadeOut()
+//         d3.select(this)
+//         .transition()
+//         .attr("stroke-width", strokeWeight*3);
+//     })
+//     .on("mouseout", function(){
+//          d3.select(this)
+//         .transition()
+//         .attr("stroke-width", strokeWeight);   
+//     })
 
 
 
