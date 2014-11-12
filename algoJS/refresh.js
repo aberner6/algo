@@ -650,102 +650,91 @@ console.log(whatClicked.data()[0].sense)
     makeNewCirc();
 })
 }
+var what = 0;
+
 var l = 0;
 var right = 0;
 function changeCircs(newData,indexCircs, xPos){
-    var multiplier = 1;
+var multiplier = 1;
 var oMap = d3.scale.linear()
     .domain([0, threshold*multiplier])
     .range([0, 1]);
-console.log(xPos+"xpos")
+
 if(xPos<width/2){
-// l+=1;
-l = 1;
-// var xLMap = d3.scale.linear()
-//     .domain([0, newData[0].weight*multiplier*l])
-//     .range([leftMargin+rRad/2+4, width/2]);
-// var hMap = d3.scale.linear()
-//     .domain([0, newData[0].weight*multiplier*l])
-//     .range([height/hMargin, hTopMargin-rRad]);
-var xLMap = d3.scale.linear()
-    .domain([0, threshold])
-    .range([leftMargin+rRad/2+4, width/2]);
+l+=1;
+var what = newData[0].weight*100;
 var hMap = d3.scale.linear()
-    .domain([0, threshold])
+    .domain([0, what])
     .range([height/hMargin, hTopMargin-rRad]);
+var xLMap = d3.scale.linear()
+    .domain([0, what])
+    .range([leftMargin+rRad/2+4, width/2]);
 
 var trailLeft = svg1.selectAll("trailLeft")
-    .data(d3.range([newData[0].weight*multiplier]))
-    // .data(randData)
+    .data(d3.range([what]))
     .enter().append("circle")
     .attr("class", function(d,i){
         return "trailLeft";
     })
     .attr("cx", function(d,i){
-        // return xLMap(i);
-        // return xLMap(d);
-        return xLMap(newData[0].weight);
+        return xLMap(i);//newData[1].weight);
     })
     .attr("cy", function(d,i){
-        // return hMap(i);
-        return hMap(newData[0].weight);
-        // return hMap(d);
+        return hMap(i)//newData[1].weight);
     })
     .attr("r", tRad)
     .attr("fill", "none")
-    // .attr("opacity",function(d,i){
-    //     bumpUp(newData[indexCircs].weight);
-    //     var howFar = newData[0].weight*multiplier;
-    //     if(i<=howFar+threshold*l){
-    //         return oMap(howFar);
-    //     }
-    //     else{
-    //         return 0;
-    //     }        
-    // })
     .attr("stroke","white")
+     .attr("opacity",function(d,i){
+         bumpUp(newData[indexCircs].weight);
+         // var howFar = newData[1].weight*multiplier;
+         if(i<=what){
+            return oMap(newData[0].weight);
+         }
+        else{
+            return 0;
+        }        
+ })
 }
 
 
 else{
     console.log(newData[1].weight+"newDataweight")
-// right+=1;
-right = 1;
+right +=1;
+// if((newData[1].weight)>=threshold){
+var what = newData[1].weight*100;
 var h2Map = d3.scale.linear()
-    .domain([0, threshold])
+    .domain([0, what])
     .range([height/hMargin, hTopMargin-rRad]);
 var xRMap = d3.scale.linear()
-    .domain([0, threshold])
+    .domain([0, what])
     .range([width-leftMargin-rRad/2-4, width/2]);
-// var xRMap = d3.scale.linear()
-//     .domain([0, pathLength])
-//     .range([width-leftMargin-rRad/2-4, width/2]);
+
 var trailRight = svg1.selectAll("trailRight")
-    .data(d3.range([newData[1].weight]))
-    // .data(randData)
+    .data(d3.range([what]))
     .enter().append("circle")
     .attr("class", function(d,i){
         return "trailRight";
     })
     .attr("cx", function(d,i){
-        return xRMap(newData[1].weight);//newData[1].weight);
+        return xRMap(i);//newData[1].weight);
     })
     .attr("cy", function(d,i){
-        return h2Map(newData[1].weight)//newData[1].weight);
+        return h2Map(i)//newData[1].weight);
     })
     .attr("r", tRad)
     .attr("fill", "none")
-    // .attr("opacity",function(d,i){
-    //     bumpUp(newData[indexCircs].weight);
-    //     var howFar = newData[1].weight*multiplier;
-    //     if(i<=howFar+threshold*right){
-    //         return oMap(howFar);
-    //     }
-    //     else{
-    //         return 0;
-    //     }        
-    // })
     .attr("stroke","white")
+     .attr("opacity",function(d,i){
+         bumpUp(newData[indexCircs].weight);
+         // var howFar = newData[1].weight*multiplier;
+         if(i<=what){
+            return oMap(newData[1].weight);
+         }
+        else{
+            return 0;
+        }        
+ })
 }
 
 }
