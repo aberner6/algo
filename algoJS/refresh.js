@@ -84,17 +84,18 @@ var leftMargin = width/6;
 var pathLength = 100;
 var rRad = 20;
 var tRad = 20;
-var xLMap = d3.scale.linear()
-    .domain([0, pathLength])
-    .range([leftMargin+rRad/2+4, width/2]);
+// var xLMap = d3.scale.linear()
+//     .domain([0, pathLength])
+//     .range([leftMargin+rRad/2+4, width/2]);
 
-var xRMap = d3.scale.linear()
-    .domain([0, pathLength])
-    .range([width-leftMargin-rRad/2-4, width/2]);
+// var xRMap = d3.scale.linear()
+//     .domain([0, pathLength])
+//     .range([width-leftMargin-rRad/2-4, width/2]);
 
-var hMap = d3.scale.linear()
-    .domain([0, pathLength])
-    .range([height/hMargin, hTopMargin-rRad]);
+// var hMap = d3.scale.linear()
+//     .domain([0, pathLength])
+//     .range([height/hMargin, hTopMargin-rRad]);
+
     // .attr("cy", hTopMargin-rRad)
 
 var opaMap = d3.scale.linear()
@@ -106,7 +107,7 @@ var opaMap = d3.scale.linear()
 //     .range([0, 1]);
 
 var oMap = d3.scale.linear()
-    .domain([0, threshold*pathLength])
+    .domain([0, threshold*50])
     .range([0, 1]);
 
 var weightOpaMap = d3.scale.linear()
@@ -243,26 +244,9 @@ changeCircs(tData,theIndexIs, xPos);
     else{
 makeText(tData,theIndexIs); 
 changeCircs(tData,theIndexIs, xPos);
-        // console.log("all set"+error>0+"see?"+error)
     }    
-    // if(error<0){
-    //     trigger = true;
-    //     console.log("trigger"+trigger)
-    // }
 console.log(tData[theIndexIs].weight+"new weight?");
 }
-// $("#equation p").replaceWith("<p>input of "+1+"* link weight of "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b>>=</b> threshold of "+threshold+"</p>");
-// $("#equation").show(1000);
-// $("#equation").delay(2000).hide();
-
-// else{
-// $("#equation p").replaceWith("<p>input of "+1+"* link weight of "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b><</b> threshold of "+threshold+"</p>");
-// console.log(tData[theIndexI].weight+"index weight");
-// $("#equation").show(1000).show();
-// $("#equation").delay(2000).hide();
-// }
-
-
 
 
 
@@ -358,39 +342,56 @@ var pathLeft = svg1.selectAll("pathLeft")
     .attr("stroke","white")
 
 
-var trailLeft = svg1.selectAll("trailLeft")
-    .data(d3.range([pathLength]))
-    .enter().append("circle")
-    .attr("class", function(d,i){
-        return "trailLeft";
-    })
-    .attr("cx", function(d,i){
-        return xLMap(i);
-    })
-    .attr("cy", function(d,i){
-        return hMap(i);
-    })
-    .attr("r", tRad)
-    .attr("fill", "none")
-    .attr("opacity",0)
-    .attr("stroke","white")
+// var trailLeft = svg1.selectAll("trailLeft")
+//     .data(d3.range([pathLength]))
+//     // .data(randData)
+//     .enter().append("circle")
+//     .attr("class", function(d,i){
+//         return "trailLeft";
+//     })
+//     .attr("cx", function(d,i){
+//         return xLMap(i);
+//     })
+//     .attr("cy", function(d,i){
+//         return hMap(i);
+//     })
+//     .attr("r", tRad)
+//     .attr("fill", "none")
+//     .attr("opacity",function(d,i){
+//         var howFar = tData[0].weight*pathLength;
+//         if(i<=howFar+threshold*pathLength){
+//             return oMap(howFar);
+//         }
+//         else{
+//             return 0;
+//         }        
+//     })
+//     .attr("stroke","white")
 
-var trailRight = svg1.selectAll("trailRight")
-    .data(d3.range([pathLength]))
-    .enter().append("circle")
-    .attr("class", function(d,i){
-        return "trailRight";
-    })
-    .attr("cx", function(d,i){
-         return xRMap(i);      
-    })
-    .attr("cy", function(d,i){
-        return hMap(i);
-    })
-    .attr("r", tRad)
-    .attr("fill", "none")
-    .attr("opacity",0)
-    .attr("stroke","white")
+// var trailRight = svg1.selectAll("trailRight")
+//     .data(d3.range([pathLength]))
+//     .enter().append("circle")
+//     .attr("class", function(d,i){
+//         return "trailRight";
+//     })
+//     .attr("cx", function(d,i){
+//          return xRMap(i);      
+//     })
+//     .attr("cy", function(d,i){
+//         return hMap(i);
+//     })
+//     .attr("r", tRad)
+//     .attr("fill", "none")
+//     .attr("opacity",function(d,i){
+//         var howFar = tData[1].weight*pathLength;
+//         if(i<=howFar+threshold*pathLength){
+//             return oMap(howFar);
+//         }
+//         else{
+//             return 0;
+//         }        
+//     })
+//     .attr("stroke","white")
 
 var thisCircle;
 thisCircle  = svg1.selectAll("runner")
@@ -516,6 +517,9 @@ var weightText = svg1.selectAll("captions")
             if(wasClicked && newData[indexText].weight>=threshold){
                 $("#refresh1p").slideDown();
             }
+            else{
+                $("#refresh1p").hide();
+            }
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
                 return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" >= "+threshold;
             }
@@ -548,12 +552,42 @@ d3.selectAll(".win")
         tData[i].weight = Math.random();
     } 
     makeText(tData,0);
-     d3.selectAll(".trailLeft, .trailRight")
-        .transition()
+     d3.selectAll(".trailLeft, .trailRight").remove();
+        // .transition()
         // .duration(3000)
-        .attr('opacity',0);
+        // .attr('opacity',0);
 $("#refresh1p").hide();
 })
+
+
+// var trailLeft = svg1.selectAll("trailLeft")
+//     .data(d3.range([pathLength]))
+//     // .data(randData)
+//     .enter().append("circle")
+//     .attr("class", function(d,i){
+//         return "trailLeft";
+//     })
+//     .attr("cx", function(d,i){
+//         return xLMap(i);
+//     })
+//     .attr("cy", function(d,i){
+//         return hMap(i);
+//     })
+//     .attr("r", tRad)
+//     .attr("fill", "none")
+//     .attr("opacity",function(d,i){
+//         var howFar = tData[0].weight*pathLength;
+//         if(i<=howFar+threshold*pathLength){
+//             return oMap(howFar);
+//         }
+//         else{
+//             return 0;
+//         }        
+//     })
+//     .attr("stroke","white")
+
+
+
 
 
 
@@ -621,34 +655,78 @@ var r = 0;
 function changeCircs(newData,indexCircs, xPos){
 if(xPos<width/2){
 l+=1;
-d3.selectAll(".trailLeft")
-    .attr("opacity", function(d,i){
+var xLMap = d3.scale.linear()
+    .domain([0, newData[0].weight*50])
+    .range([leftMargin+rRad/2+4, width/2]);
+var hMap = d3.scale.linear()
+    .domain([0, newData[0].weight*50])
+    .range([height/hMargin, hTopMargin-rRad]);
+
+var trailLeft = svg1.selectAll("trailLeft")
+    .data(d3.range([newData[0].weight*50]))
+    // .data(randData)
+    .enter().append("circle")
+    .attr("class", function(d,i){
+        return "trailLeft";
+    })
+    .attr("cx", function(d,i){
+        return xLMap(i);
+    })
+    .attr("cy", function(d,i){
+        return hMap(i);
+    })
+    .attr("r", tRad)
+    .attr("fill", "none")
+    .attr("opacity",function(d,i){
         bumpUp(newData[indexCircs].weight);
-        // console.log(weightOpaMap(newData[indexCircs].weight)+"weightOpaMap")
-        var howFar = newData[indexCircs].weight*pathLength;
-        if(i<=howFar+threshold*pathLength){
+        var howFar = newData[0].weight*l*50;
+        if(i<=howFar+threshold*l){
             return oMap(howFar);
         }
         else{
             return 0;
-        }
-    });
+        }        
+    })
+    .attr("stroke","white")
 }
 else{
     console.log(xPos+"greater than width/2?")
 r+=1;
-d3.selectAll(".trailRight")
-    .attr("opacity", function(d,i){
-            bumpUp(newData[indexCircs].weight);
-        var howFar = newData[indexCircs].weight*pathLength;
-        if(i<=howFar+threshold*pathLength){
-        //if(i<=howFar){
+var hMap = d3.scale.linear()
+    .domain([0, newData[1].weight*50])
+    .range([height/hMargin, hTopMargin-rRad]);
+var xRMap = d3.scale.linear()
+    .domain([0, newData[1].weight*50])
+    .range([width-leftMargin-rRad/2-4, width/2]);
+
+var trailLeft = svg1.selectAll("trailLeft")
+    .data(d3.range([newData[1].weight*50]))
+    // .data(randData)
+    .enter().append("circle")
+    .attr("class", function(d,i){
+        return "trailLeft";
+    })
+    .attr("cx", function(d,i){
+        return xRMap(i);
+    })
+    .attr("cy", function(d,i){
+        return hMap(i);
+    })
+    .attr("r", tRad)
+    .attr("fill", "none")
+    .attr("opacity",function(d,i){
+        bumpUp(newData[indexCircs].weight);
+
+        var howFar = newData[1].weight*50*r;
+        if(i<=howFar+threshold){
             return oMap(howFar);
         }
         else{
             return 0;
-        }
-    });
+        }        
+    })
+    .attr("stroke","white")
+
 }
 
 }
@@ -660,7 +738,7 @@ var winCircle  = svg1.selectAll("win")
     .attr("cx", width/2)
     .attr("cy", hTopMargin-rRad*4)
     .attr("r", rRad)
-    .attr("fill", "none")
+    .attr("fill", "white")
     .attr("opacity",1)
     .attr("stroke","white")  
 
@@ -677,7 +755,7 @@ var bumpCircle  = svg1.selectAll("bump")
 function bumpUp(high){
 var mapBump = d3.scale.linear()
     .domain([0,.5])
-    .range([hTopMargin-rRad, hTopMargin-rRad*5])
+    .range([hTopMargin-rRad*2, hTopMargin-rRad*2])
 
     d3.selectAll(".bump")
     .transition()
