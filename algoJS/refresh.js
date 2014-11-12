@@ -721,17 +721,17 @@ var xRMap = d3.scale.linear()
 //     .domain([0, pathLength])
 //     .range([width-leftMargin-rRad/2-4, width/2]);
 var trailRight = svg1.selectAll("trailRight")
-    .data(d3.range([newData[1].weight*multiplier]))
+    .data(d3.range([newData[1].weight]))
     // .data(randData)
     .enter().append("circle")
     .attr("class", function(d,i){
         return "trailRight";
     })
     .attr("cx", function(d,i){
-        return xRMap(newData[1].weight);
+        return xRMap(newData[1].weight);//newData[1].weight);
     })
     .attr("cy", function(d,i){
-        return h2Map(newData[1].weight);
+        return h2Map(newData[1].weight)//newData[1].weight);
     })
     .attr("r", tRad)
     .attr("fill", "none")
