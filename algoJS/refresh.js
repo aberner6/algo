@@ -515,7 +515,7 @@ var weightText = svg1.selectAll("captions")
     .text(function(d,i){
         if(Math.floor(newData[i].weight * 100) / 100 >= threshold){
             if(wasClicked && newData[indexText].weight>=threshold){
-                $("#refresh1p").slideDown();
+                $("#refresh1p").delay(2000).slideDown();
             }
             else{
                 $("#refresh1p").hide();
@@ -543,6 +543,10 @@ $("#refresh1p").animate({
     top: hTopMargin-rRad*4-6,
 })
 $("#refresh1p").on("click", function(){
+    d3.selectAll(".bump")
+    .transition()
+    .duration(2000)
+    .attr("cy", hTopMargin-rRad)
 s = 0;
 u = 0;
 d3.selectAll(".win")
@@ -744,7 +748,7 @@ var winCircle  = svg1.selectAll("win")
     .enter().append("circle")
     .attr("class","win")
     .attr("cx", width/2)
-    .attr("cy", hTopMargin-rRad*4)
+    .attr("cy", hTopMargin-rRad*5)
     .attr("r", rRad)
     .attr("fill", "white")
     .attr("opacity",1)
@@ -763,7 +767,13 @@ var bumpCircle  = svg1.selectAll("bump")
 function bumpUp(high){
 var mapBump = d3.scale.linear()
     .domain([0,.5])
-    .range([hTopMargin-rRad*2, hTopMargin-rRad*2])
+    .range([hTopMargin-rRad*2, hTopMargin-rRad*4])
+
+// .attr("cy", hTopMargin-rRad*5)
+//     .attr("r", rRad)
+
+
+
 
     d3.selectAll(".bump")
     .transition()
@@ -783,6 +793,11 @@ var mapBump = d3.scale.linear()
                 .attr("fill", "white") //should be something like the other thing in science with dashed
                 // .each("end", )
                 //also change learning constant
+            }
+            else{
+                d3.selectAll(".bump")
+                .transition()
+                .attr("cy", hTopMargin-rRad);
             }
         })        
     })
