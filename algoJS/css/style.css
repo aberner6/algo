@@ -628,6 +628,7 @@ padding-bottom: 1px;*/
 }
 .win:hover{
 cursor:pointer;
+opacity: .1;
 }
 
 #refresh1p:hover {

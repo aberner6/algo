@@ -295,16 +295,16 @@ var winCircle  = svg1.selectAll("win")
     .attr("stroke", "white")
     .attr("stroke-width", strokeWeight)
     .attr("opacity",1)
-    .on("mouseover", function(d,i){
-        d3.select(this)
-        .transition()
-        .attr("opacity",.5)                                        
-    })
-    .on("mouseout", function(d,i){
-        d3.select(this)
-        .transition()
-        .attr("opacity",1)                                        
-    })  
+    // .on("mouseover", function(d,i){
+    //     d3.select(this)
+    //     .transition()
+    //     .attr("opacity",.5)                                        
+    // })
+    // .on("mouseout", function(d,i){
+    //     d3.select(this)
+    //     .transition()
+    //     .attr("opacity",1)                                        
+    // })  
 
 
 var pathRight = svg1.selectAll("pathRight")
@@ -677,7 +677,7 @@ console.log(whatClicked.data()[0].sense)
         d3.select(this)
         .transition()
         .attr("stroke","white")
-        .attr("fill","none")
+        // .attr("fill","turquoise")
         .each("end", function(){
             d3.select(this).remove();
             wasClicked = false;
@@ -792,16 +792,26 @@ var mapBump = d3.scale.linear()
 // .attr("cy", hTopMargin-rRad*5)
 //     .attr("r", rRad)
 winCircle
-                                    .on("mouseover", function(){
-                                        d3.select(this)
-                                        .transition()
-                                        .attr("opacity",.1)
-                                    })
-                                    .on("mouseout", function(){
-                                        d3.select(this)
-                                        .transition()
-                                        .attr("opacity",.5)
-                                    }) 
+   .on("mouseover", function(){
+       d3.select(this)
+        .transition()
+        .attr("stroke-width",strokeWeight*3)
+    })
+   .on("mouseout", function(){
+        d3.select(this)
+        .transition()
+        .attr("stroke-width",strokeWeight)
+    }) 
+$("#success").on("mouseover", function(){
+    winCircle
+        .transition()
+        .attr("stroke-width",strokeWeight*3);
+})
+$("#success").on("mouseout", function(){
+    winCircle
+        .transition()
+        .attr("stroke-width",strokeWeight);
+})
 
 
 
@@ -848,8 +858,8 @@ $("#success").show();
                                     .duration(2000)
                                     .attr("r",rRad)
                                     .attr("stroke-opacity", 1)
-                                    .attr("opacity",.5)
-                                    .attr("fill", "white")
+                                    // .attr("opacity",.5)
+                                    .attr("fill", "none")
                                     .attr("stroke-width", strokeWeight) 
                                     .attr("cy", hTopMargin-rRad*5)   
                          
