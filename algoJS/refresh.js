@@ -7,6 +7,7 @@ circle, line, rollingCirc, cloudCirc, endOutCirc;
 var moveAround;
 var theIndex = [];
 var thisCloudCirc;
+var wasClicked = false;
 
 var windowWidth = window.outerWidth,
     windowHeight= window.innerHeight,
@@ -17,6 +18,8 @@ var yMid = windowHeight/2;
 var rotation = 10;
 var swingtime = 1600;
 var nextAnimation = false;
+var color1 = "#438CA5";
+var color2 = "#C4602E";
 var yMap = d3.scale.linear()
             .domain([0, 1])
             .range([-height, height*2])
@@ -236,12 +239,14 @@ console.log(learningConstant+"learning")
             tData[i].weight += learningConstant*error*input[i];
 makeText(tData,theIndexIs); 
 changeCircs(tData,theIndexIs, xPos);
+bumpUp(tData[theIndexIs].weight, triggerSense);
 
         }
     // showLines();
     }
 
     else{
+bumpUp(tData[theIndexIs].weight);
 makeText(tData,theIndexIs); 
 changeCircs(tData,theIndexIs, xPos);
     }    
@@ -439,7 +444,6 @@ clickFunction();
 // makeText();
 }
 
-var wasClicked = false;
 function makeText(newData, indexText){
 var weightRect = svg1.selectAll("rectC")
     .data(d3.range(1))
@@ -515,10 +519,10 @@ var weightText = svg1.selectAll("captions")
     .text(function(d,i){
         if(Math.floor(newData[i].weight * 100) / 100 >= threshold){
             if(wasClicked && newData[indexText].weight>=threshold){
-                $("#refresh1p").delay(2000).slideDown();
+                $("#refresh1p").delay(500).slideDown();
             }
             else{
-                $("#refresh1p").hide();
+                $("#refresh1p, #success").hide();
             }
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
                 return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" >= "+threshold;
@@ -539,10 +543,17 @@ var weightText = svg1.selectAll("captions")
     })     
 }
 $("#refresh1p").animate({
-    left: width/2+12,
-    top: hTopMargin-rRad*4-6,
+    left: width/2-90+20,
+    top: hTopMargin-rRad*5.5,
 })
-$("#refresh1p").on("click", function(){
+// $("#refresh1p").animate({
+//     left: width/2+12,
+//     top: hTopMargin-rRad*5.5,
+// })
+$("#success").animate({
+    left: width/2-2,
+})
+$("#refresh1p, #success").on("click", function(){
     d3.selectAll(".bump")
     .transition()
     .duration(2000)
@@ -560,7 +571,7 @@ d3.selectAll(".win")
         // .transition()
         // .duration(3000)
         // .attr('opacity',0);
-$("#refresh1p").hide();
+$("#refresh1p, #success").hide();
 })
 
 
@@ -629,7 +640,7 @@ console.log(whatClicked.data()[0].sense)
 
     d3.select(this)
     .transition()
-    .duration(2000)
+    .duration(500)
     .attr("cx", width/2)
     .attr("cy", hTopMargin-rRad)
     // .attr("r", function(d,i){
@@ -690,7 +701,6 @@ var trailLeft = svg1.selectAll("trailLeft")
     .attr("fill", "none")
     .attr("stroke","white")
      .attr("opacity",function(d,i){
-         bumpUp(newData[indexCircs].weight);
          // var howFar = newData[1].weight*multiplier;
          if(i<=what){
             return oMap(newData[0].weight);
@@ -730,7 +740,7 @@ var trailRight = svg1.selectAll("trailRight")
     .attr("fill", "none")
     .attr("stroke","white")
      .attr("opacity",function(d,i){
-         bumpUp(newData[indexCircs].weight);
+         // bumpUp(newData[indexCircs].weight);
          // var howFar = newData[1].weight*multiplier;
          if(i<=what){
             return oMap(newData[1].weight);
@@ -750,9 +760,11 @@ var winCircle  = svg1.selectAll("win")
     .attr("cx", width/2)
     .attr("cy", hTopMargin-rRad*5)
     .attr("r", rRad)
-    .attr("fill", "white")
-    .attr("opacity",1)
-    .attr("stroke","white")  
+    .attr("fill", "none")
+    .attr("stroke-dasharray", "4,4")
+    .attr("stroke", "white")
+    .attr("stroke-width", strokeWeight)
+    .attr("opacity",1);  
 
 var bumpCircle  = svg1.selectAll("bump")
     .data(d3.range(1))
@@ -764,7 +776,7 @@ var bumpCircle  = svg1.selectAll("bump")
     .attr("fill", "white")
     .attr("opacity",1)
     .attr("stroke","none")   
-function bumpUp(high){
+function bumpUp(high, triggerSense){
 var mapBump = d3.scale.linear()
     .domain([0,.5])
     .range([hTopMargin-rRad*2, hTopMargin-rRad*4])
@@ -778,7 +790,7 @@ var mapBump = d3.scale.linear()
     d3.selectAll(".bump")
     .transition()
     // .delay(000)
-    .duration(2000)
+    .duration(500)
     .attr("cy", hTopMargin-rRad)
     .each("end", function(){
         d3.selectAll(".bump")
@@ -788,9 +800,42 @@ var mapBump = d3.scale.linear()
         })
         .each("end", function(){
             if(high>=.5){
+$("#success").animate({
+    top: mapBump(high)+17,
+})
+$("#success").show();
+
                 d3.selectAll(".win")
                 .transition()
-                .attr("fill", "white") //should be something like the other thing in science with dashed
+                .attr("r", rRad/2)
+                .attr("stroke-width", rRad*2)
+                // .attr("stroke", "teal")
+                .attr("cy", hTopMargin-rRad*4.6)
+                .each("end", function(){
+                    d3.selectAll(".win")
+                    .transition()
+                    // .duration(1000)
+                    .attr("stroke-width", rRad)
+                    .each("end", function(){
+                        d3.selectAll(".win")
+                            .transition()
+                            // .duration(2000)
+                            .attr("r", rRad/2) 
+                            .each("end", function(){
+                                d3.selectAll(".win")
+                                    .transition()
+                                    .duration(2000)
+                                    .attr("r",rRad)
+                                    // .attr("stroke", "white")
+                                    .attr("opacity",1)
+                                    // .attr("fill", "white")
+                                    .attr("stroke-width", strokeWeight) 
+                                    .attr("cy", hTopMargin-rRad*5)                               
+                            })
+                        })
+                })
+
+                //should be something like the other thing in science with dashed
                 // .each("end", )
                 //also change learning constant
             }
@@ -938,8 +983,7 @@ colorSpectrum = ["#438CA5",
 "#7372BE",
 "#C84961",
 "#BC5296"];
-var color1 = "#438CA5";
-var color2 = "#C4602E";
+
 var color = d3.scale.ordinal()
     .domain([0, randLength])
     .range(colorSpectrum);
@@ -985,10 +1029,8 @@ $("#x").animate({
     top: yMid,
     left: endOutX-r/2-6,
 }); 
-$("#refresh").animate({
-    top: yMid+20,
-    left:lmargin+100,
-});
+
+
 $("#refreshp").animate({
     top: yMid+20,
     left:lmargin+135,
