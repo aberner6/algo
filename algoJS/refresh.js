@@ -433,7 +433,7 @@ thisCircle  = svg1.selectAll("runner")
     .attr("r", rRad)
     .attr("fill", "white")
     .attr("opacity",1)
-    .attr("stroke","none")
+    .attr("stroke","white")
     .attr("cx", function(d,i){
         if(i%2==0){
             return leftMargin;
@@ -463,7 +463,7 @@ thisCircle  = svg1.selectAll("runner")
     .attr("r", rRad)
     .attr("fill", "white")
     .attr("opacity",1)
-    .attr("stroke","none")
+    .attr("stroke","white")
 clickFunction();
 // makeText();
 }
@@ -567,8 +567,8 @@ var weightText = svg1.selectAll("captions")
     })     
 }
 $("#refresh1p").animate({
-    left: width/2-90+20,
-    top: hTopMargin-rRad*5.5,
+    left: width/2-78,
+    top: hTopMargin-rRad*5.5-10,
 })
 // $("#refresh1p").animate({
 //     left: width/2+12,
@@ -859,10 +859,11 @@ $("#success").show();
                                 d3.selectAll(".win")
                                     .transition()
                                     .duration(2000)
-                                    .attr("r",rRad)
-                                    .attr("stroke-opacity", 1)
+                                    // .attr("r",rRad)
+                                    // .attr("stroke-opacity", 1)
                                     // .attr("opacity",.5)
-                                    .attr("fill", "none")
+                                    // .attr("fill", "none")
+                                    .attr("r", rRad) 
                                     .attr("stroke-width", strokeWeight) 
                                     .attr("cy", hTopMargin-rRad*5)   
                          
