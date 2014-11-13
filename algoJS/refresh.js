@@ -23,6 +23,7 @@ var color2 = "#C4602E";
 var yMap = d3.scale.linear()
             .domain([0, 1])
             .range([-height, height*2])
+
 $(window).resize(function() {
 // windowWidth = window.outerWidth,
 //     windowHeight= window.innerHeight,
@@ -122,7 +123,9 @@ var svg1 = d3.select("#game")
     .attr("width", width)
     .attr("height", height)
     // .attr("fill",)
-
+document.getElementById('game').onmousedown = function(){
+  return false;
+};
 var randData;
 loadRand("rand.csv");
 function loadRand(csvName){
