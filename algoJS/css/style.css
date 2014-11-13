@@ -626,6 +626,10 @@ padding-left: 6px;
 /*padding-right: 5px;
 padding-bottom: 1px;*/
 }
+.win:hover{
+cursor:pointer;
+}
+
 #refresh1p:hover {
   /*opacity: 0.7;*/
   color:white;

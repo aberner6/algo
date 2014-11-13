@@ -283,7 +283,28 @@ console.log(tData[theIndexIs].weight+"new weight?");
 
 
 
-
+var winCircle  = svg1.selectAll("win")
+    .data(d3.range(1))
+    .enter().append("circle")
+    .attr("class","win")
+    .attr("cx", width/2)
+    .attr("cy", hTopMargin-rRad*5)
+    .attr("r", rRad)
+    .attr("fill", "none")
+    .attr("stroke-dasharray", "4,4")
+    .attr("stroke", "white")
+    .attr("stroke-width", strokeWeight)
+    .attr("opacity",1)
+    .on("mouseover", function(d,i){
+        d3.select(this)
+        .transition()
+        .attr("opacity",.5)                                        
+    })
+    .on("mouseout", function(d,i){
+        d3.select(this)
+        .transition()
+        .attr("opacity",1)                                        
+    })  
 
 
 var pathRight = svg1.selectAll("pathRight")
@@ -553,7 +574,7 @@ $("#refresh1p").animate({
 $("#success").animate({
     left: width/2-2,
 })
-$("#refresh1p, #success").on("click", function(){
+$("#refresh1p, #success, .win").on("click", function(){
     d3.selectAll(".bump")
     .transition()
     .duration(2000)
@@ -753,19 +774,6 @@ var trailRight = svg1.selectAll("trailRight")
 
 }
 
-var winCircle  = svg1.selectAll("win")
-    .data(d3.range(1))
-    .enter().append("circle")
-    .attr("class","win")
-    .attr("cx", width/2)
-    .attr("cy", hTopMargin-rRad*5)
-    .attr("r", rRad)
-    .attr("fill", "none")
-    .attr("stroke-dasharray", "4,4")
-    .attr("stroke", "white")
-    .attr("stroke-width", strokeWeight)
-    .attr("opacity",1);  
-
 var bumpCircle  = svg1.selectAll("bump")
     .data(d3.range(1))
     .enter().append("circle")
@@ -783,7 +791,17 @@ var mapBump = d3.scale.linear()
 
 // .attr("cy", hTopMargin-rRad*5)
 //     .attr("r", rRad)
-
+winCircle
+                                    .on("mouseover", function(){
+                                        d3.select(this)
+                                        .transition()
+                                        .attr("opacity",.1)
+                                    })
+                                    .on("mouseout", function(){
+                                        d3.select(this)
+                                        .transition()
+                                        .attr("opacity",.5)
+                                    }) 
 
 
 
@@ -802,6 +820,9 @@ var mapBump = d3.scale.linear()
             if(high>=.5){
 $("#success").animate({
     top: mapBump(high)+17,
+})
+$("#refresh1p").animate({
+    top: mapBump(high)-17,
 })
 $("#success").show();
 
@@ -826,11 +847,12 @@ $("#success").show();
                                     .transition()
                                     .duration(2000)
                                     .attr("r",rRad)
-                                    // .attr("stroke", "white")
-                                    .attr("opacity",1)
-                                    // .attr("fill", "white")
+                                    .attr("stroke-opacity", 1)
+                                    .attr("opacity",.5)
+                                    .attr("fill", "white")
                                     .attr("stroke-width", strokeWeight) 
-                                    .attr("cy", hTopMargin-rRad*5)                               
+                                    .attr("cy", hTopMargin-rRad*5)   
+                         
                             })
                         })
                 })
