@@ -954,12 +954,12 @@ $('#enterContainer').tipsy({
 });
 
 $("#enterGame").on("click", function(){
-    $("#container").slideUp("slow");
+    $("#container").slideUp("fast");
     $("#game").slideDown("slow");
     // $("#enterGame").show();
 })
 $("#enterContainer").on("click", function(){
-    $("#game").slideUp("slow");
+    $("#game").slideUp("fast");
     
     $("#enterGame").show();
 
@@ -1049,7 +1049,7 @@ $("#x").animate({
 
 
 $("#refreshp").animate({
-    top: yMid+20,
+    top: yMid+24,
     left:lmargin+135,
 });
 $("#connections").animate({
@@ -1247,9 +1247,9 @@ if(introTalk){
     $("#title .p2").delay(2000).show();
 
     $("#title p:first").replaceWith("");
-    $("#title").animate({
-        left:-lmargin,
-    })
+    // $("#title").animate({
+    //     left:-lmargin,//*3,
+    // })
 
 // moveAround(secs);
 sense = true;
@@ -1744,7 +1744,7 @@ $("#intro2").slideDown("slow");
 //maybe after randomziation?
 
         // else{
-       $("#equation p").replaceWith("<p>input of "+1+"* link weight of "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b><</b> threshold of "+threshold+"</p>");
+       $("#equation p").replaceWith("<p>input "+1+"* link weight "+(Math.floor(tData[thisIndex].weight * 100) / 100)+"<b><</b> threshold "+threshold+"</p>");
         // }
         //something like input * the weight of that neuron ?> ?< output
     console.log(tData[theIndexI].weight+"index weight");
