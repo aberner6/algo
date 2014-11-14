@@ -39,6 +39,8 @@ var tSense;
 
 var threshold = .5;
 var input = [];
+var inputGame = [];
+
 var trigOther = false;
 var endOutX = lmargin*3;
 var introDuration = 6000;
@@ -126,6 +128,9 @@ var svg1 = d3.select("#game")
     .attr("height", height)
     // .attr("fill",)
 document.getElementById('game').onmousedown = function(){
+  return false;
+};
+document.getElementById('container').onmousedown = function(){
   return false;
 };
 var randData;
@@ -240,8 +245,8 @@ console.log(learningConstant+"learning")
 
     // //new weighting
     if(error>0){ //&& random == true){
-        for (i= 0; i<input.length; i++){
-            tData[i].weight += learningConstant*error*input[i];
+        for (i= 0; i<inputGame.length; i++){
+            tData[i].weight += learningConstant*error*inputGame[i];
 makeText(tData,theIndexIs); 
 changeCircs(tData,theIndexIs, xPos);
 bumpUp(tData[theIndexIs].weight, triggerSense);
@@ -606,8 +611,8 @@ var whatIs;
 function clickFunction(){
 // if(wasClicked==false
 if(startThings){
-    input[0] = 1;
-    input[1] = 1;
+    inputGame[0] = 1;
+    inputGame[1] = 1;
     calcGame("smell", width/4,1);
 
     calcGame("touch", width/2+20,1);
@@ -625,16 +630,16 @@ console.log(whatClicked.data()[0].sense)
     s+=1;
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
-        input[0] = 1;
-        input[1] = 0;
+        inputGame[0] = 1;
+        inputGame[1] = 0;
         calcGame("smell", whatIs,s);
     }
     if(whatClicked.data()[0].sense=="touch"){
         u+=1;
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
-            input[0] = 0;
-        input[1] = 1;
+            inputGame[0] = 0;
+        inputGame[1] = 1;
         calcGame("touch", whatIs,u);
     }
 
@@ -1097,8 +1102,8 @@ var position = p.position();
     .attr("r", function(){
         return r;
     })
-    .each("end", function(){
-        showLines();
+    .each("end", function(d,i){
+        showLines(tData);
 
         neurons = true;
     })
@@ -1222,10 +1227,10 @@ var endText = vis.selectAll("endText")
 
 function outputIn(){
 if(introTalk){
-    thisCloudCirc
-    .transition()
-    .duration(1000)
-    .attr("cx", endOutX)
+    // thisCloudCirc
+    // .transition()
+    // .duration(1000)
+    // .attr("cx", endOutX)
 }
     endOutCirc
     .transition()
@@ -1483,7 +1488,7 @@ else{
 }
 }
 
-function showLines(){
+function showLines(tDataIs){
 d3.selectAll(".weightText").remove();
         // $("#connections").slideDown().animate({
         //     top: "33%",
@@ -1527,7 +1532,12 @@ console.log(triggerSense);
 
     for (i=0; i<tData.length; i++){
         if(tData[i].sense==triggerSense){
+            if(tData[i].weight<threshold){
                 addIt += tData[i].weight;
+            }
+            else{
+                addIt = tData[i].weight;
+            }
         theIndex=i;
                 console.log(theIndex);
                 console.log(addIt);
@@ -1786,7 +1796,7 @@ for (i= 0; i<input.length; i++){
     changeWeight[i] = error*input[i];   
     tData[i].weight += .8*error*input[i]; 
 }
-showLines();
+showLines(tData);
 }
 else{
 }
@@ -1947,7 +1957,7 @@ $("#refreshp").hide();
     random = true;
 for (var i = 0; i < tData.length; i++) {
    tData[i].weight = randMap(Math.random());
-         showLines();
+         showLines(tData);
 } 
       // tData[i].weight = Math.random(-1,1);
       // console.log("generating weights")
