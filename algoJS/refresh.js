@@ -8,7 +8,7 @@ var moveAround;
 var theIndex = [];
 var thisCloudCirc;
 var wasClicked = false;
-
+var startThings = true;
 var windowWidth = window.outerWidth,
     windowHeight= window.innerHeight,
     height = windowHeight,
@@ -23,7 +23,9 @@ var color2 = "#C4602E";
 var yMap = d3.scale.linear()
             .domain([0, 1])
             .range([-height, height*2])
-
+var randMap = d3.scale.linear()
+    .domain([0, 1])
+    .range([0, .49]);
 $(window).resize(function() {
 // windowWidth = window.outerWidth,
 //     windowHeight= window.innerHeight,
@@ -141,7 +143,7 @@ d3.csv(csvName, function(thisData) {
     tData=thisData;
     if(tData.length>0){
         for (var i = 0; i < tData.length; i++) {
-           tData[i].weight = Math.random();
+           tData[i].weight = randMap(Math.random());
         } 
         gaming();
     }
@@ -568,16 +570,14 @@ var weightText = svg1.selectAll("captions")
 }
 $("#refresh1p").animate({
     left: width/2-78,
-    top: hTopMargin-rRad*5.5-10,
+    // top: hTopMargin-rRad*5.5-20,
 })
-// $("#refresh1p").animate({
-//     left: width/2+12,
-//     top: hTopMargin-rRad*5.5,
-// })
+
 $("#success").animate({
     left: width/2-2,
 })
 $("#refresh1p, #success, .win").on("click", function(){
+startThings = true;
     d3.selectAll(".bump")
     .transition()
     .duration(2000)
@@ -588,48 +588,14 @@ d3.selectAll(".win")
     .transition()
     .attr("fill", "none");
     for (var i = 0; i < tData.length; i++) {
-        tData[i].weight = Math.random();
+        tData[i].weight = randMap(Math.random());
     } 
     makeText(tData,0);
-     d3.selectAll(".trailLeft, .trailRight").remove();
-        // .transition()
-        // .duration(3000)
-        // .attr('opacity',0);
+    d3.selectAll(".trailLeft, .trailRight").remove();
+
 $("#refresh1p, #success").hide();
+clickFunction();
 })
-
-
-// var trailLeft = svg1.selectAll("trailLeft")
-//     .data(d3.range([pathLength]))
-//     // .data(randData)
-//     .enter().append("circle")
-//     .attr("class", function(d,i){
-//         return "trailLeft";
-//     })
-//     .attr("cx", function(d,i){
-//         return xLMap(i);
-//     })
-//     .attr("cy", function(d,i){
-//         return hMap(i);
-//     })
-//     .attr("r", tRad)
-//     .attr("fill", "none")
-//     .attr("opacity",function(d,i){
-//         var howFar = tData[0].weight*pathLength;
-//         if(i<=howFar+threshold*pathLength){
-//             return oMap(howFar);
-//         }
-//         else{
-//             return 0;
-//         }        
-//     })
-//     .attr("stroke","white")
-
-
-
-
-
-
 
 clickFunction();
 
@@ -638,6 +604,16 @@ var u = 0;
 
 var whatIs;
 function clickFunction(){
+// if(wasClicked==false
+if(startThings){
+    input[0] = 1;
+    input[1] = 1;
+    calcGame("smell", width/4,1);
+
+    calcGame("touch", width/2+20,1);
+    startThings = false;
+}
+
 d3.selectAll(".runner").on("click", function(){
 wasClicked = true;
     // clearInterval(myPulse);
@@ -650,7 +626,7 @@ console.log(whatClicked.data()[0].sense)
 console.log(whatClicked.data()[0].sense)
         addIt = 0;
         input[0] = 1;
-            input[1] = 0;
+        input[1] = 0;
         calcGame("smell", whatIs,s);
     }
     if(whatClicked.data()[0].sense=="touch"){
@@ -835,7 +811,7 @@ $("#success").animate({
     top: mapBump(high)+17,
 })
 $("#refresh1p").animate({
-    top: mapBump(high)-17,
+    top: mapBump(high)-29,
 })
 $("#success").show();
 
@@ -1970,7 +1946,7 @@ myPulse=setInterval(function () {pulseTimer()}, 3000);
 $("#refreshp").hide();
     random = true;
 for (var i = 0; i < tData.length; i++) {
-   tData[i].weight = Math.random();
+   tData[i].weight = randMap(Math.random());
          showLines();
 } 
       // tData[i].weight = Math.random(-1,1);

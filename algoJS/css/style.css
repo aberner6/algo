@@ -622,7 +622,7 @@ font-size: 14px;
 padding-right: 6px;
 padding-left: 6px;
 padding-bottom: -5px;
-border: 1px solid white;
+border: 2px solid yellow;
 
 
 /*position: fixed;
@@ -645,7 +645,7 @@ opacity: .1;
 color: darkgray;
 background-color: white;
 cursor: pointer;
-border: 3px solid yellow;
+border: 2px solid yellow;
 border-radius: 6px;
 }
 #refresh1{
