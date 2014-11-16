@@ -152,8 +152,30 @@ d3.csv(csvName, function(thisData) {
         } 
         gaming();
     }
+$("#title").show()
 })
+// ($".title1")
 }
+$("#enter").on("click", function(){
+  // <a href='#' onclick='$("#manual-example a[rel=tipsy]").tipsy("show"); return false;'>Show</a>
+  // <a href='#' onclick='$("#manual-example a[rel=tipsy]").tipsy("hide"); return false;'>Hide</a>
+  $('#manual-example a[rel=tipsy]').tipsy("show"); 
+
+
+    $("#enter").slideUp();
+        $("#title").animate({
+            top: "8%",
+        });
+    $("#title .p1").delay(1000).fadeIn(500);     
+    $("#title .p2").delay(3000).fadeIn(500);     
+    $("#title .p3").delay(5000).fadeIn(500); 
+    $("#title p:first").remove();  
+
+    $("#neurons").slideDown().animate({
+        top: (200),
+        left: lmargin+r-150,
+    },2000)  
+})
 
 
 
