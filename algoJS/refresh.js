@@ -700,7 +700,10 @@ if(connectionsChanged == false){
         left: width/2-conn1/2,  
         top:height/2+50,
     },6000);
-
+   // $("#connections1").delay(7000).remove();
+$('#connections1').delay(0).fadeOut(0, function(){
+   $(this).remove();
+});
     connectionsChanged = true;
 }
 wasClicked = true;
