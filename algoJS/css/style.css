@@ -105,12 +105,23 @@ font-family:'SFDigitalReadout-Medium';
 
   display:none;
 }
-
-#neurons{
-    top:0px;
-
+#neurop1{
+    top:50%;
+z-index:1000;
     position:absolute;
-  left:10%;
+  left:50%;
+    border-radius: 10px;
+  padding: 2px 4px;
+    background-color:white;
+opacity:.7;
+
+  display:none;
+}
+#neurop2{
+    top:50%;
+z-index:1000;
+    position:absolute;
+  left:50%;
     border-radius: 10px;
   padding: 2px 4px;
     background-color:white;
@@ -119,7 +130,47 @@ opacity:.7;
   display:none;
 }
 
-#connections{
+
+
+
+
+#neurons .p1 .p2{
+    top:50%;
+z-index:1000;
+    position:absolute;
+  left:50%;
+    border-radius: 10px;
+  padding: 2px 4px;
+    background-color:white;
+opacity:.7;
+
+  display:none;
+}
+#neurons{
+    top:50%;
+
+    /*position:absolute;*/
+  left:50%;
+/*    border-radius: 10px;
+  padding: 2px 4px;
+    background-color:white;
+opacity:.7;*/
+
+  display:none;
+}
+
+#connections1{
+    top:0px;
+
+      position:absolute;
+  left:45%;
+    border-radius: 10px;
+  padding: 2px 4px;
+    background-color:white;
+opacity:.7;
+  display:none;
+}
+#connections2{
     top:0px;
 
       position:absolute;

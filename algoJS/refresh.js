@@ -8,8 +8,10 @@ var moveAround;
 var theIndex = [];
 var thisCloudCirc;
 var wasClicked = false;
+var connectionsChanged = false;
+
 var startThings = true;
-var windowWidth = window.outerWidth,
+var windowWidth = window.innerWidth,
     windowHeight= window.innerHeight,
     height = windowHeight,
     width = windowWidth;
@@ -141,7 +143,10 @@ d3.csv(csvName, function(thisData) {
     })
 }
 
+    var neurop1 = $("#neurop1").width();
 
+    var conn1 = $("#connections1").width();
+    var conn2 = $("#connections2").width();
 loadIt("senses.csv");
 function loadIt(csvName){
 d3.csv(csvName, function(thisData) {
@@ -152,33 +157,58 @@ d3.csv(csvName, function(thisData) {
         } 
         gaming();
     }
-$("#title").show()
-})
+    $("#title").animate({
+        left: width/2-204,  
+        top:height/2,
+    },100).fadeIn(introDuration/2);
 // ($".title1")
+})
 }
 $("#enter").on("click", function(){
   // <a href='#' onclick='$("#manual-example a[rel=tipsy]").tipsy("show"); return false;'>Show</a>
   // <a href='#' onclick='$("#manual-example a[rel=tipsy]").tipsy("hide"); return false;'>Hide</a>
-  $('#manual-example a[rel=tipsy]').tipsy("show"); 
+  // $('#manual-example a[rel=tipsy]').tipsy("show"); 
 
 
     $("#enter").slideUp();
-        $("#title").animate({
-            top: "8%",
-        });
-    $("#title .p1").delay(1000).fadeIn(500);     
-    $("#title .p2").delay(3000).fadeIn(500);     
-    $("#title .p3").delay(5000).fadeIn(500); 
-    $("#title p:first").remove();  
-
-    $("#neurons").slideDown().animate({
-        top: (200),
-        left: lmargin+r-150,
+        $("#title").hide();
+        // animate({
+        //     top: "8%",
+        // });
+    // $("#title .p1").delay(1000).fadeIn(500);     
+    // $("#title .p2").delay(3000).fadeIn(500);     
+    // $("#title .p3").delay(5000).fadeIn(500); 
+    // $("#title p:first").remove();  
+// $("#neurons").show(function(){
+    // var conn2 = $("#connections2").width();
+    $("#neurop1").slideDown().animate({
+        top: height/hMargin+rRad*6,
+        left: width/2+leftMargin*2,  
+    },2000) 
+    $("#neurop2").slideDown().animate({
+        top: height/hMargin+rRad*6,
+        left: width/2-neurop1-leftMargin*2,
     },2000)  
+// })
+
+ $("#connections1").delay(500).slideDown().animate({
+        left: width/2-conn1*1.8-leftMargin,  
+        top:height/2+50,
+    },1000) 
+    $("#connections2").delay(500).slideDown().animate({
+        left: width/2+leftMargin+conn2/1.4,  
+        top:height/2+50,
+    },1000) 
 })
+    $("#neurop1, #neurop2").animate({
+        left: width/2-neurop1/2,  
+    },2000) 
 
 
-
+   $("#connections1, #connections2").delay(1000).animate({
+        left: width/2-conn1/2,  
+        top:height/2+50,
+    },1000) 
 // myPulse=setInterval(function () {pulseTimer()}, 1000);
 // function pulseTimer() {
 //     pulseInputs();
@@ -642,6 +672,37 @@ if(startThings){
 }
 
 d3.selectAll(".runner").on("click", function(){
+    $("#neurop1, #neurop2").hide();
+
+
+
+if(connectionsChanged == false){
+        $("#connections2 p").replaceWith("<p>the more we strengthen</p>");
+        $("#connections1 p").replaceWith("<p>the more you trigger input</p>");
+
+    conn1 = $("#connections1").width();
+    conn2 = $("#connections2").width();
+
+        // $("#connections1").animate({
+        //     left: width/2-conn1*1.8-leftMargin,  
+        // })
+        // $("#connections2").animate({
+        // left: width/2+leftMargin+conn2/1.3,  
+        // })
+        $("#connections1").animate({
+            left: width/2-conn1*1.5-leftMargin,  
+        })
+        $("#connections2").animate({
+        left: width/2+leftMargin+conn2/2,  
+        })
+
+   $("#connections1, #connections2").delay(1000).animate({
+        left: width/2-conn1/2,  
+        top:height/2+50,
+    },6000);
+
+    connectionsChanged = true;
+}
 wasClicked = true;
     // clearInterval(myPulse);
 whatClicked = d3.select(this);
@@ -703,6 +764,8 @@ var oMap = d3.scale.linear()
     .range([0, 1]);
 
 if(xPos<width/2){
+
+
 l+=1;
 var what = newData[0].weight*100;
 var hMap = d3.scale.linear()
@@ -711,6 +774,8 @@ var hMap = d3.scale.linear()
 var xLMap = d3.scale.linear()
     .domain([0, what])
     .range([leftMargin+rRad/2+4, width/2]);
+
+
 
 var trailLeft = svg1.selectAll("trailLeft")
     .data(d3.range([what]))
@@ -740,6 +805,7 @@ var trailLeft = svg1.selectAll("trailLeft")
 
 
 else{
+
     console.log(newData[1].weight+"newDataweight")
 right +=1;
 // if((newData[1].weight)>=threshold){
@@ -749,7 +815,13 @@ var h2Map = d3.scale.linear()
     .range([height/hMargin, hTopMargin-rRad]);
 var xRMap = d3.scale.linear()
     .domain([0, what])
+    // .range([width/2, width]);
     .range([width-leftMargin-rRad/2-4, width/2]);
+// var xLMap = d3.scale.linear()
+//     .domain([0, what])
+//     .range([leftMargin+rRad/2+4, width/2]);
+
+ 
 
 var trailRight = svg1.selectAll("trailRight")
     .data(d3.range([what]))
@@ -795,6 +867,7 @@ var mapBump = d3.scale.linear()
     .domain([0,.5])
     .range([hTopMargin-rRad*2, hTopMargin-rRad*4])
 
+$("#connections").hide();
 // .attr("cy", hTopMargin-rRad*5)
 //     .attr("r", rRad)
 winCircle
@@ -1074,9 +1147,9 @@ $("#refreshp").animate({
     top: yMid+24,
     left:lmargin+135,
 });
-$("#connections").animate({
-    left: lmargin*2-60,
-});
+// $("#connections").animate({
+//     left: lmargin*2-60,
+// });
 circle = vis.selectAll("neurons")
     .data(thisData)
     .enter()
@@ -1910,35 +1983,38 @@ var b = 0;
 
 //sensecloud
     // $("#buttons").show(3000);
-$("#title").fadeIn(introDuration/2);
+// $("#title").fadeIn(introDuration/2);
+    // $("#title").animate({
+    //     left: width/2-204,  
+    //     top:height/2,
+    // },100).fadeIn(introDuration/2); 
+// d3.select("#enter").on("click", function(){
+// nextAnimation = true;
+// prepEndText();
+//     $("#enter").slideUp();
+//         $("#title").animate({
+//             top: "8%",
+//         });
+//         // svg.call(transition, p0, p1);
 
-d3.select("#enter").on("click", function(){
-nextAnimation = true;
-prepEndText();
-    $("#enter").slideUp();
-        $("#title").animate({
-            top: "8%",
-        });
-        // svg.call(transition, p0, p1);
+// neuronsIn();
+//     $("#title .p1").delay(1000).fadeIn(500);     
+//     $("#title .p2").delay(3000).fadeIn(500);     
+//     $("#title .p3").delay(5000).fadeIn(500);     
 
-neuronsIn();
-    $("#title .p1").delay(1000).fadeIn(500);     
-    $("#title .p2").delay(3000).fadeIn(500);     
-    $("#title .p3").delay(5000).fadeIn(500);     
+// // d3.select("#title p").transition().delay(introDuration/2).duration(100)
+// //     .attr("opacity", function(){
+// //         $("#title p").append(" linked through weighted lines to an output node</p>");        
+// //     } )
 
-// d3.select("#title p").transition().delay(introDuration/2).duration(100)
-//     .attr("opacity", function(){
-//         $("#title p").append(" linked through weighted lines to an output node</p>");        
-//     } )
+// // if(neurons==true){
 
-// if(neurons==true){
+// // }
+//         // outputIn();
 
-// }
-        // outputIn();
-
-    // $('#intro').fadeIn("slow");
-    // $('#title').fadeOut("fast");
-})
+//     // $('#intro').fadeIn("slow");
+//     // $('#title').fadeOut("fast");
+// })
 
 d3.select("#ok").on("click", function(){
     $('#intro2').fadeIn(1000);
