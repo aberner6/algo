@@ -634,11 +634,14 @@ $("#refresh1p").animate({
 $("#success").animate({
     left: width/2-2,
 })
-$("#refresh1p, #success, .win").on("click", function(){
+$("#refresh1p, #success, .win").on("click", function(){  
+   
+
 startThings = true;
     d3.selectAll(".bump")
     .transition()
     .duration(2000)
+    .attr("fill","white")
     .attr("cy", hTopMargin-rRad)
 s = 0;
 u = 0;
@@ -898,21 +901,25 @@ winCircle
    .on("mouseover", function(){
        d3.select(this)
         .transition()
+        .attr("stroke","yellow")
         .attr("stroke-width",strokeWeight*3)
     })
    .on("mouseout", function(){
         d3.select(this)
         .transition()
+        .attr("stroke","white")
         .attr("stroke-width",strokeWeight)
     }) 
 $("#success").on("mouseover", function(){
     winCircle
         .transition()
+        .attr("stroke","yellow")
         .attr("stroke-width",strokeWeight*3);
 })
 $("#success").on("mouseout", function(){
     winCircle
         .transition()
+        .attr("stroke","white")
         .attr("stroke-width",strokeWeight);
 })
 
@@ -938,12 +945,15 @@ $("#refresh1p").animate({
     top: mapBump(high)-29,
 })
 $("#success").show();
+    d3.selectAll(".bump")
+    .transition()
+    .attr("fill","yellow")
 
                 d3.selectAll(".win")
                 .transition()
                 .attr("r", rRad/2)
                 .attr("stroke-width", rRad*2)
-                // .attr("stroke", "teal")
+                .attr("stroke", "yellow")
                 .attr("cy", hTopMargin-rRad*4.6)
                 .each("end", function(){
                     d3.selectAll(".win")
@@ -956,17 +966,13 @@ $("#success").show();
                             // .duration(2000)
                             .attr("r", rRad/2) 
                             .each("end", function(){
-                                d3.selectAll(".win")
+                                    d3.selectAll(".win")
                                     .transition()
                                     .duration(2000)
-                                    // .attr("r",rRad)
-                                    // .attr("stroke-opacity", 1)
-                                    // .attr("opacity",.5)
-                                    // .attr("fill", "none")
                                     .attr("r", rRad) 
+                                    .attr("stroke","white")
                                     .attr("stroke-width", strokeWeight) 
-                                    .attr("cy", hTopMargin-rRad*5)   
-                         
+                                    .attr("cy", hTopMargin-rRad*5) 
                             })
                         })
                 })
@@ -978,7 +984,8 @@ $("#success").show();
             else{
                 d3.selectAll(".bump")
                 .transition()
-                .attr("cy", hTopMargin-rRad);
+                .attr("cy", hTopMargin-rRad)
+                .attr("fill","white");
             }
         })        
     })
