@@ -106,26 +106,31 @@ font-family:'SFDigitalReadout-Medium';
   display:none;
 }
 #neurop1{
-    top:50%;
+    top:45%;
 z-index:1000;
     position:absolute;
   left:50%;
     border-radius: 10px;
   padding: 2px 4px;
-    background-color:white;
-opacity:.7;
+    /*background-color:white;*/
+/*opacity:.7;*/
+color:white;
+border-bottom: 1px solid white;
 
   display:none;
 }
 #neurop2{
-    top:50%;
+  color:white;
+
+    top:45%;
 z-index:1000;
     position:absolute;
   left:50%;
     border-radius: 10px;
   padding: 2px 4px;
-    background-color:white;
-opacity:.7;
+    /*background-color:white;*/
+/*opacity:.7;*/
+border-bottom: 1px solid white;
 
   display:none;
 }
@@ -161,24 +166,29 @@ opacity:.7;*/
 
 #connections1{
     top:0px;
+color:white;
 
       position:absolute;
   left:45%;
     border-radius: 10px;
   padding: 2px 4px;
-    background-color:white;
-opacity:.7;
+    /*background-color:white;*/
+/*opacity:.7;*/
+border-bottom: 1px solid white;
+
   display:none;
 }
 #connections2{
     top:0px;
+color:white;
 
       position:absolute;
   left:45%;
     border-radius: 10px;
   padding: 2px 4px;
-    background-color:white;
-opacity:.7;
+    /*background-color:white;*/
+/*opacity:.7;*/
+border-bottom: 1px solid white;
   display:none;
 }
 

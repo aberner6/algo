@@ -85,7 +85,6 @@ var randLength = 400;
 
 
 
-
 var whatClicked;
 
 var hTopMargin = height/4;//10;
@@ -164,23 +163,12 @@ d3.csv(csvName, function(thisData) {
 // ($".title1")
 })
 }
-$("#enter").on("click", function(){
-  // <a href='#' onclick='$("#manual-example a[rel=tipsy]").tipsy("show"); return false;'>Show</a>
-  // <a href='#' onclick='$("#manual-example a[rel=tipsy]").tipsy("hide"); return false;'>Hide</a>
-  // $('#manual-example a[rel=tipsy]').tipsy("show"); 
+$("#enter").on("click", function(e){
 
 
     $("#enter").slideUp();
         $("#title").hide();
-        // animate({
-        //     top: "8%",
-        // });
-    // $("#title .p1").delay(1000).fadeIn(500);     
-    // $("#title .p2").delay(3000).fadeIn(500);     
-    // $("#title .p3").delay(5000).fadeIn(500); 
-    // $("#title p:first").remove();  
-// $("#neurons").show(function(){
-    // var conn2 = $("#connections2").width();
+
     $("#neurop1").slideDown().animate({
         top: height/hMargin+rRad*6,
         left: width/2+leftMargin*2,  
@@ -522,10 +510,22 @@ thisCircle  = svg1.selectAll("runner")
     .attr("r", rRad)
     .attr("fill", "white")
     .attr("opacity",1)
-    .attr("stroke","white")
+    .attr("stroke","white");
+$('.runner').tipsy({
+    gravity: 'nw', 
+    html: true,
+    trigger: 'manual', 
+    title: function() {
+         return "Return to Part I: Game";
+    }
+});
+$('.runner').tipsy("show");
+
+
 clickFunction();
 // makeText();
 }
+  $('.runner').tipsy({trigger: 'manual'});
 
 function makeText(newData, indexText){
 var weightRect = svg1.selectAll("rectC")
