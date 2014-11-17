@@ -169,14 +169,15 @@ $("#enter").on("click", function(e){
     $("#enter").slideUp();
         $("#title").hide();
 
-    $("#neurop1").slideDown().animate({
-        top: height/hMargin+rRad*6,
-        left: width/2+leftMargin*2,  
+  $("#neurop1").slideDown().animate({
+        top: height/hMargin+rRad*4.5,
+        left: width/2+neurop1*3.5,  
     },2000) 
     $("#neurop2").slideDown().animate({
-        top: height/hMargin+rRad*6,
-        left: width/2-neurop1-leftMargin*2,
-    },2000)  
+        top: height/hMargin+rRad*4.5,
+        left: width/2-neurop1*3.8,
+    },2000) 
+
 // })
 
  $("#connections1").delay(500).slideDown().animate({
@@ -511,21 +512,21 @@ thisCircle  = svg1.selectAll("runner")
     .attr("fill", "white")
     .attr("opacity",1)
     .attr("stroke","white");
-$('.runner').tipsy({
-    gravity: 'nw', 
-    html: true,
-    trigger: 'manual', 
-    title: function() {
-         return "Return to Part I: Game";
-    }
-});
-$('.runner').tipsy("show");
+// $('.runner').tipsy({
+//     gravity: 'nw', 
+//     html: true,
+//     trigger: 'manual', 
+//     title: function() {
+//          return "Return to Part I: Game";
+//     }
+// });
+// $('.runner').tipsy("show");
 
 
 clickFunction();
 // makeText();
 }
-  $('.runner').tipsy({trigger: 'manual'});
+  // $('.runner').tipsy({trigger: 'manual'});
 
 function makeText(newData, indexText){
 var weightRect = svg1.selectAll("rectC")
@@ -678,7 +679,7 @@ d3.selectAll(".runner").on("click", function(){
 
 if(connectionsChanged == false){
         $("#connections2 p").replaceWith("<p>the more we strengthen</p>");
-        $("#connections1 p").replaceWith("<p>the more you trigger input</p>");
+        $("#connections1 p").replaceWith("<p>the more you click input</p>");
 
     conn1 = $("#connections1").width();
     conn2 = $("#connections2").width();
@@ -693,19 +694,39 @@ if(connectionsChanged == false){
             left: width/2-conn1*1.5-leftMargin,  
         })
         $("#connections2").animate({
-        left: width/2+leftMargin+conn2/2,  
+            left: width/2+leftMargin+conn2/2,  
         })
 
    $("#connections1, #connections2").delay(1000).animate({
         left: width/2-conn1/2,  
-        top:height/2+50,
-    },6000);
+        top: hTopMargin-rRad-8,
+    },3000);
    // $("#connections1").delay(7000).remove();
 $('#connections1').delay(0).fadeOut(0, function(){
-   $(this).remove();
+    $("#connections1 p").replaceWith("<p> </p>");
 });
-    connectionsChanged = true;
-}
+$('#connections2').delay(2000).fadeOut(300, function(){
+   // $(this).remove(); 
+       $("#connections1 p").replaceWith("<p>the more we strengthen</p>"); 
+       connectionsChanged = true;
+});
+} 
+// else{
+//         $("#connections1").show().animate({
+//             left: width/2-conn2*1.5-leftMargin,  
+//             top: hTopMargin-rRad*4,
+//         })
+//         $("#connections2").show().animate({
+//         left: width/2+leftMargin+conn2/2,  
+//         top:hTopMargin-rRad*4,
+//         })  
+// }
+
+
+
+
+
+
 wasClicked = true;
     // clearInterval(myPulse);
 whatClicked = d3.select(this);
