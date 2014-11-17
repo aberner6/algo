@@ -156,8 +156,9 @@ d3.csv(csvName, function(thisData) {
         } 
         gaming();
     }
+    var tWidth = $("#title").width();
     $("#title").animate({
-        left: width/2-204,  
+        left: width/2-tWidth/2,  
         top:height/2,
     },100).fadeIn(introDuration/2);
 // ($".title1")

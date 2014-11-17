@@ -292,7 +292,7 @@ font-weight:bold;
 	position:absolute;
 z-index: 1000;
 top: 39%;
-margin-left: 38%;
+/*margin-left: 38%;*/
 display:none;
 }
 .textIs{
