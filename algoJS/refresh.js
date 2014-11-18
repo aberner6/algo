@@ -170,13 +170,21 @@ $("#enter").on("click", function(e){
     $("#enter").slideUp();
         $("#title").hide();
 
+
+
+    // .attr("cx", function(d,i){
+    //     if(i%2==0){
+    //         return leftMargin;
+    //     }
+    //     return width-leftMargin;
+    // })
   $("#neurop1").slideDown().animate({
         top: height/hMargin+rRad*4.5,
-        left: width/2+neurop1*3.5,  
+        left: width-leftMargin,//width/2+neurop1*3.5,  
     },2000) 
     $("#neurop2").slideDown().animate({
         top: height/hMargin+rRad*4.5,
-        left: width/2-neurop1*3.8,
+        left: leftMargin,//width/2-neurop1*3.8,
     },2000) 
 
 // })
@@ -237,7 +245,7 @@ $('#moreInfoBtn').tipsy({
 //     })
 // }
 function gaming(){
-function calcGame(triggerSense, xPos, clicks){
+function calcGame(triggerSense, xPos, clicks,type){
 console.log(triggerSense+"inside calculate");
 console.log(clicks+"clicks")
     for (i=0; i<tData.length; i++){
@@ -248,7 +256,7 @@ console.log(clicks+"clicks")
                 console.log(addIt);
         }
     }
-    triggerRollGame(addIt, triggerSense, theIndex, xPos, clicks);
+    triggerRollGame(addIt, triggerSense, theIndex, xPos, clicks,type);
 }
 
 // if(addIt>=threshold){//THIS SHOULD  BE HAPPENING @END
@@ -265,13 +273,15 @@ function showCaptions(addIs, senseIs, errorIs,thisIndex){
 }
 
 var error = 0;
-// makeText(); 
-makeText(tData,0); 
+// makeText();
+makeText(tData,tData,0,0,"u"); 
 
+// makeText(tData,0); 
+var oldData = [];
 var learning = d3.scale.linear()
     .domain([0,10])
     .range([0,1])
-function triggerRollGame(addIt, triggerSense, theIndexIs, xPos,clicks){
+function triggerRollGame(addIt, triggerSense, theIndexIs, xPos,clicks,type){
 
      // console.log(addIt+"sum "+triggerSense+" sense");
      tSense = triggerSense;
@@ -288,8 +298,12 @@ console.log(learningConstant+"learning")
     // //new weighting
     if(error>0){ //&& random == true){
         for (i= 0; i<inputGame.length; i++){
+            oldData[i] = tData[i].weight;
+            console.log(oldData[i]+"old data?")
             tData[i].weight += learningConstant*error*inputGame[i];
-makeText(tData,theIndexIs); 
+            console.log(tData[i].weight+"new data?")
+
+makeText(oldData,tData,theIndexIs,learningConstant,type); 
 changeCircs(tData,theIndexIs, xPos);
 bumpUp(tData[theIndexIs].weight, triggerSense);
 
@@ -299,7 +313,7 @@ bumpUp(tData[theIndexIs].weight, triggerSense);
 
     else{
 bumpUp(tData[theIndexIs].weight);
-makeText(tData,theIndexIs); 
+makeText(oldData,tData,theIndexIs,learningConstant,type); 
 changeCircs(tData,theIndexIs, xPos);
     }    
 console.log(tData[theIndexIs].weight+"new weight?");
@@ -529,14 +543,15 @@ clickFunction();
 }
   // $('.runner').tipsy({trigger: 'manual'});
 
-function makeText(newData, indexText){
+function makeText(oldData, newData, indexText, learningConstant,type){
 var weightRect = svg1.selectAll("rectC")
     .data(d3.range(1))
     .enter()
     .append("rect").attr("class", "rectC")
-    .attr("x", 190)
+    .attr("x", 100)
     .attr("y", 80)
-    .attr("width",180)
+    .attr("width",330)
+    // .attr("width",180)
     .attr("height",50)
     .attr("fill","white")
     .attr("stroke", "white"); 
@@ -584,9 +599,10 @@ var weightLine = svg1.selectAll("lineC")
         return 190 + i+ 70;
     })
     .attr("y2", 130)
-    .attr("fill","gray")
-    .attr("stroke","gray")
-    .attr("stroke-weight",.1)
+    // .attr("fill","gray")
+    // .attr("stroke","gray")
+    // .attr("stroke-weight",.1)
+d3.selectAll(".learnText").remove();
 
 d3.selectAll(".captions").remove();
 console.log(newData+"newdata");
@@ -596,7 +612,7 @@ var weightText = svg1.selectAll("captions")
     .data(newData)
     .enter()
     .append("text").attr("class", "captions")
-    .attr("x", 200)
+    .attr("x", 100)
     .attr("y", function(d,i){
         return 100+i*20;
     })
@@ -616,16 +632,85 @@ var weightText = svg1.selectAll("captions")
                 return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" >= "+threshold;            
             }            
         }
+
+
+
+
+
         else{
-            if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
-                return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold;
+            if(oldData[i]!=newData[i].weight){
+            if((Math.floor(oldData[i] * 100) / 100).toString().length<4){
+                if(i==0){
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                }
+                if(i==1){
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                }
             }
             else{
-                return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold;            
+                if(i==0){
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" * "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                }
+                if(i==1){
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" * "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                }
+                // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+"*"+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
             } 
-            // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+      "   <    "+threshold;                       
+            }
+            else{
+            if((Math.floor(oldData[i] * 100) / 100).toString().length<4){
+                if(i==0){
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                }
+                if(i==1){
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                }
+                // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+            }
+            else{
+                if(i==0){
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                }
+                if(i==1){
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                }
+
+                // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
+            } 
+            }
+            // if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
+            //     return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold;
+            // }
+            // else{
+            //     return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold;            
+            // } 
         }
     })     
+
+
+var learnText = svg1.selectAll("learnText")
+    .data(d3.range(2))
+    .enter()
+    .append("text").attr("class", "learnText")
+    .attr("x", function(d,i){
+        if(type=="s"){
+            return leftMargin*2;
+        }
+        if(type=="u"){
+            return width-leftMargin*2;
+        }
+    })
+    .attr("y", function(d,i){
+        return height/hMargin-height/2+rRad*4;
+    })
+    .attr("fill","gray")
+    .text(function(d,i){
+        return learningConstant+" learning as you click";
+    })
+
+
+
+
 }
 $("#refresh1p").animate({
     left: width/2-78,
@@ -652,7 +737,9 @@ d3.selectAll(".win")
     for (var i = 0; i < tData.length; i++) {
         tData[i].weight = randMap(Math.random());
     } 
-    makeText(tData,0);
+makeText(tData,tData,0,0,"u"); 
+
+    // makeText(tData,0);
     d3.selectAll(".trailLeft, .trailRight").remove();
 
 $("#refresh1p, #success").hide();
@@ -670,9 +757,9 @@ function clickFunction(){
 if(startThings){
     inputGame[0] = 1;
     inputGame[1] = 1;
-    calcGame("smell", width/4,1);
+    calcGame("smell", width/4,0,"s");
 
-    calcGame("touch", width/2+20,1);
+    calcGame("touch", width/2+20,0,"u");
     startThings = false;
 }
 
@@ -682,8 +769,8 @@ d3.selectAll(".runner").on("click", function(){
 
 
 if(connectionsChanged == false){
-        $("#connections2 p").replaceWith("<p>the more we strengthen</p>");
-        $("#connections1 p").replaceWith("<p>the more you click input</p>");
+        $("#connections2 p").replaceWith("<p>the connections will strengthen</p>");
+        $("#connections1 p").replaceWith("<p>if you keep clicking</p>");
 
     conn1 = $("#connections1").width();
     conn2 = $("#connections2").width();
@@ -702,7 +789,7 @@ if(connectionsChanged == false){
         })
 
    $("#connections1, #connections2").delay(1000).animate({
-        left: width/2-conn1/2,  
+        left: width/2-conn2/2,  
         top: hTopMargin-rRad-8,
     },3000);
    // $("#connections1").delay(7000).remove();
@@ -711,7 +798,7 @@ $('#connections1').delay(0).fadeOut(0, function(){
 });
 $('#connections2').delay(2000).fadeOut(300, function(){
    // $(this).remove(); 
-       $("#connections1 p").replaceWith("<p>the more we strengthen</p>"); 
+       $("#connections1 p").replaceWith("<p>the connections will strengthen</p>"); 
        connectionsChanged = true;
 });
 } 
@@ -743,7 +830,7 @@ console.log(whatClicked.data()[0].sense)
         addIt = 0;
         inputGame[0] = 1;
         inputGame[1] = 0;
-        calcGame("smell", whatIs,s);
+        calcGame("smell", whatIs,s,"s");
     }
     if(whatClicked.data()[0].sense=="touch"){
         u+=1;
@@ -751,7 +838,7 @@ console.log(whatClicked.data()[0].sense)
         addIt = 0;
             inputGame[0] = 0;
         inputGame[1] = 1;
-        calcGame("touch", whatIs,u);
+        calcGame("touch", whatIs,u,"u");
     }
 
     d3.select(this)
