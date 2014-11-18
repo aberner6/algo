@@ -628,21 +628,30 @@ var weightText = svg1.selectAll("captions")
             if(oldData[i]!=newData[i].weight){
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+learningConstant+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+learningConstant+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
                 }
                 // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" >= "+threshold;
             }
+            else{
+                if(i==0){
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                }
+                if(i==1){
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                }
+                // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" >= "+threshold;            
+            }  
             }
             else{
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
                 }
             }
             else{
