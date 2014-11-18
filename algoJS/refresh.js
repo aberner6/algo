@@ -560,9 +560,9 @@ var midLine = svg1.selectAll("midlineC")
     .data(d3.range(1))
     .enter()
     .append("line").attr("class", "midlineC")
-    .attr("x1", 190)
+    .attr("x1", 100)
     .attr("y1", 105)
-    .attr("x2", 370)
+    .attr("x2", 430)
     .attr("y2", 105)
     .attr("fill","gray")
     .attr("stroke","gray")
@@ -612,7 +612,7 @@ var weightText = svg1.selectAll("captions")
     .data(newData)
     .enter()
     .append("text").attr("class", "captions")
-    .attr("x", 100)
+    .attr("x", 110)
     .attr("y", function(d,i){
         return 100+i*20;
     })
@@ -625,12 +625,36 @@ var weightText = svg1.selectAll("captions")
             else{
                 $("#refresh1p, #success").hide();
             }
+            if(oldData[i]!=newData[i].weight){
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
-                return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" >= "+threshold;
+                if(i==0){
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+learningConstant+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                }
+                if(i==1){
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+learningConstant+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                }
+                // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" >= "+threshold;
+            }
             }
             else{
-                return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" >= "+threshold;            
-            }            
+            if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
+                if(i==0){
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                }
+                if(i==1){
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                }
+            }
+            else{
+                if(i==0){
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                }
+                if(i==1){
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                }
+                // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" >= "+threshold;            
+            }    
+            }        
         }
 
 
@@ -641,18 +665,18 @@ var weightText = svg1.selectAll("captions")
             if(oldData[i]!=newData[i].weight){
             if((Math.floor(oldData[i] * 100) / 100).toString().length<4){
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
                 }
             }
             else{
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" * "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" * "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
                 }
                 // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+"*"+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
             } 
@@ -660,19 +684,19 @@ var weightText = svg1.selectAll("captions")
             else{
             if((Math.floor(oldData[i] * 100) / 100).toString().length<4){
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
                 }
                 // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
             }
             else{
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
                 }
 
                 // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
@@ -688,6 +712,10 @@ var weightText = svg1.selectAll("captions")
     })     
 
 
+
+
+
+////////////////MAKE THIS POPPIER
 var learnText = svg1.selectAll("learnText")
     .data(d3.range(2))
     .enter()
