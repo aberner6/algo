@@ -164,7 +164,10 @@ d3.csv(csvName, function(thisData) {
 // ($".title1")
 })
 }
+d3.select("#game svg").attr("opacity",.2)
 $("#enter").on("click", function(e){
+// $("#game").
+d3.select("#game svg").attr("opacity",1)
 
 
     $("#enter").slideUp();
@@ -544,64 +547,98 @@ clickFunction();
   // $('.runner').tipsy({trigger: 'manual'});
 
 function makeText(oldData, newData, indexText, learningConstant,type){
-var weightRect = svg1.selectAll("rectC")
-    .data(d3.range(1))
-    .enter()
-    .append("rect").attr("class", "rectC")
-    .attr("x", 100)
-    .attr("y", 80)
-    .attr("width",330)
-    // .attr("width",180)
-    .attr("height",50)
-    .attr("fill","white")
-    .attr("stroke", "white"); 
+// var weightRect = svg1.selectAll("rectC")
+//     .data(d3.range(2))
+//     .enter()
+//     .append("rect").attr("class", "rectC")
+//     .attr("x",function(d,i){
+//         if(i==0){
+//             return width/2-282*2-10;
+//         }
+//         if(i==1){
+//             return width/2+282-10;
+//         }
+//     })
+//     .attr("y", 80)
+//     .attr("width",320)
+//     .attr("height",30)
+//     .attr("fill","white")
+//     .attr("stroke", "white"); 
+// var weightRect = svg1.selectAll("rectC")
+//     .data(d3.range(1))
+//     .enter()
+//     .append("rect").attr("class", "rectC")
+//     .attr("x", 100+width/2)
+//     .attr("y", 80)
+//     .attr("width",330)
+//     // .attr("width",180)
+//     .attr("height",30)
+//     .attr("fill","white")
+//     .attr("stroke", "white"); 
 
-var midLine = svg1.selectAll("midlineC")
-    .data(d3.range(1))
-    .enter()
-    .append("line").attr("class", "midlineC")
-    .attr("x1", 100)
-    .attr("y1", 105)
-    .attr("x2", 430)
-    .attr("y2", 105)
-    .attr("fill","gray")
-    .attr("stroke","gray")
-    .attr("stroke-weight",.1)
-
+// var midLine = svg1.selectAll("midlineC")
+//     .data(d3.range(1))
+//     .enter()
+//     .append("line").attr("class", "midlineC")
+//     .attr("x1", 100)
+//     .attr("y1", 105)
+//     .attr("x2", 430)
+//     .attr("y2", 105)
+//     .attr("fill","gray")
+//     .attr("stroke","gray")
+//     .attr("stroke-weight",.1)
+// var midLine = svg1.selectAll("midlineC")
+//     .data(d3.range(1))
+//     .enter()
+//     .append("line").attr("class", "midlineC")
+//     .attr("x1", width/2+100)
+//     .attr("y1", 105)
+//     .attr("x2", width/2+100+330)
+//     .attr("y2", 105)
+//     .attr("fill","gray")
+//     .attr("stroke","gray")
+//     .attr("stroke-weight",.1)
 
 var weightLine = svg1.selectAll("lineC")
-    .data(d3.range(3))
+    .data(d3.range(5))
     .enter()
     .append("line").attr("class", "lineC")
     .attr("x1", function(d,i){
-        if(i==1){
-            return 190 + 115;
+        if(i==0){
+            return 100 + 90;
         }
         if(i==2){
-            return 190 + 135;
+            return 100 + 140;
         }
         if(i==3){
-            // return 190 + 175;
+            return 100 + 175;
         }
-        return 190 + i+ 70;
+        if(i==4){
+            return 100 + 195;
+        }
+        // return 100 + i*10;
     })
     .attr("y1", 80)
     .attr("x2", function(d,i){
-        if(i==1){
-            return 190 + 115;
+        if(i==0){
+            return 100 + 90;
         }
         if(i==2){
-            return 190 + 135;
+            return 100 + 140;
         }
         if(i==3){
-            // return 190 + 175;
+            return 100 + 175;
         }
-        return 190 + i+ 70;
+        if(i==4){
+            return 100 + 195;
+        }
+        // return 100 + i*10;
     })
-    .attr("y2", 130)
+    .attr("y2", 110)
     // .attr("fill","gray")
     // .attr("stroke","gray")
     // .attr("stroke-weight",.1)
+
 d3.selectAll(".learnText").remove();
 
 d3.selectAll(".captions").remove();
@@ -612,11 +649,24 @@ var weightText = svg1.selectAll("captions")
     .data(newData)
     .enter()
     .append("text").attr("class", "captions")
-    .attr("x", 110)
-    .attr("y", function(d,i){
-        return 100+i*20;
+    .attr("fill","white")
+    // var country = document.getElementById("UK");
+    // .style("border-bottom","1px solid white")
+    // .style("padding","2px 4px")
+    // .style("border-radius","10px")
+
+    .attr("x", function(d,i){
+        if(i==0){
+            return width/2-282*2;
+        }
+        if(i==1){
+            return width/2+282;
+        }
     })
-    .attr("fill","gray")
+    .attr("y", function(d,i){
+        return 100;
+    })
+    // .attr("fill","gray")
     .text(function(d,i){
         if(Math.floor(newData[i].weight * 100) / 100 >= threshold){
             if(wasClicked && newData[indexText].weight>=threshold){
@@ -718,10 +768,8 @@ var weightText = svg1.selectAll("captions")
             //     return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold;            
             // } 
         }
-    })     
-
-
-
+    }) 
+    .attr("text-decoration","underline")
 
 
 ////////////////MAKE THIS POPPIER
@@ -742,7 +790,7 @@ var learnText = svg1.selectAll("learnText")
     })
     .attr("fill","gray")
     .text(function(d,i){
-        return learningConstant+" learning as you click";
+        // return learningConstant+" learning as you click";
     })
 
 

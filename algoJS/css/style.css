@@ -325,6 +325,18 @@ width: 400px;
 
 /*border-bottom: 1px solid lightgray;*/
 }
+
+.captions{
+color:white;
+
+      position:absolute;
+  left:45%;
+    border-radius: 10px;
+  padding: 2px 4px;
+    /*background-color:white;*/
+/*opacity:.7;*/
+border-bottom: 1px solid white;
+}
 .title1 .p1, .p2, .p3{
   display:none;
 }
