@@ -17,6 +17,9 @@ body{
     -khtml-user-select: none; /* webkit (konqueror) browsers */
     -ms-user-select: none; /* IE10+ */
 }
+::-webkit-scrollbar { 
+    display: none; 
+}
 canvas{
 	left:0px;
 	top:0px;
@@ -27,6 +30,34 @@ canvas{
   top:0px;
   position:absolute;
 }
+
+
+.inputInteraction, .outputInteraction, .winInteraction, .goInteraction{
+display:inline;
+}
+
+.inputInteraction, .outputInteraction, .goInteraction{
+background-color:yellow;
+  }
+.inputInteraction:hover{
+  cursor:pointer;
+background-color:gray;
+color:white;
+}
+.outputInteraction:hover{
+  cursor:pointer;
+background-color:gray;
+color:white;
+}
+
+.goInteraction:hover{
+  cursor:pointer;
+background-color:gray;
+color:white;
+}
+
+
+
 #enterGame{
   display:none;
   position:absolute;
@@ -51,8 +82,52 @@ canvas{
   border-bottom: 1px solid yellow;
   cursor: pointer;
 }
+#explanation{
+position: fixed;
+font-size: 12px;
+display: none;
+width: 15%;
+/* height: 5%; */
+/* letter-spacing: 0.5pt; */
+top: 11.5%;
+left: 40px;
+/* margin-left: 5.8em; */
+/* margin-top: 7.4em; */
+background-color: white;
+color: darkgray;
+padding: 7px;
+height:50%;overflow-y:scroll;
+
+/*      position:fixed;
+  font-size: 12px;
+  display:none;
+  width:15%;
+height: 5%;
+letter-spacing: 0.5pt;
+margin-left: 5.8em;
+margin-top: 7.4em;
+background-color:white;
+color:darkgray;*/
+}
+
 #enterContainer{
-  position:absolute;
+  display:none;
+position: fixed;
+top: 7.5%;
+left: 40px;
+padding: 10px;
+opacity: .5;
+/* width: 0.8em; */
+z-index: 20;
+/* background-color: gray; */
+line-height: 14px;
+border-left: 1px solid white;
+border-right: 1px solid white;
+border-bottom: 1px solid white;
+padding: 5px;
+cursor: pointer;
+color: white;
+/*  position:absolute;
   bottom: .5%;
   left: 40px;
   padding:10px;
@@ -65,7 +140,7 @@ canvas{
   border-right: 1px solid gray;
   border-bottom: 1px solid gray;
   padding: 5px;
-  cursor: pointer;
+  cursor: pointer;*/
 }
 
 #enterContainer:hover{
@@ -75,7 +150,31 @@ canvas{
   border-bottom: 1px solid yellow;
   cursor: pointer;
 }
-
+#clickExpl{
+  display:none;
+position: fixed;
+top: 7.5%;
+left: 115px;
+padding: 10px;
+opacity: .5;
+/* width: 0.8em; */
+z-index: 20;
+/* background-color: gray; */
+line-height: 14px;
+border-left: 1px solid white;
+border-right: 1px solid white;
+border-bottom: 1px solid white;
+padding: 5px;
+cursor: pointer;
+color: white;
+}
+#clickExpl:hover{
+  background-color: darkgray;
+  border-left: 1px solid yellow;
+  border-right: 1px solid yellow;
+  border-bottom: 1px solid yellow;
+  cursor: pointer;
+}
 
 @font-face {
   font-family: 'SFDigitalReadout-Medium';
@@ -114,13 +213,13 @@ z-index:1000;
   padding: 2px 4px;
     /*background-color:white;*/
 /*opacity:.7;*/
-color:white;
-border-bottom: 1px solid white;
+color:black;
+border-bottom: 1px solid black;
 
   display:none;
 }
 #neurop2{
-  color:white;
+  color:black;
 
     top:45%;
 z-index:1000;
@@ -130,7 +229,7 @@ z-index:1000;
   padding: 2px 4px;
     /*background-color:white;*/
 /*opacity:.7;*/
-border-bottom: 1px solid white;
+border-bottom: 1px solid black;
 
   display:none;
 }
@@ -166,7 +265,7 @@ opacity:.7;*/
 
 #connections1{
     top:0px;
-color:white;
+color:black;
 
       position:absolute;
   left:45%;
@@ -174,13 +273,13 @@ color:white;
   padding: 2px 4px;
     /*background-color:white;*/
 /*opacity:.7;*/
-border-bottom: 1px solid white;
+border-bottom: 1px solid black;
 
   display:none;
 }
 #connections2{
     top:0px;
-color:white;
+color:black;
 
       position:absolute;
   left:45%;
@@ -188,7 +287,7 @@ color:white;
   padding: 2px 4px;
     /*background-color:white;*/
 /*opacity:.7;*/
-border-bottom: 1px solid white;
+border-bottom: 1px solid black;
   display:none;
 }
 
@@ -687,15 +786,42 @@ padding-bottom: 1px;
 #refresh1p{
 position: fixed;
 display: none;
-left: 603px;
-top: 72px;
+/*left: 603px;*/
+/*top: 72px;*/
 position: absolute;
 color: white;
 font-size: 14px;
 padding-right: 6px;
 padding-left: 6px;
 padding-bottom: -5px;
-border: 2px solid yellow;
+/*border: 2px solid yellow;*/
+
+
+  display:none;
+position: fixed;
+top: 7.5%;
+/*left: 40px;*/
+/*padding: 10px;*/
+/*opacity: .5;*/
+/* width: 0.8em; */
+z-index: 20;
+/* background-color: gray; */
+line-height: 14px;
+border-left: 1px solid yellow;
+border-right: 1px solid yellow;
+border-bottom: 1px solid yellow;
+/*padding: 5px;*/
+cursor: pointer;
+/*color: white;*/
+
+
+
+
+
+
+
+
+
 
 
 /*position: fixed;
@@ -779,6 +905,7 @@ display: none;
 margin-top:15px;
 }
 #game{
+  position:fixed;
 z-index: 1;
 margin-left: 0px;
 margin-top:50px;

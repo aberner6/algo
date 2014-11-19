@@ -9,6 +9,7 @@ var theIndex = [];
 var thisCloudCirc;
 var wasClicked = false;
 var connectionsChanged = false;
+var callRun;
 
 var startThings = true;
 var windowWidth = window.innerWidth,
@@ -164,11 +165,14 @@ d3.csv(csvName, function(thisData) {
 // ($".title1")
 })
 }
+// d3.select("#enterContainer").attr("opacity",.2)
+
 d3.select("#game svg").attr("opacity",.2)
 $("#enter").on("click", function(e){
 // $("#game").
 d3.select("#game svg").attr("opacity",1)
-
+$("#enterContainer").show();
+$("#clickExpl").show();
 
     $("#enter").slideUp();
         $("#title").hide();
@@ -182,11 +186,11 @@ d3.select("#game svg").attr("opacity",1)
     //     return width-leftMargin;
     // })
   $("#neurop1").slideDown().animate({
-        top: height/hMargin+rRad*4.5,
+        top: height/hMargin,//+rRad*4.5,
         left: width-leftMargin,//width/2+neurop1*3.5,  
     },2000) 
     $("#neurop2").slideDown().animate({
-        top: height/hMargin+rRad*4.5,
+        top: height/hMargin,//+rRad*4.5,
         left: leftMargin,//width/2-neurop1*3.8,
     },2000) 
 
@@ -352,6 +356,26 @@ console.log(tData[theIndexIs].weight+"new weight?");
 
 
 
+
+// var gradient = svg1.append("svg:defs")
+//     .append("svg:linearGradient")
+//     .attr("id", "gradient")
+//     .attr("x1", "0%")
+//     .attr("y1", "0%")
+//     .attr("x2", "100%")
+//     .attr("y2", "100%")
+//     .attr("spreadMethod", "pad");
+
+
+//  gradient.append("svg:stop")
+//     .attr("offset", "0%")
+//     .attr("stop-color", "yellow")
+//     .attr("stop-opacity", .1);
+
+// gradient.append("svg:stop")
+//     .attr("offset", "100%")
+//     .attr("stop-color", "white")
+//     .attr("stop-opacity", 1);
 var winCircle  = svg1.selectAll("win")
     .data(d3.range(1))
     .enter().append("circle")
@@ -359,11 +383,13 @@ var winCircle  = svg1.selectAll("win")
     .attr("cx", width/2)
     .attr("cy", hTopMargin-rRad*5)
     .attr("r", rRad)
+        // .attr('fill', 'url(#gradient)')
     .attr("fill", "none")
     .attr("stroke-dasharray", "4,4")
     .attr("stroke", "white")
     .attr("stroke-width", strokeWeight)
-    .attr("opacity",1)
+    .attr("opacity",1);
+
     // .on("mouseover", function(d,i){
     //     d3.select(this)
     //     .transition()
@@ -374,6 +400,20 @@ var winCircle  = svg1.selectAll("win")
     //     .transition()
     //     .attr("opacity",1)                                        
     // })  
+// <div id = "outputInteraction"
+// make output circle get bigger
+
+$(".outputInteraction").on("click", function(){
+    d3.selectAll(".win")
+    .transition()
+    .duration(500)
+        .attr("stroke","yellow")
+        .attr("stroke-width",strokeWeight*5)
+   .transition()
+   .duration(1000)
+        .attr("stroke","white")
+        .attr("stroke-width",strokeWeight)
+})
 
 
 var pathRight = svg1.selectAll("pathRight")
@@ -544,6 +584,36 @@ thisCircle  = svg1.selectAll("runner")
 clickFunction();
 // makeText();
 }
+
+
+// <div id = "inputInteraction">
+// make the input circle get bigger
+$(".inputInteraction").on("click", function(){
+    d3.selectAll(".runner")
+    .transition()
+    .duration(1000)
+    .attr("r", rRad*2)
+    .transition()
+    .duration(1000)
+    .attr("r", rRad)
+})
+
+// <div id="goInteraction">
+// manual trigger of the circle to be clicked
+var go = 0;
+$(".goInteraction").on("click", function(){
+    go+=1;
+    // inputGame[0] = 1;
+    // inputGame[1] = 1;
+var thisClicked = d3.select(".runner");
+callRun(thisClicked);
+
+    // calcGame("smell", width/4,go,"s");
+
+    // calcGame("touch", width/2+20,go,"u");
+    // calcGame()
+})
+
   // $('.runner').tipsy({trigger: 'manual'});
 
 function makeText(oldData, newData, indexText, learningConstant,type){
@@ -599,42 +669,42 @@ function makeText(oldData, newData, indexText, learningConstant,type){
 //     .attr("stroke","gray")
 //     .attr("stroke-weight",.1)
 
-var weightLine = svg1.selectAll("lineC")
-    .data(d3.range(5))
-    .enter()
-    .append("line").attr("class", "lineC")
-    .attr("x1", function(d,i){
-        if(i==0){
-            return 100 + 90;
-        }
-        if(i==2){
-            return 100 + 140;
-        }
-        if(i==3){
-            return 100 + 175;
-        }
-        if(i==4){
-            return 100 + 195;
-        }
-        // return 100 + i*10;
-    })
-    .attr("y1", 80)
-    .attr("x2", function(d,i){
-        if(i==0){
-            return 100 + 90;
-        }
-        if(i==2){
-            return 100 + 140;
-        }
-        if(i==3){
-            return 100 + 175;
-        }
-        if(i==4){
-            return 100 + 195;
-        }
-        // return 100 + i*10;
-    })
-    .attr("y2", 110)
+// var weightLine = svg1.selectAll("lineC")
+//     .data(d3.range(5))
+//     .enter()
+//     .append("line").attr("class", "lineC")
+//     .attr("x1", function(d,i){
+//         if(i==0){
+//             return 100 + 90;
+//         }
+//         if(i==2){
+//             return 100 + 140;
+//         }
+//         if(i==3){
+//             return 100 + 175;
+//         }
+//         if(i==4){
+//             return 100 + 195;
+//         }
+//         // return 100 + i*10;
+//     })
+//     .attr("y1", 80)
+//     .attr("x2", function(d,i){
+//         if(i==0){
+//             return 100 + 90;
+//         }
+//         if(i==2){
+//             return 100 + 140;
+//         }
+//         if(i==3){
+//             return 100 + 175;
+//         }
+//         if(i==4){
+//             return 100 + 195;
+//         }
+//         // return 100 + i*10;
+//     })
+//     .attr("y2", 110)
     // .attr("fill","gray")
     // .attr("stroke","gray")
     // .attr("stroke-weight",.1)
@@ -678,19 +748,19 @@ var weightText = svg1.selectAll("captions")
             if(oldData[i]!=newData[i].weight){
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
                 }
                 // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" >= "+threshold;
             }
             else{
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
                 }
                 // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" >= "+threshold;            
             }  
@@ -698,18 +768,18 @@ var weightText = svg1.selectAll("captions")
             else{
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
                 }
             }
             else{
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" >=  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
                 }
                 // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" >= "+threshold;            
             }    
@@ -724,18 +794,18 @@ var weightText = svg1.selectAll("captions")
             if(oldData[i]!=newData[i].weight){
             if((Math.floor(oldData[i] * 100) / 100).toString().length<4){
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
                 }
             }
             else{
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
                 }
                 // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+"*"+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
             } 
@@ -743,19 +813,19 @@ var weightText = svg1.selectAll("captions")
             else{
             if((Math.floor(oldData[i] * 100) / 100).toString().length<4){
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
                 }
                 // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
             }
             else{
                 if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
                 }
                 if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
                 }
 
                 // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
@@ -770,28 +840,30 @@ var weightText = svg1.selectAll("captions")
         }
     }) 
     .attr("text-decoration","underline")
+    // .attr("text-decoration","overline")
+
 
 
 ////////////////MAKE THIS POPPIER
-var learnText = svg1.selectAll("learnText")
-    .data(d3.range(2))
-    .enter()
-    .append("text").attr("class", "learnText")
-    .attr("x", function(d,i){
-        if(type=="s"){
-            return leftMargin*2;
-        }
-        if(type=="u"){
-            return width-leftMargin*2;
-        }
-    })
-    .attr("y", function(d,i){
-        return height/hMargin-height/2+rRad*4;
-    })
-    .attr("fill","gray")
-    .text(function(d,i){
-        // return learningConstant+" learning as you click";
-    })
+// var learnText = svg1.selectAll("learnText")
+//     .data(d3.range(2))
+//     .enter()
+//     .append("text").attr("class", "learnText")
+//     .attr("x", function(d,i){
+//         if(type=="s"){
+//             return leftMargin*2;
+//         }
+//         if(type=="u"){
+//             return width-leftMargin*2;
+//         }
+//     })
+//     .attr("y", function(d,i){
+//         return height/hMargin-height/2+rRad*4;
+//     })
+//     .attr("fill","gray")
+//     .text(function(d,i){
+//         // return learningConstant+" learning as you click";
+//     })
 
 
 
@@ -805,6 +877,11 @@ $("#refresh1p").animate({
 $("#success").animate({
     left: width/2-2,
 })
+
+
+
+
+
 $("#refresh1p, #success, .win").on("click", function(){  
    
 
@@ -849,6 +926,10 @@ if(startThings){
 }
 
 d3.selectAll(".runner").on("click", function(){
+   var whatClicked = d3.select(this);
+callRun(whatClicked);
+})
+callRun= function(whatClicked){
     $("#neurop1, #neurop2").hide();
 
 
@@ -905,8 +986,12 @@ $('#connections2').delay(2000).fadeOut(300, function(){
 
 wasClicked = true;
     // clearInterval(myPulse);
-whatClicked = d3.select(this);
-whatIs = d3.select(this).attr("cx");
+// whatClicked = d3.select(this);
+// whatClicked = w
+
+// whatIs = d3.select(this).attr("cx");
+
+whatIs = whatClicked.attr("cx");
 
 console.log(whatClicked.data()[0].sense)
     if (whatClicked.data()[0].sense=="smell"){
@@ -926,7 +1011,8 @@ console.log(whatClicked.data()[0].sense)
         calcGame("touch", whatIs,u,"u");
     }
 
-    d3.select(this)
+    whatClicked
+    // d3.select(this)
     .transition()
     .duration(500)
     .attr("cx", width/2)
@@ -941,18 +1027,25 @@ console.log(whatClicked.data()[0].sense)
     // .call(twizzle, 2000)
     // .call(plonk, 2000)
     .each("end", function(d,i){
-        d3.select(this)
+        // d3.select(this)
+        whatClicked
         .transition()
         .attr("stroke","white")
         // .attr("fill","turquoise")
         .each("end", function(){
-            d3.select(this).remove();
+            whatClicked.remove();
+            // d3.select(this).remove();
             wasClicked = false;
         })
     })
     makeNewCirc();
-})
+// })
 }
+}
+
+
+
+
 var what = 0;
 
 var l = 0;
@@ -1114,9 +1207,9 @@ $("#success").on("mouseout", function(){
 $("#success").animate({
     top: mapBump(high)+17,
 })
-$("#refresh1p").animate({
-    top: mapBump(high)-29,
-})
+// $("#refresh1p").animate({
+//     top: "7.5%",//mapBump(high)-29,
+// })
 $("#success").show();
     d3.selectAll(".bump")
     .transition()
@@ -1245,26 +1338,21 @@ $('#enterGame').tipsy({
 });
 
 $('#enterContainer').tipsy({
-    gravity: 'sw', 
+    gravity: 'nw', 
     html: true, 
     title: function() {
-         return "Part II: Scientific Explanation";
+         return "Scientific Explanation";
     }
 });
+var b=1;
 
 $("#enterGame").on("click", function(){
     $("#container").slideUp("fast");
     $("#game").slideDown("slow");
-    // $("#enterGame").show();
 })
 $("#enterContainer").on("click", function(){
-    $("#game").slideUp("fast");
-    
-    $("#enterGame").show();
 
-    $("#container").slideDown("slow", function(){
-        loadData("senses.csv");
-    });
+    $("#explanation").toggle();
 })
 
 
