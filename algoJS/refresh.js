@@ -708,7 +708,15 @@ function makeText(oldData, newData, indexText, learningConstant,type){
     // .attr("fill","gray")
     // .attr("stroke","gray")
     // .attr("stroke-weight",.1)
-
+$(".scoreboard").on("click", function(){
+    d3.selectAll(".captions")
+    .transition()
+    .duration(1000)
+    .attr("font-size", 36)
+    .transition()
+    .duration(1000)
+    .attr("font-size", 18)
+})
 d3.selectAll(".learnText").remove();
 
 d3.selectAll(".captions").remove();
@@ -719,6 +727,7 @@ var weightText = svg1.selectAll("captions")
     .data(newData)
     .enter()
     .append("text").attr("class", "captions")
+    .attr("font-size",18)
     .attr("fill","white")
     // var country = document.getElementById("UK");
     // .style("border-bottom","1px solid white")

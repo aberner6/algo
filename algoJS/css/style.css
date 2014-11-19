@@ -32,11 +32,11 @@ canvas{
 }
 
 
-.inputInteraction, .outputInteraction, .winInteraction, .goInteraction{
+.inputInteraction, .outputInteraction, .winInteraction, .goInteraction, .scoreboard{
 display:inline;
 }
 
-.inputInteraction, .outputInteraction, .goInteraction{
+.inputInteraction, .outputInteraction, .goInteraction, .scoreboard{
 background-color:yellow;
   }
 .inputInteraction:hover{
@@ -51,6 +51,11 @@ color:white;
 }
 
 .goInteraction:hover{
+  cursor:pointer;
+background-color:gray;
+color:white;
+}
+.scoreboard:hover{
   cursor:pointer;
 background-color:gray;
 color:white;
@@ -213,13 +218,13 @@ z-index:1000;
   padding: 2px 4px;
     /*background-color:white;*/
 /*opacity:.7;*/
-color:black;
-border-bottom: 1px solid black;
-
+/*color:black;*/
+color:#777;
+border-bottom: 1px solid #777;
   display:none;
 }
 #neurop2{
-  color:black;
+  /*color:black;*/
 
     top:45%;
 z-index:1000;
@@ -229,8 +234,8 @@ z-index:1000;
   padding: 2px 4px;
     /*background-color:white;*/
 /*opacity:.7;*/
-border-bottom: 1px solid black;
-
+color:#777;
+border-bottom: 1px solid #777;
   display:none;
 }
 
@@ -265,7 +270,8 @@ opacity:.7;*/
 
 #connections1{
     top:0px;
-color:black;
+color:#777;
+border-bottom: 1px solid #777;
 
       position:absolute;
   left:45%;
@@ -273,13 +279,12 @@ color:black;
   padding: 2px 4px;
     /*background-color:white;*/
 /*opacity:.7;*/
-border-bottom: 1px solid black;
 
   display:none;
 }
 #connections2{
     top:0px;
-color:black;
+/*color:black;*/
 
       position:absolute;
   left:45%;
@@ -287,7 +292,8 @@ color:black;
   padding: 2px 4px;
     /*background-color:white;*/
 /*opacity:.7;*/
-border-bottom: 1px solid black;
+color:#777;
+border-bottom: 1px solid #777;
   display:none;
 }
 
