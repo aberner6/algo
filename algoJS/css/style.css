@@ -181,16 +181,16 @@ color: white;
   cursor: pointer;
 }
 
-@font-face {
+/*@font-face {
   font-family: 'SFDigitalReadout-Medium';
   src: url('SFDigitalReadout-Medium.ttf');
   /*font-size: 24px;*/
-  font-weight: normal;
-  font-style: normal;
-} 
+  /*font-weight: normal;*/
+  /*font-style: normal;*/
+/*} */
 .captions{
-font-size: 18px;
-font-family:'SFDigitalReadout-Medium';
+font-size: 14px;
+font-family:Lato Thin 100
 }
 /*<div id = "senseCloud">{ sense cloud }</div>
 <div id = "neurons">{ neurons }</div>

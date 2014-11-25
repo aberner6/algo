@@ -10,7 +10,8 @@ var thisCloudCirc;
 var wasClicked = false;
 var connectionsChanged = false;
 var callRun;
-
+var newD = [];
+var oldD = [];
 var startThings = true;
 var windowWidth = window.innerWidth,
     windowHeight= window.innerHeight,
@@ -29,6 +30,7 @@ var yMap = d3.scale.linear()
 var randMap = d3.scale.linear()
     .domain([0, 1])
     .range([0, .49]);
+// $('.wodry').wodry();
 
 
 
@@ -37,7 +39,7 @@ var randMap = d3.scale.linear()
 
 
 
-    
+
 $(window).resize(function() {
 // windowWidth = window.outerWidth,
 //     windowHeight= window.innerHeight,
@@ -269,7 +271,7 @@ function showCaptions(addIs, senseIs, errorIs,thisIndex){
 
 var error = 0;
 // makeText();
-makeText(tData,tData,0,0,"u"); 
+makeText(tData,tData,0,0,0,"u"); 
 
 // makeText(tData,0); 
 var oldData = [];
@@ -296,9 +298,10 @@ console.log(learningConstant+"learning")
             oldData[i] = tData[i].weight;
             console.log(oldData[i]+"old data?")
             tData[i].weight += learningConstant*error*inputGame[i];
+            console.log(learningConstant*error*inputGame[i]+"equation")
             console.log(tData[i].weight+"new data?")
 
-makeText(oldData,tData,theIndexIs,learningConstant,type); 
+makeText(oldData,tData,theIndexIs,learningConstant, error, type); 
 changeCircs(tData,theIndexIs, xPos);
 bumpUp(tData[theIndexIs].weight, triggerSense);
 
@@ -308,7 +311,7 @@ bumpUp(tData[theIndexIs].weight, triggerSense);
 
     else{
 bumpUp(tData[theIndexIs].weight);
-makeText(oldData,tData,theIndexIs,learningConstant,type); 
+makeText(oldData,tData,theIndexIs,learningConstant, error, type); 
 changeCircs(tData,theIndexIs, xPos);
     }    
 console.log(tData[theIndexIs].weight+"new weight?");
@@ -599,49 +602,49 @@ callRun(thisClicked);
 
   // $('.runner').tipsy({trigger: 'manual'});
 
-function makeText(oldData, newData, indexText, learningConstant,type){
+function makeText(oldData, newData, indexText, learningConstant, error, type){
+// oldD[i]
+var errorI =Math.floor(error*100)/100;
+// console.log(oldData+"OLDDDATA")
+var learns = Math.floor(learningConstant * 100) / 100;
+// for (i=0; i<newData.length; i++){
+//     newD = Math.floor(newData[i].weight * 100) / 100;
+// }
+//     oldD = Math.floor(oldData * 100) / 100;
+//     console.log(newD+"NEWD")
+//     console.log(oldD+"OLDD")
+// }
 
-$(".scoreboard").on("click", function(){
-    d3.selectAll(".captions")
-    .transition()
-    .duration(1000)
-    .attr("font-size", 36)
-    .transition()
-    .duration(1000)
-    .attr("font-size", 18)
-})
 d3.selectAll(".learnText").remove();
 
-d3.selectAll(".captions").remove();
+d3.selectAll(".wodry").remove();
 console.log(newData+"newdata");
 console.log(newData[indexText].weight+" newData[indextext].weight inside make text")
+// $('.wodry').wodry({
+//     animation: 'rotateX',
+//     delay: 1000,
+//     animationDuration: 800
+// });
 
-var weightText = svg1.selectAll("captions")
+var weightText = svg1.selectAll("wodry")
     .data(newData)
     .enter()
-    .append("text").attr("class", "captions")
-    .attr("font-size",18)
+    .append("text").attr("class", "wodry")
+    .attr("font-size",14)
     .attr("fill","white")
-    // var country = document.getElementById("UK");
-    // .style("border-bottom","1px solid white")
-    // .style("padding","2px 4px")
-    // .style("border-radius","10px")
-
     .attr("x", function(d,i){
         if(i==0){
             return leftMargin; //width/2-182*2;
         }
         if(i==1){
             return width-leftMargin-282; //width/2+182;
-
-            //return width-leftMargin;
         }
     })
     .attr("y", function(d,i){
         return 100;
     })
-    // .attr("fill","gray")
-    .text(function(d,i){
+    .html(function(d,i){
+        if (i==indexText){
         if(Math.floor(newData[i].weight * 100) / 100 >= threshold){
             if(wasClicked && newData[indexText].weight>=threshold){
                 $("#refresh1p").delay(500).slideDown();
@@ -649,43 +652,20 @@ var weightText = svg1.selectAll("captions")
             else{
                 $("#refresh1p, #success").hide();
             }
-            if(oldData[i]!=newData[i].weight){
+            if(Math.floor(oldData[i] * 100) / 100!=Math.floor(newData[i].weight * 100) / 100){
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
-                if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
-                }
-                if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
-                }
-                // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" >= "+threshold;
+                    return Math.floor(oldData[i] * 100) / 100+" + "+learns+" &#10036 "+errorI+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
             }
             else{
-                if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
-                }
-                if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
-                }
-                // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" >= "+threshold;            
+                    return Math.floor(oldData[i] * 100) / 100+" + "+learns+" &#10036 "+errorI+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
             }  
             }
             else{
             if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
-                if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
-                }
-                if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
-                }
+                    return Math.floor(oldData[i] * 100) / 100+" + "+learningConstant+" &#10036 "+errorI+    " = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
             }
             else{
-                if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
-                }
-                if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
-                }
-                // return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" >= "+threshold;            
+                    return Math.floor(oldData[i] * 100) / 100+" + "+learningConstant+" &#10036 "+errorI+    " = "+ Math.floor(newData[i].weight * 100) / 100+" >=  "+" \xa0"+threshold; 
             }    
             }        
         }
@@ -695,58 +675,60 @@ var weightText = svg1.selectAll("captions")
 
 
         else{
-            if(oldData[i]!=newData[i].weight){
+            if(oldData[i]!=Math.floor(newData[i].weight * 100) / 100){
             if((Math.floor(oldData[i] * 100) / 100).toString().length<4){
-                if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
-                }
-                if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
-                }
+                    return Math.floor(oldData[i] * 100) / 100+0+" + "+learns+" &#10036 "+errorI+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+threshold; 
             }
             else{
-                if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
-                }
-                if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
-                }
-                // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+"*"+Math.floor(learningConstant * 100) / 100+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
+                    return Math.floor(oldData[i] * 100) / 100+" + "+learns+" &#10036 "+errorI+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+threshold; 
             } 
             }
             else{
             if((Math.floor(oldData[i] * 100) / 100).toString().length<4){
-                if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
-                }
-                if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+0+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
-                }
-                // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+0+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold; 
+                    return Math.floor(oldData[i] * 100) / 100+0+" + "+0+" &#10036 "+errorI+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+threshold; 
             }
             else{
-                if(i==0){
-                    return "Left Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
-                }
-                if(i==1){
-                    return "Right Link"+": "+Math.floor(oldData[i] * 100) / 100+" x "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
-                }
-
-                // return "Link "+i+": "+Math.floor(oldData[i] * 100) / 100+" * "+0+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold; 
+                    return Math.floor(oldData[i] * 100) / 100+" + "+0+" &#10036 "+errorI+" = "+ Math.floor(newData[i].weight * 100) / 100+" <  "+threshold; 
             } 
             }
-            // if((Math.floor(newData[i].weight * 100) / 100).toString().length<4){
-            //     return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+0+" <  "+" \xa0"+threshold;
-            // }
-            // else{
-            //     return "Link "+i+": "+Math.floor(newData[i].weight * 100) / 100+" <  "+" \xa0"+threshold;            
-            // } 
         }
+    }
     }) 
     .attr("text-decoration","underline")
-    // .attr("text-decoration","overline")
-
-
+var connText = svg1.selectAll("wodry")
+    .data(newData)
+    .enter()
+    .append("text").attr("class", "wodry")
+    .attr("font-size",14)
+    .attr("fill","white")
+    .attr("x", function(d,i){
+        if(i==0){
+            return leftMargin; //width/2-182*2;
+        }
+        if(i==1){
+            return width-leftMargin-282; //width/2+182;
+        }
+    })
+    .attr("y", function(d,i){
+        return 70;
+    })
+    .text(function(d,i){
+        if(i==indexText){
+            return "Connection Strength:";
+        }else{
+            return " ";
+        }
+    })
+    // .attr("text-decoration","underline")
+// $(".wodry").textrotator({
+//   animation: "dissolve", // You can pick the way it animates when rotating through words. Options are dissolve (default), fade, flip, flipUp, flipCube, flipCubeUp and spin.
+//   separator: ",", // If you don't want commas to be the separator, you can define a new separator (|, &, * etc.) by yourself using this field.
+//   speed: 1000 // How many milliseconds until the next word show.
+// });
+      // $(".wodry").textrotator({
+      //   animation: "flipUp",
+      //   speed: 2000
+      // });
 
 ////////////////MAKE THIS POPPIER
 // var learnText = svg1.selectAll("learnText")
@@ -803,7 +785,7 @@ d3.selectAll(".win")
     for (var i = 0; i < tData.length; i++) {
         tData[i].weight = randMap(Math.random());
     } 
-makeText(tData,tData,0,0,"u"); 
+makeText(tData,tData,0,0,0,"u"); 
 
     // makeText(tData,0);
     d3.selectAll(".trailLeft, .trailRight").remove();
