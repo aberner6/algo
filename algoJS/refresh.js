@@ -769,7 +769,8 @@ $("#success").animate({
 
 
 $("#refresh1p, #success, .win").on("click", function(){  
-   
+   l = 0;
+   right = 0;
 
 startThings = true;
     d3.selectAll(".bump")

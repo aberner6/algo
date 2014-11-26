@@ -18,7 +18,7 @@ body{
     -ms-user-select: none; /* IE10+ */
 }
 ::-webkit-scrollbar { 
-    display: none; 
+    /*display: none; */
 }
 canvas{
 	left:0px;
@@ -101,7 +101,11 @@ left: 40px;
 background-color: white;
 color: darkgray;
 padding: 7px;
-height:50%;overflow-y:scroll;
+height:50%;
+/*direction: rtl; */
+/*height: 250px; */
+/*overflow: scroll;*/
+overflow-y:scroll;
 
 /*      position:fixed;
   font-size: 12px;
@@ -915,7 +919,11 @@ margin-top:15px;
 z-index: 1;
 margin-left: 0px;
 margin-top:50px;
+/*background-color:rgb(70, 93, 97);*/
 background-color:rgb(164, 194, 200);
+/*rgb(48, 82, 89) 
+rgb(164, 194, 200)
+rgb(70, 93, 97)*/
 }
 
 header#navbar {
