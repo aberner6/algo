@@ -898,34 +898,20 @@ console.log(whatClicked.data()[0].sense)
     }
 
     whatClicked
-    // d3.select(this)
     .transition()
     .duration(500)
     .attr("cx", width/2)
     .attr("cy", hTopMargin-rRad)
-    // .attr("r", function(d,i){
-    //     if(whatIs<width/2){
-    //         return oMap(l)*50;
-    //     } else{
-    //         return oMap(r)*50;
-    //     }
-    // })
-    // .call(twizzle, 2000)
-    // .call(plonk, 2000)
     .each("end", function(d,i){
-        // d3.select(this)
         whatClicked
         .transition()
         .attr("stroke","white")
-        // .attr("fill","turquoise")
         .each("end", function(){
             whatClicked.remove();
-            // d3.select(this).remove();
             wasClicked = false;
         })
     })
     makeNewCirc();
-// })
 }
 }
 
@@ -954,7 +940,9 @@ var xLMap = d3.scale.linear()
     .domain([0, what])
     .range([leftMargin+rRad/2+4, width/2]);
 
+// var green = d3.rgb(0,10,0);
 
+var color = d3.scale.category10();
 
 var trailLeft = svg1.selectAll("trailLeft")
     .data(d3.range([what]))
@@ -966,20 +954,27 @@ var trailLeft = svg1.selectAll("trailLeft")
         return xLMap(i);//newData[1].weight);
     })
     .attr("cy", function(d,i){
+        // console.log(l+"l")
         return hMap(i)//newData[1].weight);
     })
     .attr("r", tRad)
-    .attr("fill", "none")
-    .attr("stroke","white")
-     .attr("opacity",function(d,i){
-         // var howFar = newData[1].weight*multiplier;
-         if(i<=what){
-            return oMap(newData[0].weight);
-         }
-        else{
-            return 0;
-        }        
- })
+    // .attr("fill", "none")
+.attr("fill", function(d) {
+    return "hsl(" + (l * 10) + ",100%,50%";
+  // return "hsl(" + Math.random() * 360 + ",100%,50%)";
+    // return "rgb(0, 50, " + 100+(l * 2) + ")";
+})
+.attr("opacity",.1)
+    // .style("stroke", color(Math.floor((Math.random()*20)+1)))
+ //     .attr("opacity",function(d,i){
+ //         // var howFar = newData[1].weight*multiplier;
+ //         if(i<=what){
+ //            return oMap(newData[0].weight);
+ //         }
+ //        else{
+ //            return 0;
+ //        }        
+ // })
 }
 
 
@@ -1015,18 +1010,24 @@ var trailRight = svg1.selectAll("trailRight")
         return h2Map(i)//newData[1].weight);
     })
     .attr("r", tRad)
-    .attr("fill", "none")
-    .attr("stroke","white")
-     .attr("opacity",function(d,i){
-         // bumpUp(newData[indexCircs].weight);
-         // var howFar = newData[1].weight*multiplier;
-         if(i<=what){
-            return oMap(newData[1].weight);
-         }
-        else{
-            return 0;
-        }        
- })
+    // .attr("fill", "none")
+    // .attr("stroke","white")
+.attr("fill", function(d) {
+    return "hsl(" + (right * 10) + ",100%,50%";
+  // return "hsl(" + Math.random() * 360 + ",100%,50%)";
+    // return "rgb(0, 50, " + 100+(l * 2) + ")";
+})
+.attr("opacity",.1)
+ //     .attr("opacity",function(d,i){
+ //         // bumpUp(newData[indexCircs].weight);
+ //         // var howFar = newData[1].weight*multiplier;
+ //         if(i<=what){
+ //            return oMap(newData[1].weight);
+ //         }
+ //        else{
+ //            return 0;
+ //        }        
+ // })
 }
 
 }
@@ -1143,70 +1144,6 @@ $("#success").show();
     })
 }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
