@@ -97,7 +97,8 @@ color:white;
 position: fixed;
 font-size: 12px;
 display: none;
-width: 15%;
+width:169.984px;
+/*15%;*/
 /* height: 5%; */
 /* letter-spacing: 0.5pt; */
 top: 11.5%;
@@ -806,18 +807,23 @@ display: none;
 /*top: 72px;*/
 position: absolute;
 color: white;
-font-size: 14px;
-padding-right: 6px;
+font-size:36px;
+/*font-size: 14px;*/
+/*padding-right: 6px;
 padding-left: 6px;
-padding-bottom: -5px;
+padding-bottom: 6px;*/
 /*border: 2px solid yellow;*/
 
 
   display:none;
 position: fixed;
-top: 7.5%;
+/*top: 7.5%;*/
+top:50%;
+
+
+
 /*left: 40px;*/
-/*padding: 10px;*/
+padding: 10px;
 /*opacity: .5;*/
 /* width: 0.8em; */
 z-index: 20;
@@ -860,7 +866,10 @@ opacity: .1;
 color: darkgray;
 background-color: white;
 cursor: pointer;
-border: 2px solid yellow;
+border-left: 2px solid yellow;
+border-right: 2px solid yellow;
+border-bottom: 2px solid yellow;
+
 border-radius: 6px;
 }
 #refresh1{

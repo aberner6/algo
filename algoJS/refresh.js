@@ -818,7 +818,7 @@ if(scoreBoardClicked==true){
 
 }
 $("#refresh1p").animate({
-    left: width/2-78,
+    left: width/2-165,//78,
     // top: hTopMargin-rRad*5.5-20,
 })
 
@@ -1167,6 +1167,7 @@ $("#success").show();
 
                 d3.selectAll(".win")
                 .transition()
+                 .duration(100)
                 .attr("r", rRad/2)
                 .attr("stroke-width", rRad*2)
                 .attr("stroke", "yellow")
@@ -1174,12 +1175,12 @@ $("#success").show();
                 .each("end", function(){
                     d3.selectAll(".win")
                     .transition()
-                    // .duration(1000)
+                    .duration(10)
                     .attr("stroke-width", rRad)
                     .each("end", function(){
                         d3.selectAll(".win")
                             .transition()
-                            // .duration(2000)
+                            .duration(10)
                             .attr("r", rRad/2) 
                             .each("end", function(){
                                     d3.selectAll(".win")
