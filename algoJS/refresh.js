@@ -587,7 +587,16 @@ $(".inputInteraction").on("click", function(){
     .duration(1000)
     .attr("r", rRad)
 })
-
+$('.scoreboard').click(function(){
+    d3.selectAll(".wodry")
+    .transition()
+.duration(100)
+    .attr("font-size",18)
+    .transition()
+    .delay(1000)
+    .duration(1000)
+    .attr("font-size",14)
+})
 // <div id="goInteraction">
 // manual trigger of the circle to be clicked
 var go = 0;
@@ -754,11 +763,24 @@ if(indexText ==1){
 }
 
 if(scoreBoardClicked==true){
-    $(".wodry").hide(1000)
-    $("#explainAlgo").delay(1000).show(2000);
-    $("#explainAlgo").delay(4000).hide();
-        $(".wodry").delay(8000).show(1000);
+//     $(".wodry").hide(1000)
+//     $("#explainAlgo").delay(1000).show(2000);
+//     $("#explainAlgo").delay(4000).hide();
+//         $(".wodry").delay(8000).show(1000);
+// 
+// $('.scoreBoard').click(function(){
+    console.log("hey");
+    // e.preventDefault();
+    d3.selectAll(".wodry").transition()
+.duration(2000)
+    .attr("font-size",24)
+    .delay(4000)
+    .transition()
+    .duration(2000)
+    .attr("font-size",14)
+// });
 }
+
     // .attr("text-decoration","underline")
 // $(".wodry").textrotator({
 //   animation: "dissolve", // You can pick the way it animates when rotating through words. Options are dissolve (default), fade, flip, flipUp, flipCube, flipCubeUp and spin.
