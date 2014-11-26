@@ -34,7 +34,7 @@ var randMap = d3.scale.linear()
 
 
 
-
+var scoreBoardClicked = false;
 
 
 
@@ -694,7 +694,14 @@ var weightText = svg1.selectAll("wodry")
         }
     }
     }) 
-    .attr("text-decoration","underline")
+    .attr("text-decoration","underline");
+$('.wodry').tipsy({
+    gravity: 'nw', 
+    html: true, 
+    title:function(){
+        return "Connection Weight + Learning Constant * Error = Learned Connection Weight (> or <) Pre-Designated Threshold"
+    }
+})
 var connText = svg1.selectAll("wodry")
     .data(newData)
     .enter()
@@ -718,7 +725,26 @@ var connText = svg1.selectAll("wodry")
         }else{
             return " ";
         }
-    })
+    });
+if (indexText == 0){
+$("#explainAlgo").animate({
+    left: leftMargin,
+    top: 100,
+})
+}
+if(indexText ==1){
+ $("#explainAlgo").animate({
+    left: width-leftMargin-282,
+    top: 100,
+})   
+}
+
+if(scoreBoardClicked==true){
+    $(".wodry").hide(1000)
+    $("#explainAlgo").delay(1000).show(2000);
+    $("#explainAlgo").delay(4000).hide();
+        $(".wodry").delay(8000).show(1000);
+}
     // .attr("text-decoration","underline")
 // $(".wodry").textrotator({
 //   animation: "dissolve", // You can pick the way it animates when rotating through words. Options are dissolve (default), fade, flip, flipUp, flipCube, flipCubeUp and spin.

@@ -87,6 +87,12 @@ color:white;
   border-bottom: 1px solid yellow;
   cursor: pointer;
 }
+#explainAlgo{
+  display:none;
+  left:50%;
+  /*top:;*/
+}
+
 #explanation{
 position: fixed;
 font-size: 12px;
