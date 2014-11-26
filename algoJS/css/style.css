@@ -32,11 +32,11 @@ canvas{
 }
 
 
-.inputInteraction, .outputInteraction, .winInteraction, .goInteraction, .scoreboard{
+.inputInteraction, .scoreboard, .outputInteraction, .winInteraction, .goInteraction{
 display:inline;
 }
 
-.inputInteraction, .outputInteraction, .goInteraction, .scoreboard{
+.inputInteraction,.scoreboard, .outputInteraction, .goInteraction{
 background-color:yellow;
   }
 .inputInteraction:hover{

@@ -698,10 +698,24 @@ var weightText = svg1.selectAll("wodry")
 $('.wodry').tipsy({
     gravity: 'nw', 
     html: true, 
+// trigger: 'manual',
     title:function(){
         return "Connection Weight + Learning Constant * Error = Learned Connection Weight (> or <) Pre-Designated Threshold"
     }
 })
+
+// var el = $('#manual-example a[rel=tipsy]').tipsy({trigger: 'manual'});
+// $('.scoreBoard').click(function(){
+//     console.log("hey");
+//     // e.preventDefault();
+//     console.log($('.tipsy'));
+//     if($('.tipsy').length == 0){
+//         el.tipsy('show');
+//     }else{
+//         el.tipsy('hide');        
+//     }
+// });
+
 var connText = svg1.selectAll("wodry")
     .data(newData)
     .enter()
