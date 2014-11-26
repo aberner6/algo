@@ -1118,7 +1118,7 @@ winCircle
        d3.select(this)
         .transition()
         .attr("stroke","yellow")
-        .attr("stroke-width",strokeWeight*3)
+        .attr("stroke-width",strokeWeight*8)
     })
    .on("mouseout", function(){
         d3.select(this)
@@ -1130,7 +1130,7 @@ $("#success").on("mouseover", function(){
     winCircle
         .transition()
         .attr("stroke","yellow")
-        .attr("stroke-width",strokeWeight*3);
+        .attr("stroke-width",strokeWeight*8);
 })
 $("#success").on("mouseout", function(){
     winCircle
@@ -1167,9 +1167,9 @@ $("#success").show();
 
                 d3.selectAll(".win")
                 .transition()
-                 .duration(100)
+                 .duration(1000)
                 .attr("r", rRad/2)
-                .attr("stroke-width", rRad*2)
+                .attr("stroke-width", rRad*8)
                 .attr("stroke", "yellow")
                 .attr("cy", hTopMargin-rRad*4.6)
                 .each("end", function(){
