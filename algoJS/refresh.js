@@ -393,7 +393,19 @@ var winCircle  = svg1.selectAll("win")
     // })  
 // <div id = "outputInteraction"
 // make output circle get bigger
-
+$(".trailInteraction").on("click", function(){
+    d3.selectAll(".trailLeft, .trailRight")
+    .transition()
+    .duration(1000)
+    .attr("stroke", "white")
+    // .attr("stroke-width", strokeWeight*2)
+    .each("end", function(){
+        d3.selectAll(".trailLeft, .trailRight")
+        .transition()
+        .duration(1000)
+        .attr("stroke", "none")        
+    })
+})
 $(".outputInteraction").on("click", function(){
     d3.selectAll(".win")
     .transition()

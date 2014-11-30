@@ -32,11 +32,11 @@ canvas{
 }
 
 
-.inputInteraction, .scoreboard, .outputInteraction, .winInteraction, .goInteraction{
+.trailInteraction, .inputInteraction, .scoreboard, .outputInteraction, .winInteraction, .goInteraction{
 display:inline;
 }
 
-.inputInteraction,.scoreboard, .outputInteraction, .goInteraction{
+.trailInteraction, .inputInteraction,.scoreboard, .outputInteraction, .goInteraction{
 background-color:yellow;
   }
 .inputInteraction:hover{
@@ -56,6 +56,11 @@ background-color:gray;
 color:white;
 }
 .scoreboard:hover{
+  cursor:pointer;
+background-color:gray;
+color:white;
+}
+.trailInteraction:hover{
   cursor:pointer;
 background-color:gray;
 color:white;
